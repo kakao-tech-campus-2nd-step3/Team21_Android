@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Everymoment</string>
+    <string name="diary_edit_button">편집</string>
+    <string name="diary_done_button">완료</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
