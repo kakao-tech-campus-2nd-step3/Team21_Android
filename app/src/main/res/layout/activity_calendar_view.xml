@@ -30,4 +30,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="570dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendarAlarm"
+        app:mcv_selectionColor="@color/black"
+        app:mcv_showOtherDates="all"
+        app:mcv_headerTextAppearance="@style/CalendarHeaderTextAppearance"
+        app:mcv_tileHeight="80dp"
+        app:mcv_tileSize="53dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
