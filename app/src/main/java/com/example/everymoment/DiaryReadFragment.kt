@@ -1,59 +1,76 @@
 package com.example.everymoment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import com.example.everymoment.databinding.FragmentDiaryReadBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DiaryReadFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DiaryReadFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentDiaryReadBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diary_read, container, false)
+        binding = FragmentDiaryReadBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DiaryReadFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DiaryReadFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setBookmark(binding.bookmark)
+
+        binding.bookmark.setOnClickListener {
+            toggleBookmark(requireContext(), binding.bookmark)
+        }
+
+        binding.diaryEditButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, DiaryEditFragment())
+                addToBackStack(null)
+                commit()
             }
+        }
+    }
+
+    companion object Bookmark {
+        var isBookmarked: Boolean = false
+
+        fun setBookmark(bookmarkId: ImageView) {
+            if (isBookmarked == false) {
+                bookmarkId.setImageResource(R.drawable.baseline_bookmark_border_24)
+            } else {
+                bookmarkId.setImageResource(R.drawable.baseline_bookmark_24)
+            }
+        }
+
+        fun toggleBookmark(context: Context, bookmarkId: ImageView) {
+            Log.d("bookmark", "bookmark clicked")
+            if (isBookmarked == false) {
+                bookmarkId.setImageResource(R.drawable.baseline_bookmark_24)
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.add_bookmark),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else {
+                bookmarkId.setImageResource(R.drawable.baseline_bookmark_border_24)
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.remove_bookmark),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            isBookmarked = !isBookmarked
+        }
     }
 }
