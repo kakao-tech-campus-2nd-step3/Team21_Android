@@ -4,7 +4,7 @@
 ## 코드 리뷰 받고 싶은 부분 (개발 질문)
 
 ### todlf
-[이슈 #1](https://github.com/kakao-tech-campus-2nd-step3/Team21_Android/issues/1) 에서 바텀 네비게이션 아이콘 주위에 보라색 타원이 기본으로 생기는데 없애는 방법이 궁금합니다.
+[이슈 #1](https://github.com/kakao-tech-campus-2nd-step3/Team21_Android/issues/1) 에서 바텀 네비게이션 아이콘 주위에 보라색 타원이 기본으로 생기는데 없애는 방법이 궁금합니다.   
 바텀 네비게이션뷰에서 아이콘을 클릭시 화면 전환하는 건 fragment가 좋다고 생각하는데 하나의 Activity만 만들고 그거를 메인으로 해서 나머지를 다 fragment로 만드는게 좋을까요?
 
 ### arieum
