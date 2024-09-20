@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Everymoment"
         tools:targetApi="31">
         <activity
+            android:name=".CalendarViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
