@@ -153,7 +153,7 @@ class LocationService : Service() {
         longitude: Double,
         callback: (List<String>) -> Unit
     ) {
-        val apiKey = "AIzaSyAFtmbIMP3V-dZ_RWBzOVbdDq_aVcGX3zk"
+        val apiKey = BuildConfig.API_KEY
         val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                 "location=$latitude,$longitude&language=ko&rankby=distance&key=$apiKey"
 

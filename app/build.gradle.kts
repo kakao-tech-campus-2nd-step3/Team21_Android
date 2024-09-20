@@ -1,7 +1,11 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
+
+fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
 
 android {
     namespace = "com.example.everymoment"
@@ -15,8 +19,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 
+        buildConfigField("String", "API_KEY", "\"${getApiKey("API_KEY")}\"")
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -25,6 +30,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
