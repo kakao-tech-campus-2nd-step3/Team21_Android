@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.presentation
 
 import android.app.Activity
 import android.content.Intent
@@ -10,15 +10,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupWindow
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.everymoment.databinding.EmotionWindowBinding
 import com.example.everymoment.databinding.FragmentDiaryEditBinding
-import java.util.Locale.Category
 
 class DiaryEditFragment : Fragment() {
 
@@ -93,8 +90,7 @@ class DiaryEditFragment : Fragment() {
         val location = IntArray(2)
         anchorView.getLocationOnScreen(location)
         val xOffset = 10.dpToPx()
-        val yOffset = (-2).dpToPx()
-        emotionPopup.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + anchorView.width + xOffset, location[1] + yOffset)
+        emotionPopup.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + anchorView.width + xOffset, location[1])
 
         popupView.happy.text = "${String(Character.toChars(0x1F60A))}"
         popupView.sad.text = "${String(Character.toChars(0x1F622))}"

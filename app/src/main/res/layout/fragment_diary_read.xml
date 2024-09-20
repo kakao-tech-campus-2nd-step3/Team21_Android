@@ -7,7 +7,7 @@
     android:layout_marginTop="30dp"
     android:background="@drawable/diary_background"
     android:orientation="vertical"
-    tools:context=".DiaryReadFragment">
+    tools:context=".presentation.DiaryReadFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

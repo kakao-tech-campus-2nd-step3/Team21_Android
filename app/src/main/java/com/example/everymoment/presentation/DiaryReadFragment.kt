@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.presentation
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import com.example.everymoment.R
 import com.example.everymoment.databinding.FragmentDiaryReadBinding
 
 class DiaryReadFragment : Fragment() {
