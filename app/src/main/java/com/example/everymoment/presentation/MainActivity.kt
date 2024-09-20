@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.presentation
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,6 +15,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.everymoment.LocationService
+import com.example.everymoment.R
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/emotions_background"
+    android:orientation="horizontal"
+    android:paddingStart="7dp"
+    android:paddingTop="2dp"
+    android:paddingEnd="2dp"
+    android:paddingBottom="2dp">
+
+    <TextView
+        android:id="@+id/happy"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="SMILING FACE WITH SMILING EYES"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/sad"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="CRYING FACE"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/insensitive"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="NEUTRAL FACE"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/angry"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="ANGRY FACE"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/confounded"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="CONFOUNDED FACE"
+        android:textSize="20sp" />
+
+</LinearLayout>
