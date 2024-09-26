@@ -1,12 +1,8 @@
 package com.example.everymoment
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -15,11 +11,10 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.everymoment.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var locationReceiver: BroadcastReceiver
-
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
         private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 2000
@@ -38,14 +33,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        checkNotificationPermission()
+        val timelineList: MutableList<Timeline> = mutableListOf()
+        // 리스트 예시
+        timelineList.add(Timeline("오전 10:00", "빽다방 강원대점", "강원도 춘천시 충열로", "😢", true))
+        timelineList.add(Timeline("오후 12:00", "천지관", "강원도 춘천시 충열로", "😢", false))
+
+        binding.timeLineRecyclerView.adapter = TimelineAdapter(timelineList)
+        binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            checkNotificationPermission()
+        }
         checkLocationPermission()
-        setupLocationReceiver()
     }
 
     private fun checkLocationPermission() {
@@ -78,23 +83,5 @@ class MainActivity : AppCompatActivity() {
     private fun startLocationService() {
         val intent = Intent(this, LocationService::class.java)
         ContextCompat.startForegroundService(this, intent)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupLocationReceiver() {
-        locationReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val placeName = intent?.getStringExtra("place_name") ?: "알 수 없는 장소"
-                findViewById<TextView>(R.id.tvPlaceName).text = "현재 위치: $placeName"
-            }
-        }
-
-        val intentFilter = IntentFilter("LOCATION_UPDATE")
-        registerReceiver(locationReceiver, intentFilter, RECEIVER_EXPORTED)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(locationReceiver)
     }
 }

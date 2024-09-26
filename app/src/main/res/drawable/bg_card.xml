@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 카드 배경 -->
+    <item android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#F1F0F0" /> <!-- 하얀색 배경 -->
+            <corners android:radius="10dp" /> <!-- 둥근 모서리 -->
+        </shape>
+    </item>
+
+</layer-list>
