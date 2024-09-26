@@ -27,7 +27,9 @@ class KakaoLoginActivity : AppCompatActivity() {
         setContentView(view)
 
         val userRepository = UserRepository()
-        viewModel = ViewModelProvider(this, KakaoLoginViewModelFactory(userRepository)).get(KakaoLoginViewModel::class.java)
+        viewModel = ViewModelProvider(this, KakaoLoginViewModelFactory(userRepository)).get(
+            KakaoLoginViewModel::class.java
+        )
 
         viewModel.uiState.observe(this) { uiState ->
             if (uiState.isLoggedIn) {
