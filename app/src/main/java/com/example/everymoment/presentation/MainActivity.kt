@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.presentation
 
 import android.content.Intent
 import android.os.Build
@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.databinding.ActivityMainBinding
+import com.example.everymoment.LocationService
+import com.example.everymoment.Timeline
+import com.example.everymoment.TimelineAdapter
 
 class MainActivity : AppCompatActivity() {
     companion object {
