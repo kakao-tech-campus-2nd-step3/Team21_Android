@@ -3,6 +3,7 @@ package com.example.everymoment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ class TimelineAdapter(private val timelineList: MutableList<Timeline>): Recycler
 
         val diaryContainer = binding.detailedDiaryContainer
 
+        val editButton = binding.editIcon
         val bookmarkButton = binding.bookmarkIcon
         val shareButton = binding.shareIcon
         val deleteButton = binding.deleteIcon
@@ -101,6 +103,13 @@ class TimelineAdapter(private val timelineList: MutableList<Timeline>): Recycler
                     dialog.dismiss()
                 }
             builder.create().show()
+        }
+
+        holder.editButton.setOnClickListener {
+            val popupMenu = PopupMenu(holder.editButton.context, holder.editButton)
+            popupMenu.menuInflater.inflate(R.menu.location_candidate_menu, popupMenu.menu)
+
+            popupMenu.show()
         }
     }
 }
