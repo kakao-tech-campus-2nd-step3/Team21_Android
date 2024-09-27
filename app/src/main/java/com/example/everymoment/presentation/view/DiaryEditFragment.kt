@@ -1,22 +1,15 @@
 package com.example.everymoment.presentation.view
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupWindow
-import androidx.activity.result.contract.ActivityResultContracts
-import com.example.everymoment.databinding.EmotionWindowBinding
 import com.example.everymoment.databinding.FragmentDiaryEditBinding
 import com.example.everymoment.extensions.Bookmarks
 import com.example.everymoment.extensions.EmotionPopup
-import com.example.everymoment.extensions.Emotions
 import com.example.everymoment.extensions.GalleryUtil
 import com.example.everymoment.extensions.ToPxConverter
 

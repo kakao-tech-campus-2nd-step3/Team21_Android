@@ -1,4 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -6,6 +8,9 @@ plugins {
 }
 
 fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
+val properties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
 
 android {
     namespace = "com.example.everymoment"
@@ -21,10 +26,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_KEY", "\"${getApiKey("API_KEY")}\"")
+        buildConfigField("String", "KAKAO_NATIVE_KEY", "\"${getApiKey("KAKAO_NATIVE_KEY")}\"")
     }
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["KAKAO_NATIVE_KEY"] as String
+        }
         release {
             isMinifyEnabled = false
+            manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["KAKAO_NATIVE_KEY"] as String
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,7 +53,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
 }
 
 dependencies {
@@ -58,6 +68,8 @@ dependencies {
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation ("com.jakewharton.threetenabp:threetenabp:1.2.1")
     implementation ("com.google.android.material:material:1.2.0")
+    implementation ("com.kakao.sdk:v2-all:2.20.6")
+    implementation ("com.kakao.sdk:v2-user:2.20.6")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

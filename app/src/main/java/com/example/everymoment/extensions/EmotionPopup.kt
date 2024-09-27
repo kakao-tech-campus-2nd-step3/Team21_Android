@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import com.example.everymoment.data.model.Emotions
 import com.example.everymoment.databinding.EmotionWindowBinding
 
 class EmotionPopup(

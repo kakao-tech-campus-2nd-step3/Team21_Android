@@ -1,4 +1,4 @@
-package com.example.everymoment.extensions
+package com.example.everymoment.data.model
 
 enum class Emotions(private val unicode: String) {
     HAPPY(String(Character.toChars(0x1F60A))),
