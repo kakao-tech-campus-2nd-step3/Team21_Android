@@ -3,7 +3,6 @@ package com.example.everymoment.presentation
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,7 +18,6 @@ import com.example.everymoment.TimelineAdapter
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
         private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 2000
     }
 
@@ -50,9 +48,7 @@ class MainActivity : AppCompatActivity() {
         binding.timeLineRecyclerView.adapter = TimelineAdapter(timelineList)
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            checkNotificationPermission()
-        }
+        checkNotificationPermission()
         checkLocationPermission()
     }
 
@@ -72,14 +68,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun checkNotificationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                NOTIFICATION_PERMISSION_REQUEST_CODE
-            )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST_CODE
+                )
+            }
         }
     }
 

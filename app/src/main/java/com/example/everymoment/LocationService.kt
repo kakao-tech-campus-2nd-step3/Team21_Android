@@ -31,6 +31,7 @@ class LocationService : Service() {
     private lateinit var handlerThread: HandlerThread
 
     private var initialPlaceName: String? = null
+    private var isFirstLocationUpdateAfterChange = true
 
     override fun onCreate() {
         super.onCreate()
@@ -53,8 +54,9 @@ class LocationService : Service() {
         handler = Handler(handlerThread.looper)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, LOCATION_UPDATE_INTERVAL)
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, LOCATION_UPDATE_INTERVAL)
             .setMinUpdateIntervalMillis(LOCATION_UPDATE_INTERVAL)
+            .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL)
             .build()
 
         locationCallback = object : LocationCallback() {
@@ -86,15 +88,21 @@ class LocationService : Service() {
 
         getPlaceNamesFromCoordinates(latitude, longitude) { currentPlaceNames ->
             if (currentPlaceNames.isNotEmpty()) {
-                // 현재 측정된 장소 중 첫 번째 장소
+                Log.d("myplace", "$currentPlaceNames")
                 val currentPlace = currentPlaceNames.firstOrNull()
 
                 // 처음 위치 측정이거나 현재 위치가 이전과 다를 때
                 if (initialPlaceName == null || (currentPlace != null && !currentPlaceNames.contains(initialPlaceName!!))) {
                     initialPlaceName = currentPlace
-                    Log.d("arieum", "새 장소 측정: $initialPlaceName")
+                    Log.d("arieum", "새 장소 측정: $initialPlaceName, 아직 전달 안함")
                 } else {
-                    Log.d("arieum", "같은 장소: $initialPlaceName, 전달 안함")
+                    // 장소가 같을 때
+                    if (isFirstLocationUpdateAfterChange) {
+                        Log.d("arieum", "백엔드로 전달: $initialPlaceName")
+                        isFirstLocationUpdateAfterChange = false // 첫 전달 이후에는 false로 설정하여 다시 전달 안함
+                    } else {
+                        Log.d("arieum", "세 번 이상 장소: $initialPlaceName, 더이상 전달 안함")
+                    }
                 }
             } else {
                 // 장소 정보가 비어있는 경우 처리 - currentPlaceNames 비어있음
