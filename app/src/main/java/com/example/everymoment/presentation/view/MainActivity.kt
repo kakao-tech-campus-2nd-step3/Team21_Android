@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation
+package com.example.everymoment.presentation.view
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -45,9 +45,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        checkNotificationPermission()
-        checkLocationPermission()
-        setupLocationReceiver()
+        val fragmentManager = supportFragmentManager // 액티비티 내에서 사용 시
+        val transaction = fragmentManager.beginTransaction()
+
+        transaction.replace(R.id.fragment_container, SettingFragment()) // fragment_container는 프래그먼트를 담을 레이아웃의 ID
+        transaction.addToBackStack(null) // 뒤로 가기 버튼 시 이전 프래그먼트로 돌아가기 가능
+        transaction.commit()
+
+//        checkNotificationPermission()
+//        checkLocationPermission()
+//        setupLocationReceiver()
     }
 
     private fun checkLocationPermission() {
