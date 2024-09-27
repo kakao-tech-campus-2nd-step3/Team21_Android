@@ -36,7 +36,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        tools:listitem="@layout/notification_layout"
+        tools:listitem="@layout/notification_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

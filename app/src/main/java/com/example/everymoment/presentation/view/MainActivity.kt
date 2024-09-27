@@ -1,6 +1,7 @@
 package com.example.everymoment.presentation.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.everymoment.R
 import com.example.everymoment.databinding.ActivityMainBinding
@@ -23,6 +24,14 @@ class MainActivity : AppCompatActivity() {
         initNavigationBar()
     }
 
+    fun hideNavigationBar() {
+        binding.bottomNavigationView.visibility = View.GONE
+    }
+
+    fun showNavigationBar() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
     private fun initNavigationBar() {
 
         binding.bottomNavigationView.run {
@@ -37,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = TodayLogFragment()
+                        val fragment = DiaryReadFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()

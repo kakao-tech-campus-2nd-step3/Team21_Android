@@ -3,14 +3,14 @@ package com.example.everymoment.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.databinding.NotificationLayoutBinding
+import com.example.everymoment.databinding.NotificationItemBinding
 
 class NotificationAdapter(private val onClick: (String) -> Unit) :
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 
     private var notiList: List<String> = emptyList()
 
-    inner class ViewHolder(private val binding: NotificationLayoutBinding) :
+    inner class ViewHolder(private val binding: NotificationItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(s: String) {
 
@@ -26,7 +26,7 @@ class NotificationAdapter(private val onClick: (String) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            NotificationLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            NotificationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

@@ -39,10 +39,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.view.MainActivity"
+            android:name=".presentation.view.KakaoLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.view.KakaoLoginActivity"
+            android:name=".presentation.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.LocationService
+import com.example.everymoment.R
 import com.example.everymoment.data.model.Timeline
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
@@ -58,6 +59,14 @@ class TodayLogFragment : Fragment() {
 
         binding.timeLineRecyclerView.adapter = TimelineAdapter(timelineList)
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.notification.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, NotificationFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
 
         checkNotificationPermission()
         checkLocationPermission()

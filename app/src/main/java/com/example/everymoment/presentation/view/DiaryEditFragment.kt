@@ -35,6 +35,7 @@ class DiaryEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as? MainActivity)?.hideNavigationBar()
         Bookmarks.setBookmark(binding.bookmark)
         val emotionPopupManager = EmotionPopup(requireContext()) { emotion ->
             binding.emotion.text = emotion.getEmotionUnicode()
@@ -69,6 +70,11 @@ class DiaryEditFragment : Fragment() {
         binding.diaryDoneButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as? MainActivity)?.showNavigationBar()
     }
 
     private fun addImage(imageUri: Uri?) {
