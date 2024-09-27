@@ -93,6 +93,8 @@
         app:layout_constraintTop_toBottomOf="@id/accountName"
         app:switchMinWidth="0dp"
         app:thumbTextPadding="24dp"
+        android:textOff=""
+        android:textOn=""
         app:track="@drawable/switch_track_selector" />
 
     <TextView
