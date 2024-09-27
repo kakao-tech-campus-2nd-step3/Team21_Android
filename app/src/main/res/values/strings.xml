@@ -5,6 +5,15 @@
     <string name="diary_hint_sentence">여기에서는 무슨 일이 있었나요?</string>
     <string name="add_bookmark">북마크가 추가되었습니다</string>
     <string name="remove_bookmark">북마크가 해제되었습니다</string>
+    <string name="account">프로필</string>
+    <string name="notification">알림</string>
+    <string name="time_interval_setting">시간 간격 설정</string>
+    <string name="time_15min">15분</string>
+    <string name="time_20min">20분</string>
+    <string name="time_25min">25분</string>
+    <string name="time_30min">30분</string>
+    <string name="notification_posButton">수락</string>
+    <string name="notification_negButton">거절</string>
     <string name="login_description_one">간편하게 로그인하고</string>
     <string name="login_description_two">다양한 서비스를 이용해보세요.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".presentation.CalendarViewActivity">
+    tools:context=".presentation.view.CalendarViewFragment">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/calendarAlarm"
@@ -43,20 +43,5 @@
         app:mcv_showOtherDates="all"
         app:mcv_tileHeight="80dp"
         app:mcv_tileSize="53dp" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        app:itemActiveIndicatorStyle="@android:color/transparent"
-        app:itemBackground="@color/bottom_bar_background"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@drawable/bottom_navigation_item_selector"
-        app:itemTextColor="@drawable/bottom_navigation_item_selector"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

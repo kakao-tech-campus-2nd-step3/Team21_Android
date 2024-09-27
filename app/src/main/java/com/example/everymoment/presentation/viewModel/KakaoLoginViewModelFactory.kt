@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.viewmodel
+package com.example.everymoment.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -7,7 +7,7 @@
     android:layout_marginTop="30dp"
     android:background="@drawable/diary_background"
     android:orientation="vertical"
-    tools:context=".presentation.DiaryEditFragment">
+    tools:context=".presentation.view.DiaryEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -99,7 +99,7 @@
             <EditText
                 android:id="@+id/address"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
@@ -165,7 +165,7 @@
                     android:layout_height="30dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="25sp"
+                    android:textSize="22.5sp"
                     android:visibility="gone" />
             </LinearLayout>
 

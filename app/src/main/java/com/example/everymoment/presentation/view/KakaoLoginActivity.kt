@@ -1,19 +1,14 @@
-package com.example.everymoment.presentation
+package com.example.everymoment.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.everymoment.R
 import com.example.everymoment.data.repository.UserRepository
 import com.example.everymoment.databinding.ActivityKakaoLoginBinding
-import com.example.everymoment.presentation.viewmodel.KakaoLoginViewModel
-import com.example.everymoment.presentation.viewmodel.KakaoLoginViewModelFactory
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
+import com.example.everymoment.presentation.viewModel.KakaoLoginViewModel
+import com.example.everymoment.presentation.viewModel.KakaoLoginViewModelFactory
 import com.kakao.sdk.user.UserApiClient
 
 class KakaoLoginActivity : AppCompatActivity() {
@@ -52,7 +47,7 @@ class KakaoLoginActivity : AppCompatActivity() {
     }
 
     private fun moveToMainScreen(userId: Long?, userNickname: String?) {
-        val intent = Intent(this, CalendarViewActivity::class.java)
+        val intent = Intent(this, CalendarViewFragment::class.java)
         intent.putExtra("userId", userId)
         intent.putExtra("userNickname", userNickname)
         startActivity(intent)

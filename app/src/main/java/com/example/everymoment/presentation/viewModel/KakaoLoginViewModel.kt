@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.viewmodel
+package com.example.everymoment.presentation.viewModel
 
 import android.app.Activity
 import android.util.Log

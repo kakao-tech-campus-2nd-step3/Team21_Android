@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
+import com.example.everymoment.R
+import com.example.everymoment.data.model.Timeline
 import com.example.everymoment.databinding.TimelineItemBinding
 
 class TimelineAdapter(private val timelineList: MutableList<Timeline>): RecyclerView.Adapter<TimelineAdapter.Holder>() {

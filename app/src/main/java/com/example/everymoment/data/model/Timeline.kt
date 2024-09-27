@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.data.model
 
 data class Timeline(val time: String,
                     val buildingName: String,
