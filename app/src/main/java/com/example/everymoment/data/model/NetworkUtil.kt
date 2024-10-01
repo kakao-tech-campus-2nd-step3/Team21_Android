@@ -28,7 +28,7 @@ object NetworkUtil {
         val request = Request.Builder()
             .url(url)
             .post(requestBody)
-            .addHeader("Authorization", "Bearer $jwtToken")  // JWT 토큰 추가
+            .addHeader("Authorization", "Bearer $jwtToken")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
