@@ -45,8 +45,7 @@
                     android:id="@+id/bookmarkIcon"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@drawable/ic_bookmark"
-                    android:contentDescription="Bookmark Icon"
+                    android:src="@drawable/baseline_bookmark_border_24"
                     android:layout_marginEnd="6dp" />
 
                 <!-- 공유 아이콘 -->
@@ -55,7 +54,6 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/ic_share"
-                    android:contentDescription="Share Icon"
                     android:layout_marginEnd="6dp" />
 
                 <!-- 삭제 아이콘 -->
@@ -69,7 +67,7 @@
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -80,14 +78,16 @@
                 android:layout_height="wrap_content"
                 android:hint="빽다방 춘천강북점"
                 android:textSize="16sp"
+                android:textColor="@color/primary_color"
                 android:textStyle="bold" />
 
             <!-- 수정 아이콘 -->
             <ImageView
                 android:id="@+id/editIcon"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
                 android:src="@drawable/ic_edit_location_name" />
         </LinearLayout>
 
@@ -106,58 +106,22 @@
             android:layout_marginTop="6dp">
 
             <ImageView
-                android:id="@+id/selectedEmoji"
+                android:id="@+id/addEmotion"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginEnd="5dp"
                 android:layout_gravity="center_vertical"
                 android:visibility="visible"
-                android:src="@drawable/ic_add_reaction" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/outline_add_reaction_24" />
 
-            <!-- 이모지 리스트 -->
-            <LinearLayout
-                android:id="@+id/emojiContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="invisible"
-                android:background="@drawable/emoji_background"
-                android:padding="4dp">
-
-                <TextView
-                    android:id="@+id/happyEmoji"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="3dp"
-                    android:text="😊" />
-
-                <TextView
-                    android:id="@+id/laughEmoji"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="3dp"
-                    android:text="😀" />
-
-                <TextView
-                    android:id="@+id/expressionlessEmoji"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="3dp"
-                    android:text="😑" />
-
-                <TextView
-                    android:id="@+id/annoyEmoji"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="3dp"
-                    android:text="😠" />
-
-                <TextView
-                    android:id="@+id/sadEmoji"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:text="😢" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/emotion"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="3dp"
+                android:textSize="13sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
