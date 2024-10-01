@@ -20,9 +20,7 @@ class DiaryEditFragment : Fragment() {
     private var categoriesArray: BooleanArray = BooleanArray(2)
     private var xOffset = ToPxConverter().dpToPx(10)
 
-    private val galleryUtil = GalleryUtil(this) { imageUri ->
-        addImage(imageUri)
-    }
+    private lateinit var galleryUtil: GalleryUtil
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

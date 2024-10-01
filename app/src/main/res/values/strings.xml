@@ -18,4 +18,15 @@
     <string name="login_description_two">다양한 서비스를 이용해보세요.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_success">로그인에 성공하셨습니다.</string>
+    <string name="profile_image_dialog">프로필 사진을 변경하시겠습니까?</string>
+    <string name="profile_image_dialog_posiitve">변경</string>
+    <string name="cancel">취소</string>
+    <string name="profile_name_dialog">이름을 변경하시겠습니까?</string>
+    <string name="save">저장</string>
+    <string name="example_name">홍길동</string>
+    <string name="add_comment_guide">댓글을 달아보세요</string>
+    <string name="post">게시</string>
+    <string name="comment">댓글</string>
+    <string name="search_window_guide">키워드로 검색해주세요</string>
+    <string name="search_filter">검색필터</string>
 </resources>
