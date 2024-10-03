@@ -11,7 +11,7 @@
         android:id="@+id/friendsList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="@string/friends_list"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -48,19 +48,23 @@
         app:layout_constraintTop_toBottomOf="@id/line" />
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/friendAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:background="@null"
         android:src="@drawable/person_add_40px"
+        android:tint="@color/primary_color"
         app:layout_constraintStart_toEndOf="@id/searchNicknameEditText"
         app:layout_constraintTop_toTopOf="@id/searchNicknameEditText" />
 
     <TextView
+        android:id="@+id/addFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/add_friends"
         android:textStyle="bold"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
