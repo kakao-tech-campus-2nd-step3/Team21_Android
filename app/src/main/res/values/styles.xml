@@ -10,8 +10,11 @@
         <item name="android:background">#FFFFFF</item>
     </style>
 
-    <style name="CustomNegButton" parent="Widget.AppCompat.Button">
-        <item name="android:textColor">@color/primary_color</item>
-        <item name="android:background">@drawable/dialog_negative_button</item>
+    <style name="CustomDialogStyle" parent="@style/Theme.MaterialComponents.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.72</item>
     </style>
+    
+    <style name="notificationToggleStyle" parent="Widget.AppCompat.CompoundButton.Switch"></style>
 </resources>

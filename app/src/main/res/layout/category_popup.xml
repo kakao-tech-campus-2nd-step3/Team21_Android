@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/categories_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:id="@+id/categoryGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alignmentMode="alignMargins"
+        android:background="@drawable/categories_background"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:useDefaultMargins="true">
+
+        <ImageView
+            android:id="@+id/addCategory"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/category_background"
+            android:src="@drawable/baseline_add_24"
+            android:visibility="visible" />
+
+    </GridLayout>
+
+</HorizontalScrollView>

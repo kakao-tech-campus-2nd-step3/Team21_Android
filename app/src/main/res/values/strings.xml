@@ -12,6 +12,9 @@
     <string name="time_20min">20분</string>
     <string name="time_25min">25분</string>
     <string name="time_30min">30분</string>
+    <string name="time_interval_text">시간 간격이 %1$s으로 설정되었습니다</string>
+    <string name="notification_isChecked">알림이 설정되었습니다</string>
+    <string name="notification_isUnChecked">알림이 해제되었습니다</string>
     <string name="notification_posButton">수락</string>
     <string name="notification_negButton">거절</string>
     <string name="login_description_one">간편하게 로그인하고</string>
@@ -19,9 +22,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_success">로그인에 성공하셨습니다.</string>
     <string name="profile_image_dialog">프로필 사진을 변경하시겠습니까?</string>
-    <string name="profile_image_dialog_posiitve">변경</string>
+    <string name="change">변경하기</string>
     <string name="cancel">취소</string>
-    <string name="profile_name_dialog">이름을 변경하시겠습니까?</string>
+    <string name="profile_name_dialog">닉네임을 변경하시겠습니까?</string>
+    <string name="change_name_dialog">닉네임 변경</string>
+    <string name="change_name_dialog_instruction">6자 이내의 닉네임만 가능합니다</string>
     <string name="save">저장</string>
     <string name="example_name">홍길동</string>
     <string name="add_comment_guide">댓글을 달아보세요</string>
@@ -29,4 +34,8 @@
     <string name="comment">댓글</string>
     <string name="search_window_guide">키워드로 검색해주세요</string>
     <string name="search_filter">검색필터</string>
+    <string name="category_text">#%1$s</string>
+    <string name="category_add_dialog">카테고리 추가</string>
+    <string name="example_category">예: 공부, 힐링</string>
+    <string name="category_add_dialog_instruction">#은 자동으로 추가됩니다</string>
 </resources>

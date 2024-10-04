@@ -3,6 +3,7 @@
     <style name="Base.Theme.Everymoment" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="switchStyle">@style/notificationToggleStyle</item>
     </style>
 
     <style name="Theme.Everymoment" parent="Base.Theme.Everymoment" />

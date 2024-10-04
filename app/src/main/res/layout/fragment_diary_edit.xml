@@ -9,11 +9,11 @@
     tools:context=".presentation.view.DiaryEditFragment">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:elevation="7dp"
-        android:background="@drawable/diary_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/diary_background"
+        android:elevation="7dp"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
