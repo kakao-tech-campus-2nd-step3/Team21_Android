@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/multi_profile_setting"
+        android:id="@+id/menu1"
         android:title="세븐일레븐 강원대점" />
     <item
-        android:id="@+id/hide_friend"
+        android:id="@+id/menu2"
         android:title="스타벅스 강원대점" />
     <item
-        android:id="@+id/delete_friend"
+        android:id="@+id/menu3"
         android:title="별식당 강원대점" />
     <item
-        android:id="@+id/block_friend"
+        android:id="@+id/menu4"
         android:title="강원대중앙도서관" />
 </menu>
