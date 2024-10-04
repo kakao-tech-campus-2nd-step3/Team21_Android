@@ -1,7 +1,7 @@
 # Team21_Android
 21조 안드로이드
 
-## 코드 리뷰 받고 싶은 부분 (개발 질문): 4주차
+## 코드 리뷰 받고 싶은 부분 (개발 질문): 5주차
 
 ### settle54
 [이슈 #20](https://github.com/kakao-tech-campus-2nd-step3/Team21_Android/issues/20)
