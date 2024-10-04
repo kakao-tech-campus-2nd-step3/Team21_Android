@@ -30,9 +30,7 @@ class FriendRequestFragment : Fragment() {
         FriendRequest("김고은", "https://example.com/user8.jpg"),
         FriendRequest("박소영", "https://example.com/user9.jpg"),
         FriendRequest("김범수", "https://example.com/user10.jpg"),
-        FriendRequest("한혜진", "https://example.com/user11.jpg"),
-        FriendRequest("이소연", "https://example.com/user12.jpg"),
-        FriendRequest("이동욱", "https://example.com/user13.jpg")
+        FriendRequest("한혜진", "https://example.com/user11.jpg")
     )
 
     override fun onCreateView(

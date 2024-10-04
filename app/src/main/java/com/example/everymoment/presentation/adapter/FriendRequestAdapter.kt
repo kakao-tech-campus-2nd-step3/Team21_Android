@@ -2,6 +2,7 @@ package com.example.everymoment.presentation.adapter
 
 import android.app.AlertDialog
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,10 +12,13 @@ import com.example.everymoment.databinding.FriendRequestItemBinding
 
 class FriendRequestAdapter(
     private val onFriendRequest: (FriendRequest) -> Unit
-) : ListAdapter<FriendRequest, FriendRequestAdapter.FriendRequestViewHolder>(FriendRequestDiffCallback()) {
+) : ListAdapter<FriendRequest, FriendRequestAdapter.FriendRequestViewHolder>(
+    FriendRequestDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendRequestViewHolder {
-        val binding = FriendRequestItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            FriendRequestItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FriendRequestViewHolder(binding, onFriendRequest)
     }
 
@@ -39,7 +43,11 @@ class FriendRequestAdapter(
                 .setTitle("친구 신청")
                 .setMessage("${user.name}님에게 친구 신청을 하시겠습니까?")
                 .setNegativeButton("아니오") { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton("네") { _, _ -> onFriendRequest(user) }
+                .setPositiveButton("네") { _, _ ->
+                    onFriendRequest(user)
+                    binding.friendRequestButton.visibility = View.GONE
+                    binding.requestCompletedButton.visibility = View.VISIBLE
+                }
                 .show()
         }
     }

@@ -29,9 +29,7 @@ class FriendsListFragment : Fragment() {
         Friends("김고은", "https://example.com/user8.jpg"),
         Friends("박소영", "https://example.com/user9.jpg"),
         Friends("김범수", "https://example.com/user10.jpg"),
-        Friends("한혜진", "https://example.com/user11.jpg"),
-        Friends("이소연", "https://example.com/user12.jpg"),
-        Friends("이동욱", "https://example.com/user13.jpg")
+        Friends("한혜진", "https://example.com/user11.jpg")
     )
 
     override fun onCreateView(

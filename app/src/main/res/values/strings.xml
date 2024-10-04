@@ -28,4 +28,5 @@
     <string name="friend_request">친구신청</string>
     <string name="search_nothing">검색 결과가 없습니다.</string>
     <string name="friend">친구</string>
+    <string name="request_completed">신청됨</string>
 </resources>
