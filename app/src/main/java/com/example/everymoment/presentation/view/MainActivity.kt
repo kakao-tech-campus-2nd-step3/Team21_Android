@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = DiaryReadFragment()
+                        val fragment = PostFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.search -> {
-                        val fragment = TodayLogFragment()
+                        val fragment = SearchFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()

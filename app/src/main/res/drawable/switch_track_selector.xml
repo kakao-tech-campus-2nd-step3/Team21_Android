@@ -2,16 +2,15 @@
     <item android:state_checked="true">
         <shape android:shape="rectangle">
             <corners android:radius="45dp"/>
-            <solid android:color="@color/white"/>
-            <stroke android:color="@color/primary_color"
+            <solid android:color="@color/primary_color"/>
                 android:width="10dp" />
         </shape>
     </item>
 
-    <item>
+    <item android:state_checked="false">
         <shape android:shape="rectangle">
             <corners android:radius="45dp"/>
-            <solid android:color="@color/primary_color" />
+            <solid android:color="#8493A6" />
         </shape>
     </item>
 </selector>

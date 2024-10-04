@@ -16,11 +16,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import com.example.everymoment.data.model.NetworkUtil
+import com.example.everymoment.data.repository.GooglePlacesResponse
 import com.google.android.gms.location.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONObject
-import java.io.IOException
 
 class LocationService : Service() {
 
@@ -145,33 +143,31 @@ class LocationService : Service() {
         callback: (List<String>) -> Unit
     ) {
         val apiKey = BuildConfig.API_KEY
-        val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=$latitude,$longitude&language=ko&rankby=distance&key=$apiKey"
+        val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
-        val request = Request.Builder().url(url).build()
-        OkHttpClient().newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                callback(emptyList())
-            }
+        val queryParams = mapOf(
+            "location" to "$latitude,$longitude",
+            "language" to "ko",
+            "rankby" to "distance",
+            "key" to apiKey
+        )
 
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                if (response.isSuccessful) {
-                    val responseData = response.body?.string()
-                    val jsonObject = JSONObject(responseData)
-                    val results = jsonObject.getJSONArray("results")
-                    val placeNames = mutableListOf<String>()
-
-                    for (i in 0 until results.length()) {
-                        val place = results.getJSONObject(i)
-                        val name = place.getString("name")
-                        placeNames.add(name)
-                    }
+        NetworkUtil.getData(
+            url,
+            queryParams = queryParams,
+            responseClass = GooglePlacesResponse::class.java
+        ) { success, response ->
+            if (success && response != null) {
+                try {
+                    val placeNames = response.results.map { it.name }
                     callback(placeNames)
-                } else {
+                } catch (e: Exception) {
                     callback(emptyList())
                 }
+            } else {
+                callback(emptyList())
             }
-        })
+        }
     }
 
     companion object {

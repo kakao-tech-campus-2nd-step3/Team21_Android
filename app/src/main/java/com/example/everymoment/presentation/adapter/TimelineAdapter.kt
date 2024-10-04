@@ -1,15 +1,20 @@
 package com.example.everymoment.presentation.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.example.everymoment.R
 import com.example.everymoment.data.model.Timeline
 import com.example.everymoment.databinding.TimelineItemBinding
+import com.example.everymoment.extensions.EmotionPopup
+import com.example.everymoment.extensions.ToPxConverter
 
 class TimelineAdapter(private val timelineList: MutableList<Timeline>): RecyclerView.Adapter<TimelineAdapter.Holder>() {
 
@@ -18,14 +23,8 @@ class TimelineAdapter(private val timelineList: MutableList<Timeline>): Recycler
         val buildingName = binding.locationNameText
         val address = binding.addressText
 
-        val addEmojiButton = binding.selectedEmoji
-
-        val emojiList = binding.emojiContainer
-        val happyEmoji = binding.happyEmoji
-        val laughEmoji = binding.laughEmoji
-        val expressionlessEmoji = binding.expressionlessEmoji
-        val annoyEmoji = binding.annoyEmoji
-        val sadEmoji = binding.sadEmoji
+        val addEmotion = binding.addEmotion
+        val emotion = binding.emotion
 
         val diaryContainer = binding.detailedDiaryContainer
 
@@ -50,32 +49,27 @@ class TimelineAdapter(private val timelineList: MutableList<Timeline>): Recycler
         holder.buildingName.text = timelineList[position].buildingName
         holder.address.text = timelineList[position].address
 
-        holder.addEmojiButton.setOnClickListener {
-            if (holder.emojiList.visibility == View.GONE) {
-                holder.emojiList.visibility = View.VISIBLE
-                holder.emojiList.animate()
-                    .translationX(0f)
-                    .alpha(1.0f)
-                    .setDuration(300)
-                    .start()
-            } else {
-                // 메뉴가 보일 때 사라지게
-                holder.emojiList.animate()
-                    .translationX(-holder.emojiList.width.toFloat()) // 수평 이동
-                    .alpha(0.0f) // 투명도 애니메이션
-                    .setDuration(300) // 애니메이션 시간
-                    .withEndAction {
-                        holder.emojiList.visibility = View.GONE
-                    }
-                    .start()
-            }
+        val emotionPopupManager = EmotionPopup(holder.itemView.context) { selectedEmotion ->
+            holder.emotion.text = selectedEmotion.getEmotionUnicode()
+            holder.addEmotion.visibility = View.GONE
+            holder.emotion.visibility = View.VISIBLE
+        }
+
+        holder.addEmotion.setOnClickListener {
+            emotionPopupManager.showEmotionsPopup(holder.addEmotion, ToPxConverter().dpToPx(10))
+        }
+
+        holder.emotion.setOnClickListener {
+            emotionPopupManager.showEmotionsPopup(holder.emotion, ToPxConverter().dpToPx(10))
         }
 
         holder.bookmarkButton.setOnClickListener {
             if (isBookmarked) {
-                holder.bookmarkButton.setImageResource(R.drawable.ic_bookmark)
+                holder.bookmarkButton.setImageResource(R.drawable.baseline_bookmark_border_24)
+                holder.itemView.context.showToast(holder.itemView.context.getString(R.string.remove_bookmark))
             } else {
-                holder.bookmarkButton.setImageResource(R.drawable.ic_is_bookmarked)
+                holder.bookmarkButton.setImageResource(R.drawable.baseline_bookmark_24)
+                holder.itemView.context.showToast(holder.itemView.context.getString(R.string.add_bookmark))
             }
 
             isBookmarked = !isBookmarked
@@ -84,8 +78,10 @@ class TimelineAdapter(private val timelineList: MutableList<Timeline>): Recycler
         holder.shareButton.setOnClickListener {
             if (isShared) {
                 holder.shareButton.setImageResource(R.drawable.ic_share)
+                holder.itemView.context.showToast(holder.itemView.context.getString(R.string.is_private))
             } else {
                 holder.shareButton.setImageResource(R.drawable.ic_is_shared)
+                holder.itemView.context.showToast(holder.itemView.context.getString(R.string.is_public))
             }
 
             isShared = !isShared
@@ -111,7 +107,15 @@ class TimelineAdapter(private val timelineList: MutableList<Timeline>): Recycler
             val popupMenu = PopupMenu(holder.editButton.context, holder.editButton)
             popupMenu.menuInflater.inflate(R.menu.location_candidate_menu, popupMenu.menu)
 
+            popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                holder.buildingName.text = item.title.toString()
+                true
+            }
             popupMenu.show()
         }
+    }
+
+    private fun Context.showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

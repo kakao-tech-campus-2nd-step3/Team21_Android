@@ -47,7 +47,7 @@ class KakaoLoginActivity : AppCompatActivity() {
     }
 
     private fun moveToMainScreen(userId: Long?, userNickname: String?) {
-        val intent = Intent(this, CalendarViewFragment::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("userId", userId)
         intent.putExtra("userNickname", userNickname)
         startActivity(intent)
