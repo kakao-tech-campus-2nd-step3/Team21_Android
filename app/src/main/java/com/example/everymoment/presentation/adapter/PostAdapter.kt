@@ -9,16 +9,23 @@ import com.example.everymoment.R
 import com.example.everymoment.databinding.CommentItemBinding
 import com.example.everymoment.databinding.PostRecyclerHeaderBinding
 
-class PostAdapter(private val context: Context, private val onPostClick: (String) -> Unit) :
+class PostAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLike: Boolean = false
     private var likeCount = 0
+    private var commentCount = 0
     private var commentList: MutableList<Array<String>> = mutableListOf()
 
     companion object {
         const val VIEW_TYPE_HEADER = 0
         const val VIEW_TYPE_ITEM = 1
+    }
+
+    fun addComment(userInput: String) {
+        commentList.add(arrayOf("", "user", userInput))
+        commentCount += 1
+        notifyItemChanged(0)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -40,6 +47,7 @@ class PostAdapter(private val context: Context, private val onPostClick: (String
 
         init {
             binding.likeCnt.text = likeCount.toString()
+            binding.commentCnt.text = commentCount.toString()
         }
 
         fun bind() {
@@ -55,6 +63,10 @@ class PostAdapter(private val context: Context, private val onPostClick: (String
                 }
                 binding.likeCnt.text = likeCount.toString()
             }
+        }
+
+        fun updateCommentCnt() {
+            binding.commentCnt.text = commentCount.toString()
         }
 
     }
@@ -82,6 +94,7 @@ class PostAdapter(private val context: Context, private val onPostClick: (String
         when (holder) {
             is HeaderViewHolder -> {
                 holder.bind()
+                holder.updateCommentCnt()
             }
 
             is ItemViewHolder -> {

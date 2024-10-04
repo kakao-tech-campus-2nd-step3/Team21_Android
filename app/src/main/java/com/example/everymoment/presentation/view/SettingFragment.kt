@@ -49,12 +49,20 @@ class SettingFragment : Fragment() {
         binding.editButton.setOnClickListener {
             profileNameDialog.show(requireActivity().supportFragmentManager, "CustomDialog")
         }
-        
+
         binding.notificationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                Toast.makeText(requireContext(), resources.getString(R.string.notification_isChecked), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.notification_isChecked),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                Toast.makeText(requireContext(), resources.getString(R.string.notification_isUnChecked), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.notification_isUnChecked),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -64,17 +72,24 @@ class SettingFragment : Fragment() {
                 R.id.time15m -> {
                     selectedTime = resources.getString(R.string.time_15min)
                 }
+
                 R.id.time20m -> {
                     selectedTime = resources.getString(R.string.time_20min)
                 }
+
                 R.id.time25m -> {
                     selectedTime = resources.getString(R.string.time_25min)
                 }
+
                 R.id.time30m -> {
                     selectedTime = resources.getString(R.string.time_30min)
                 }
             }
-            Toast.makeText(requireContext(), getString(R.string.time_interval_text, selectedTime), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.time_interval_text, selectedTime),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -109,13 +124,30 @@ class SettingFragment : Fragment() {
         nameChangeDialog =
             CustomEditDialog(
                 resources.getString(R.string.change_name_dialog),
+                binding.accountName.text.toString(),
                 resources.getString(R.string.example_name),
                 resources.getString(R.string.change_name_dialog_instruction),
                 resources.getString(R.string.cancel),
                 resources.getString(R.string.save),
                 onPositiveClick = {
-                    binding.accountName.text = it
-                })
+                    if (checkNickname(it) == -1) {
+                        nameChangeDialog.setWrongInstruction(resources.getString(R.string.nickname_less_one))
+                    } else if (checkNickname(it) == 1) {
+                        nameChangeDialog.setWrongInstruction(resources.getString(R.string.nickname_more_six))
+                    } else {
+                        binding.accountName.text = it.trim()
+                        nameChangeDialog.dismiss()
+                    }
+                }).apply {
+                isCancelable = false
+            }
+    }
+
+    private fun checkNickname(userInput: String): Int {
+        val nickName = userInput.trim()
+        if (nickName.isEmpty()) return -1
+        else if (nickName.length > 6) return 1
+        else return 0
     }
 
     private fun addImage(imageUri: Uri?) {

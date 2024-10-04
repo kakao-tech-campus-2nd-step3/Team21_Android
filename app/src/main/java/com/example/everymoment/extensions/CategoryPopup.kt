@@ -84,13 +84,29 @@ class CategoryPopup(
     private fun setAddCategoryDialog() {
         addCategoryDialog = CustomEditDialog(
             context.resources.getString(R.string.category_add_dialog),
+            "",
             context.resources.getString(R.string.example_category),
             context.resources.getString(R.string.category_add_dialog_instruction),
             context.resources.getString(R.string.cancel),
             context.resources.getString(R.string.save),
             onPositiveClick = {
-                addCategoryTextView(it)
-            })
+                val category = it.trim()
+                if (checkCategory(category) == -1) {
+                    addCategoryDialog.setWrongInstruction(context.getString(R.string.category_less_one))
+                } else if (checkCategory(category) == 1) {
+                    addCategoryDialog.setWrongInstruction(context.getString(R.string.category_more_six))
+                } else {
+                    addCategoryTextView(category)
+                    addCategoryDialog.dismiss()
+                }
+            },
+            removeEditText = true)
+    }
+
+    private fun checkCategory(userInput: String): Int {
+        if (userInput.isEmpty()) return -1
+        else if (userInput.length > 6) return 1
+        else return 0
     }
 
     private fun addCategoryTextView(userInput: String) {

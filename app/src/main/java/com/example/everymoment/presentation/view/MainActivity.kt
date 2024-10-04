@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = FriendsListFragment()
+                        val fragment = PostFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()
