@@ -5,6 +5,10 @@
     <string name="diary_hint_sentence">여기에서는 무슨 일이 있었나요?</string>
     <string name="add_bookmark">북마크가 추가되었습니다</string>
     <string name="remove_bookmark">북마크가 해제되었습니다</string>
+    <string name="is_private">나만보기를 선택하셨습니다</string>
+    <string name="is_public">친구공개를 선택했습니다</string>
+    <string name="msg_diary_delete">일기를 삭제하시겠습니까?</string>
+    <string name="delete">삭제</string>
     <string name="account">프로필</string>
     <string name="notification">알림</string>
     <string name="time_interval_setting">시간 간격 설정</string>
@@ -38,4 +42,15 @@
     <string name="category_add_dialog">카테고리 추가</string>
     <string name="example_category">예: 공부, 힐링</string>
     <string name="category_add_dialog_instruction">#은 자동으로 추가됩니다</string>
+    <string name="search_nickname">닉네임을 검색하세요.</string>
+    <string name="find_friends_User">전체 유저에서 친구를 검색하세요.</string>
+    <string name="find_friends_Nickname">닉네임으로 친구 찾기</string>
+    <string name="search_friends">친구를 검색하세요.</string>
+    <string name="add_friends">친구를 추가해보세요.</string>
+    <string name="user">사용자</string>
+    <string name="friends_list">친구목록</string>
+    <string name="friend_request">친구신청</string>
+    <string name="search_nothing">검색 결과가 없습니다.</string>
+    <string name="friend">친구</string>
+    <string name="request_completed">신청됨</string>
 </resources>

@@ -6,4 +6,8 @@
     <color name="primary_color2">#496387</color>
     <color name="bottom_bar_background">#F5F5F5</color>
     <color name="gray_line">#D6D6D6</color>
+    <color name="search_view_background">#F3F3F3</color>
+    <color name="search_icon_background">#61000000</color>
+    <color name="line_color">#D6D6D6</color>
+    <color name="light_gray">#E5E5E5</color>
 </resources>
