@@ -175,8 +175,8 @@
 
                     <ImageView
                         android:id="@+id/addEmotion"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="10dp"
                         android:scaleType="fitCenter"
@@ -184,8 +184,8 @@
 
                     <TextView
                         android:id="@+id/emotion"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="10dp"
                         android:textSize="22sp"

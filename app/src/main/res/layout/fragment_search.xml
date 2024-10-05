@@ -8,19 +8,55 @@
     android:orientation="vertical"
     tools:context=".presentation.view.SearchFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:padding="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/search_toolbar_background"
-        android:padding="5dp">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/searchUserEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/search_view_background"
+            android:drawableStart="@drawable/search_20px"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/search_icon_background"
+            android:hint="@string/search_window_guide"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/filterDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="13dp"
+            android:textSize="11sp"
+            android:hint="@string/search_filter"
+            app:layout_constraintTop_toTopOf="@id/filter"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+             />
+
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@null"
+            android:src="@drawable/manage_search_24px_1"
+            android:tint="@color/primary_color"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/searchUserEditText" />
+
+        <!--<FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
@@ -31,8 +67,8 @@
 
             <EditText
                 android:id="@+id/search_window"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:background="@android:color/transparent"
                 android:hint="@string/search_window_guide"
@@ -47,9 +83,9 @@
                 android:src="@drawable/search_40px"
                 app:tint="#959595" />
 
-        </FrameLayout>
+        </FrameLayout>-->
 
-        <TextView
+<!--        <TextView
             android:id="@+id/filterDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +101,7 @@
             android:layout_marginEnd="17dp"
             android:src="@drawable/manage_search_24px"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
