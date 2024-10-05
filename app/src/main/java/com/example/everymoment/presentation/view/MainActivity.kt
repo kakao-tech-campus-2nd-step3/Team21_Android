@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = PostFragment()
+                        val fragment = DiaryReadFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()
