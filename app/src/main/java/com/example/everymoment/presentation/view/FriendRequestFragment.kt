@@ -1,6 +1,7 @@
 package com.example.everymoment.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
 import com.example.everymoment.data.model.FriendRequest
 import com.example.everymoment.data.model.Friends
+import com.example.everymoment.data.model.NetworkUtil
+import com.example.everymoment.data.repository.Member
+import com.example.everymoment.data.repository.MemberResponse
 import com.example.everymoment.databinding.FragmentFriendRequestBinding
 import com.example.everymoment.presentation.adapter.FriendRequestAdapter
 
@@ -19,19 +23,8 @@ class FriendRequestFragment : Fragment() {
     private lateinit var adapter: FriendRequestAdapter
 
     // 테스트용 더미 데이터
-    private val allUsers = mutableListOf(
-        FriendRequest("박지연", "https://example.com/user1.jpg"),
-        FriendRequest("한예지", "https://example.com/user2.jpg"),
-        FriendRequest("춘식이", "https://example.com/user3.jpg"),
-        FriendRequest("소연이", "https://example.com/user4.jpg"),
-        FriendRequest("박소담", "https://example.com/user5.jpg"),
-        FriendRequest("한가인", "https://example.com/user6.jpg"),
-        FriendRequest("박지승", "https://example.com/user7.jpg"),
-        FriendRequest("김고은", "https://example.com/user8.jpg"),
-        FriendRequest("박소영", "https://example.com/user9.jpg"),
-        FriendRequest("김범수", "https://example.com/user10.jpg"),
-        FriendRequest("한혜진", "https://example.com/user11.jpg")
-    )
+    private var allMembers = mutableListOf<Member>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,12 +39,44 @@ class FriendRequestFragment : Fragment() {
 
         setupRecyclerView()
         setupSearch()
+        fetchMembersFromServer()
 
         binding.friendsBackButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragment_container, FriendsListFragment())
                 addToBackStack(null)
                 commit()
+            }
+        }
+
+    }
+
+    private fun fetchMembersFromServer() {
+        val url = "http://13.125.156.74:8080/api/members"
+        val jwtToken =
+            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsImlhdCI6MTcyODIwNTczMiwiZXhwIjoxNzI4Mzc4NTMyfQ.ABEv4NVw6vBmRcuz-AWnAbK3HDnaGP5pSrxYQie551E"
+
+        NetworkUtil.getData(
+            url,
+            jwtToken,
+            responseClass = MemberResponse::class.java
+        ) { success, memberResponse ->
+            if (success && memberResponse != null) {
+                Log.d("memberNetwork", "fetchedMemberList : ${memberResponse.info.members}")
+
+                allMembers.clear()
+                allMembers.addAll(memberResponse.info.members)
+                Log.d("memberNetwork", "allMembers list: $allMembers")
+
+                activity?.runOnUiThread {
+                    adapter.submitList(allMembers)
+                    setupRecyclerView()
+                }
+            } else {
+                Log.d("memberNetwork", "Network failed")
+                activity?.runOnUiThread {
+
+                }
             }
         }
     }
@@ -61,13 +86,14 @@ class FriendRequestFragment : Fragment() {
         }
         binding.friendRequestRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.friendRequestRecyclerView.adapter = adapter
-        adapter.submitList(allUsers)
+        adapter.submitList(allMembers)
     }
 
     private fun setupSearch() {
         binding.searchUserEditText.addTextChangedListener { editable ->
             val searchText = editable.toString()
-            val filteredList = allUsers.filter { it.name.contains(searchText, ignoreCase = true) }
+            val filteredList =
+                allMembers.filter { it.nickname.contains(searchText, ignoreCase = true) }
             adapter.submitList(filteredList)
 
             if (filteredList.isEmpty()) {
