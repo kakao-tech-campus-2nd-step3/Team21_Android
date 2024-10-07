@@ -87,7 +87,7 @@ class TodayLogFragment : Fragment() {
 
     private fun updateDateText() {
         val formattedDate = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR")).format(calendar.time)
-        binding.currentDate.text = formattedDate // TextView에 날짜 설정
+        binding.currentDate.text = formattedDate
     }
 
     private fun navigateToNotificationFragment() {
@@ -128,6 +128,7 @@ class TodayLogFragment : Fragment() {
 
                 activity?.runOnUiThread {
                     adapter.submitList(timelineList)
+                    adapter.notifyDataSetChanged()
                 }
             } else {
                 Log.d("arieum", "Network failed")
