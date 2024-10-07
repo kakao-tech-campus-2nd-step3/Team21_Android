@@ -55,6 +55,7 @@ class LocationService : Service() {
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, LOCATION_UPDATE_INTERVAL)
             .setMinUpdateIntervalMillis(LOCATION_UPDATE_INTERVAL)
             .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL)
+            .setWaitForAccurateLocation(false)
             .build()
 
         locationCallback = object : LocationCallback() {
