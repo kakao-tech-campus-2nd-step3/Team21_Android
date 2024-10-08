@@ -56,6 +56,7 @@ class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
                 binding.root.context.showToast(
                     if (isBookmarked) R.string.add_bookmark else R.string.remove_bookmark
                 )
+                // SERVER : patch
             }
 
             var isShared = item.public
@@ -67,6 +68,7 @@ class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
                 binding.root.context.showToast(
                     if (isShared) R.string.is_public else R.string.is_private
                 )
+                // SERVER : patch
             }
 
             // 상세 일기 표시 여부
@@ -77,6 +79,7 @@ class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
                     .setMessage("삭제하시겠습니까?")
                     .setPositiveButton("삭제") { _, _ ->
                         removeItem(adapterPosition)
+                        // SERVER : delete
                     }
                     .setNegativeButton("취소", null)
                     .show()
