@@ -8,4 +8,4 @@
 [이슈 #25](https://github.com/kakao-tech-campus-2nd-step3/Team21_Android/issues/25)
 [이슈 #28](https://github.com/kakao-tech-campus-2nd-step3/Team21_Android/issues/28)
 - 이슈 20, 이슈25, 이슈28에 대한 해결방법을 알고 싶습니다.
-- 불필요하거나 비효율적인 코드가 있으면 개선받고 싶습니다! (카테고리를 추가하는 코드가 많이 스파게티가 된 것 같습니디...)
+- 불필요하거나 비효율적인 코드가 있으면 개선받고 싶습니다! (카테고리를 추가하는 코드가 많이 스파게티가 된 것 같습니다...)
