@@ -52,9 +52,9 @@ class FriendRequestFragment : Fragment() {
     }
 
     private fun fetchMembersFromServer() {
-        val url = "http://13.125.156.74:8080/api/members"
+        val url = "http://13.125.156.74:8080/api/members?size=30"
         val jwtToken =
-            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsImlhdCI6MTcyODIwNTczMiwiZXhwIjoxNzI4Mzc4NTMyfQ.ABEv4NVw6vBmRcuz-AWnAbK3HDnaGP5pSrxYQie551E"
+            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTYsImlhdCI6MTcyODQzNzY5NSwiZXhwIjoxNzI4NjEwNDk1fQ.g3BhqoLkENk4MHLQUfrjWffmOAgh7iw_3YYT_yPNqXo"
 
         NetworkUtil.getData(
             url,

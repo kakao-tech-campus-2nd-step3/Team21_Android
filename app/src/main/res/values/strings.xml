@@ -59,4 +59,5 @@
     <string name="nickname_more_six">닉네임은 여섯 글자 이하여야 합니다</string>
     <string name="category_less_one">카테고리는 한 글자 이상이어야 합니다</string>
     <string name="category_more_six">카테고리는 여섯 글자 이하여야 합니다</string>
+    <string name="fcm_channel_description">"FCM 채널 설명"</string>
 </resources>
