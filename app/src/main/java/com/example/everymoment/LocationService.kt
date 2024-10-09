@@ -16,11 +16,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import com.example.everymoment.data.model.NetworkUtil
+import com.example.everymoment.data.repository.GooglePlacesResponse
 import com.google.android.gms.location.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONObject
-import java.io.IOException
 
 class LocationService : Service() {
 
@@ -31,7 +29,7 @@ class LocationService : Service() {
     private lateinit var handlerThread: HandlerThread
 
     private var initialPlaceName: String? = null
-    private var dataSent = false
+    private var isFirstLocationUpdateAfterChange = true
 
     override fun onCreate() {
         super.onCreate()
@@ -54,8 +52,9 @@ class LocationService : Service() {
         handler = Handler(handlerThread.looper)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, LOCATION_UPDATE_INTERVAL)
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, LOCATION_UPDATE_INTERVAL)
             .setMinUpdateIntervalMillis(LOCATION_UPDATE_INTERVAL)
+            .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL)
             .build()
 
         locationCallback = object : LocationCallback() {
@@ -76,13 +75,6 @@ class LocationService : Service() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, handler.looper)
@@ -93,34 +85,31 @@ class LocationService : Service() {
         val longitude = location.longitude
 
         getPlaceNamesFromCoordinates(latitude, longitude) { currentPlaceNames ->
-            if (initialPlaceName == null && currentPlaceNames.isNotEmpty()) {
-                // 처음 위치 측정 시 건물명 저장
-                initialPlaceName = currentPlaceNames.firstOrNull()
-                Log.d("LocationService", "Init 측정: $initialPlaceName")
-                dataSent = false // 처음 측정 시 플래그 초기화
-            } else if (initialPlaceName != null) {
-                // 처음 이후 건물명 비교
-                val matchingPlace = currentPlaceNames.find { it.contains(initialPlaceName!!) }
-                if (matchingPlace != null && !dataSent) {
-                    Log.d("LocationService", "첫 일치: $initialPlaceName")
-                    dataSent = true
+            if (currentPlaceNames.isNotEmpty()) {
+                Log.d("myplace", "$currentPlaceNames")
+                val currentPlace = currentPlaceNames.firstOrNull()
+
+                // 처음 위치 측정이거나 현재 위치가 이전과 다를 때
+                if (initialPlaceName == null || (currentPlace != null && !currentPlaceNames.contains(initialPlaceName!!))) {
+                    initialPlaceName = currentPlace
+                    Log.d("arieum", "새 장소 측정: $initialPlaceName, 아직 전달 안함")
+                } else {
+                    // 장소가 같을 때
+                    if (isFirstLocationUpdateAfterChange) {
+                        Log.d("arieum", "백엔드로 전달: $initialPlaceName")
+                        isFirstLocationUpdateAfterChange = false // 첫 전달 이후에는 false로 설정하여 다시 전달 안함
+                    } else {
+                        Log.d("arieum", "세 번 이상 장소: $initialPlaceName, 더이상 전달 안함")
+                    }
                 }
+            } else {
+                // 장소 정보가 비어있는 경우 처리 - currentPlaceNames 비어있음
+                Log.d("arieum", "장소 정보를 찾을 수 없음.")
             }
 
             // 현재 위치 정보로 알림 업데이트
             updateNotification(latitude, longitude, initialPlaceName ?: "알 수 없는 장소")
-            // MainActivity로 위치 데이터를 전송
-            sendLocationBroadcast(latitude, longitude, initialPlaceName)
         }
-    }
-
-    private fun sendLocationBroadcast(latitude: Double, longitude: Double, placeName: String?) {
-        val intent = Intent("LOCATION_UPDATE").apply {
-            putExtra("place_name", placeName)
-            putExtra("latitude", latitude)
-            putExtra("longitude", longitude)
-        }
-        sendBroadcast(intent)
     }
 
     private fun createNotification(contentText: String): Notification {
@@ -154,33 +143,31 @@ class LocationService : Service() {
         callback: (List<String>) -> Unit
     ) {
         val apiKey = BuildConfig.API_KEY
-        val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=$latitude,$longitude&language=ko&rankby=distance&key=$apiKey"
+        val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
-        val request = Request.Builder().url(url).build()
-        OkHttpClient().newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                callback(emptyList())
-            }
+        val queryParams = mapOf(
+            "location" to "$latitude,$longitude",
+            "language" to "ko",
+            "rankby" to "distance",
+            "key" to apiKey
+        )
 
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                if (response.isSuccessful) {
-                    val responseData = response.body?.string()
-                    val jsonObject = JSONObject(responseData)
-                    val results = jsonObject.getJSONArray("results")
-                    val placeNames = mutableListOf<String>()
-
-                    for (i in 0 until results.length()) {
-                        val place = results.getJSONObject(i)
-                        val name = place.getString("name")
-                        placeNames.add(name)
-                    }
+        NetworkUtil.getData(
+            url,
+            queryParams = queryParams,
+            responseClass = GooglePlacesResponse::class.java
+        ) { success, response ->
+            if (success && response != null) {
+                try {
+                    val placeNames = response.results.map { it.name }
                     callback(placeNames)
-                } else {
+                } catch (e: Exception) {
                     callback(emptyList())
                 }
+            } else {
+                callback(emptyList())
             }
-        })
+        }
     }
 
     companion object {

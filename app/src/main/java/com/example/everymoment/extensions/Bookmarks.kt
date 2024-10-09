@@ -1,47 +1,12 @@
-package com.example.everymoment.presentation
+package com.example.everymoment.extensions
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.everymoment.R
-import com.example.everymoment.databinding.FragmentDiaryReadBinding
 
-class DiaryReadFragment : Fragment() {
-
-    private lateinit var binding: FragmentDiaryReadBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentDiaryReadBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setBookmark(binding.bookmark)
-
-        binding.bookmark.setOnClickListener {
-            toggleBookmark(requireContext(), binding.bookmark)
-        }
-
-        binding.diaryEditButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment_container, DiaryEditFragment())
-                addToBackStack(null)
-                commit()
-            }
-        }
-    }
-
+class Bookmarks {
     companion object Bookmark {
         var isBookmarked: Boolean = false
 

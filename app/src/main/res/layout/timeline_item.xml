@@ -1,0 +1,167 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="12dp"
+        android:layout_marginStart="20dp"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 시간 -->
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="오전 10:00"
+                android:textSize="10sp" />
+
+            <!-- 여백을 위한 빈 View -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- 상단 아이콘 레이아웃 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- 즐겨찾기 아이콘 -->
+                <ImageView
+                    android:id="@+id/bookmarkIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/baseline_bookmark_border_24"
+                    android:layout_marginEnd="6dp" />
+
+                <!-- 공유 아이콘 -->
+                <ImageView
+                    android:id="@+id/shareIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_share"
+                    android:layout_marginEnd="6dp" />
+
+                <!-- 삭제 아이콘 -->
+                <ImageView
+                    android:id="@+id/deleteIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_delete" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 위치 이름 -->
+            <TextView
+                android:id="@+id/locationNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="빽다방 춘천강북점"
+                android:textSize="16sp"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold" />
+
+            <!-- 수정 아이콘 -->
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_edit_location_name" />
+        </LinearLayout>
+
+        <!-- 주소 -->
+        <TextView
+            android:id="@+id/addressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="강원도 춘천시 충열로"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
+
+            <ImageView
+                android:id="@+id/addEmotion"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible"
+                android:scaleType="fitCenter"
+                android:src="@drawable/outline_add_reaction_24" />
+
+            <TextView
+                android:id="@+id/emotion"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="3dp"
+                android:textSize="13sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detailedDiaryContainer"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:padding="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/preview_diary"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <!-- 동적 이미지 콘텐츠 -->
+            <ImageView
+                android:id="@+id/diaryImageContent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:scaleType="centerCrop"/>
+
+            <!-- 동적 텍스트 콘텐츠 -->
+            <TextView
+                android:id="@+id/diaryTextContent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:layout_marginStart="5dp"
+                android:visibility="visible"
+                android:text=""/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 위치 마커 아이콘 -->
+    <ImageView
+        android:id="@+id/locationMarker"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_marker"
+        android:layout_gravity="top|start"
+        android:elevation="8dp"
+        android:layout_marginStart="0dp" />
+</FrameLayout>

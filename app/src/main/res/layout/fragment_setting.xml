@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".presentation.view.SettingFragment">
+
+    <TextView
+        android:id="@+id/account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/account"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/accountImageLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account">
+
+        <ImageView
+            android:id="@+id/accountImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/account_circle_24px" />
+
+        <ImageView
+            android:id="@+id/cameraButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/round_gray_circle"
+            android:scaleType="center"
+            android:src="@drawable/outline_camera_alt_24" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/accountName"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:text="이름"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountImageLayout" />
+
+    <ImageView
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/round_gray_circle"
+        android:scaleType="center"
+        android:src="@drawable/edit_24px"
+        app:layout_constraintStart_toEndOf="@id/accountName"
+        app:layout_constraintTop_toBottomOf="@id/accountImageLayout"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="70dp"
+        android:text="@string/notification"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountName" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/notificationToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:layout_marginEnd="30dp"
+        android:checked="true"
+        android:thumb="@drawable/switch_track_thumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountName"
+        app:switchMinWidth="0dp"
+        app:thumbTextPadding="24dp"
+        android:textOff=""
+        android:textOn=""
+        app:track="@drawable/switch_track_selector" />
+
+    <TextView
+        android:id="@+id/timeInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/time_interval_setting"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notification" />
+
+    <RadioGroup
+        android:id="@+id/timeRadioGroup"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintDimensionRatio="9:1"
+        app:layout_constraintTop_toBottomOf="@id/timeInterval"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/time15m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/time_15min"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/time20m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/time_20min"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/time25m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:text="@string/time_25min"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/time30m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/time_30min"
+            android:textColor="@color/white" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
