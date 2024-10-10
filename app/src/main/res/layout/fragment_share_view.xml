@@ -24,8 +24,8 @@
             android:gravity="center_horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/ic_friend" />
 
             <TextView
@@ -35,6 +35,11 @@
                 android:textSize="10sp"
                 android:textColor="#FF5f6368" />
         </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"   />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friendList"
@@ -48,13 +53,22 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:hint="친구를 클릭해보세요!"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
+        android:visibility="visible"
         android:gravity="center"
-        android:layout_marginBottom="10dp"
         android:padding="16dp">
 
         <ImageView
@@ -87,5 +101,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="16dp"
+        android:visibility="visible"
         android:clipToPadding="false"/>
 </LinearLayout>
