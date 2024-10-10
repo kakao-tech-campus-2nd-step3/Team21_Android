@@ -15,8 +15,9 @@ import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.databinding.TimelineItemBinding
 import com.example.everymoment.extensions.EmotionPopup
 import com.example.everymoment.extensions.ToPxConverter
+import com.example.everymoment.presentation.viewModel.TimelineViewModel
 
-class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
+class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
     object : DiffUtil.ItemCallback<Diary>() {
         override fun areItemsTheSame(oldItem: Diary, newItem: Diary): Boolean {
             return oldItem.id == newItem.id
@@ -53,10 +54,10 @@ class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
             binding.bookmarkIcon.setOnClickListener {
                 isBookmarked = !isBookmarked
                 updateBookmarkIcon(isBookmarked)
+                viewModel.updateBookmarkStatus(item.id)
                 binding.root.context.showToast(
                     if (isBookmarked) R.string.add_bookmark else R.string.remove_bookmark
                 )
-                // SERVER : patch
             }
 
             var isShared = item.public
@@ -65,6 +66,7 @@ class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
             binding.shareIcon.setOnClickListener {
                 isShared = !isShared
                 updateShareIcon(isShared)
+                viewModel.updateShareStatus(item.id)
                 binding.root.context.showToast(
                     if (isShared) R.string.is_public else R.string.is_private
                 )
@@ -79,7 +81,7 @@ class TimelineAdapter : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
                     .setMessage("삭제하시겠습니까?")
                     .setPositiveButton("삭제") { _, _ ->
                         removeItem(adapterPosition)
-                        // SERVER : delete
+                        viewModel.deleteDiary(item.id)
                     }
                     .setNegativeButton("취소", null)
                     .show()

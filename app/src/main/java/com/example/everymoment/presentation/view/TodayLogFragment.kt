@@ -12,16 +12,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.LocationService
 import com.example.everymoment.R
-import com.example.everymoment.data.model.NetworkUtil
 import com.example.everymoment.data.repository.Diary
-import com.example.everymoment.data.repository.DiaryResponse
+import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
+import com.example.everymoment.presentation.viewModel.TimelineViewModel
+import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
@@ -45,8 +46,8 @@ class TodayLogFragment : Fragment() {
         }
 
     private lateinit var binding: FragmentTodayLogBinding
-    private val adapter = TimelineAdapter()
-    private var timelineList: MutableList<Diary> = mutableListOf()
+    private lateinit var viewModel: TimelineViewModel
+    private val diaryRepository = DiaryRepository()
     private val calendar = Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,12 +60,20 @@ class TodayLogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this, TimelineViewModelFactory(diaryRepository)).get(
+            TimelineViewModel::class.java
+        )
+
         checkPermissions()
         updateDateText()
-        setupRecyclerView()
+
+        val adapter = TimelineAdapter(viewModel)
+        setupRecyclerView(adapter)
+        observeViewModel(adapter)
 
         val initialDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
-        fetchDiariesFromServer(initialDate)
+
+        viewModel.fetchDiaries(initialDate)
 
         binding.notification.setOnClickListener {
             navigateToNotificationFragment()
@@ -74,14 +83,20 @@ class TodayLogFragment : Fragment() {
             calendar.add(Calendar.DATE, 1)
             updateDateText()
             val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
-            fetchDiariesFromServer(currentDate)
+            viewModel.fetchDiaries(currentDate)
         }
 
         binding.prevDate.setOnClickListener {
             calendar.add(Calendar.DATE, -1)
             updateDateText()
             val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
-            fetchDiariesFromServer(currentDate)
+            viewModel.fetchDiaries(currentDate)
+        }
+    }
+
+    private fun observeViewModel(adapter: TimelineAdapter) {
+        viewModel.diaries.observe(viewLifecycleOwner) { diaryList ->
+            adapter.submitList(diaryList)
         }
     }
 
@@ -98,44 +113,9 @@ class TodayLogFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(adapter: TimelineAdapter) {
         binding.timeLineRecyclerView.adapter = adapter
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    private fun fetchDiariesFromServer(date: String) {
-        val url = "http://13.125.156.74:8080/api/diaries/my"
-        val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzI4NTM4MDgzLCJleHAiOjE3Mjg3MTA4ODN9.ohkjWMb5haJ-aNzXdivYTskLeKPHd-EIw9FYfbQerBo"
-
-        // mapOf에 날짜 추가
-        val params = mapOf(
-            "date" to date
-        )
-
-        NetworkUtil.getData(
-            url,
-            jwtToken,
-            params,
-            DiaryResponse::class.java
-        ) { success, response ->
-            Log.d("arieum", "$response")
-            if (success && response != null) {
-                Log.d("arieum", "data from server : ${response.info.diaries}")
-
-                timelineList.clear()
-                timelineList.addAll(response.info.diaries)
-                Log.d("arieum", "timelinelist: $timelineList")
-
-                activity?.runOnUiThread {
-                    adapter.submitList(timelineList)
-                    adapter.notifyDataSetChanged()
-                }
-            } else {
-                Log.d("arieum", "Network failed")
-                activity?.runOnUiThread {
-                }
-            }
-        }
     }
 
     private fun getNeededPermissions(): List<String> {
