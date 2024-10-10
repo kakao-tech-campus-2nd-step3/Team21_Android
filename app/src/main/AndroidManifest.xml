@@ -46,11 +46,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.view.KakaoLoginActivity"
+            android:name=".presentation.view.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.view.MainActivity"
+            android:name=".presentation.view.KakaoLoginActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

@@ -60,4 +60,9 @@
     <string name="category_less_one">카테고리는 한 글자 이상이어야 합니다</string>
     <string name="category_more_six">카테고리는 여섯 글자 이하여야 합니다</string>
     <string name="fcm_channel_description">"FCM 채널 설명"</string>
+    <string name="service_state">"서비스 상태"</string>
+    <string name="location_now_alarm">"현재 XX 위치에 머무르고 있어요!\n지금의 기분은 어떠신가요?"</string>
+    <string name="friend_accept">친구수락</string>
+    <string name="no_friend_request">친구요청이 아직 안 왔습니다.</string>
+    <string name="friend_request_list">친구요청목록</string>
 </resources>

@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/friendsBackButton"
+        android:id="@+id/friendRequestListBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -18,15 +18,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/findFriendByNickname"
+        android:id="@+id/friendRequestListTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/find_friends_Nickname"
+        android:text="@string/friend_request_list"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/friendsBackButton" />
+        app:layout_constraintTop_toTopOf="@id/friendRequestListBackButton" />
 
     <View
         android:id="@+id/line"
@@ -35,31 +35,13 @@
         android:layout_marginTop="15dp"
         android:background="@color/line_color"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/findFriendByNickname" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/searchUserEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/search_view_background"
-        android:drawableStart="@drawable/search_20px"
-        android:drawablePadding="8dp"
-        android:drawableTint="@color/search_icon_background"
-        android:hint="@string/find_friends_User"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line" />
+        app:layout_constraintTop_toBottomOf="@id/friendRequestListTv" />
 
     <TextView
         android:id="@+id/searchFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/search_friends"
+        android:hint="@string/no_friend_request"
         android:textStyle="bold"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +51,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friendRequestRecyclerView"
+        android:id="@+id/friendRequestListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -77,8 +59,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchUserEditText"
+        app:layout_constraintTop_toBottomOf="@id/line"
         app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/friend_request_item" />
+        tools:listitem="@layout/friend_request_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

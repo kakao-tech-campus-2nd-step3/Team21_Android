@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
-import com.example.everymoment.data.model.FriendRequest
-import com.example.everymoment.data.model.Friends
 import com.example.everymoment.data.model.NetworkUtil
 import com.example.everymoment.data.repository.Member
 import com.example.everymoment.data.repository.MemberResponse
