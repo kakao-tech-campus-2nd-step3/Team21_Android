@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.everymoment.databinding.FragmentShareViewBinding
 
-class ShareView : Fragment() {
+class ShareViewFragment : Fragment() {
     private lateinit var binding: FragmentShareViewBinding
 
     override fun onCreateView(

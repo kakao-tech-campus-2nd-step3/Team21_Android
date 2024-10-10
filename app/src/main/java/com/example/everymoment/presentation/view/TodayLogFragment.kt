@@ -105,7 +105,7 @@ class TodayLogFragment : Fragment() {
 
     private fun fetchDiariesFromServer(date: String) {
         val url = "http://13.125.156.74:8080/api/diaries/my"
-        val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTMsImlhdCI6MTcyODI3MTcyNywiZXhwIjoxNzI4NDQ0NTI3fQ.IUbWdVzCzfCCze2TmeZCIa82sxOr9Wj5K7KNRvtLxFE"
+        val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzI4NTM4MDgzLCJleHAiOjE3Mjg3MTA4ODN9.ohkjWMb5haJ-aNzXdivYTskLeKPHd-EIw9FYfbQerBo"
 
         // mapOf에 날짜 추가
         val params = mapOf(
