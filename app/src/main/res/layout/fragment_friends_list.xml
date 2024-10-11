@@ -31,7 +31,7 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/searchNicknameEditText"
-        android:layout_width="345dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
@@ -47,24 +47,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/friendAddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:background="@null"
-        android:src="@drawable/person_add_40px"
-        android:tint="@color/primary_color"
-        app:layout_constraintStart_toEndOf="@id/searchNicknameEditText"
-        app:layout_constraintTop_toTopOf="@id/searchNicknameEditText" />
+    <!--    <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/friendAddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@null"
+            android:src="@drawable/person_add_40px"
+            android:tint="@color/primary_color"
+            app:layout_constraintStart_toEndOf="@id/searchNicknameEditText"
+            app:layout_constraintTop_toTopOf="@id/searchNicknameEditText" />-->
 
     <TextView
         android:id="@+id/addFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/add_friends"
-        android:textStyle="bold"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +80,82 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchNicknameEditText"
         tools:listitem="@layout/friends_list_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mainFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:backgroundTint="@color/primary_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/add_24px"
+        app:tint="@android:color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/friendRequestFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
+        android:visibility="invisible"
+        android:clickable="false"
+        app:backgroundTint="@color/primary_color"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toTopOf="@id/mainFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="36dp"
+        app:srcCompat="@drawable/person_add_40px"
+        app:tint="@android:color/white" />
+
+    <TextView
+        android:id="@+id/friendRequestFabTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="2dp"
+        android:elevation="8dp"
+        android:text="@string/friend_request"
+        android:textColor="@color/primary_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/friendRequestFab"
+        app:layout_constraintEnd_toStartOf="@id/friendRequestFab"
+        app:layout_constraintTop_toTopOf="@id/friendRequestFab" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/friendAcceptFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        android:clickable="false"
+        app:backgroundTint="@color/primary_color"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toTopOf="@id/friendRequestFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="36dp"
+        app:srcCompat="@drawable/person_alert_24px"
+        app:tint="@android:color/white" />
+
+    <TextView
+        android:id="@+id/friendAcceptFabTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="2dp"
+        android:elevation="8dp"
+        android:text="@string/friend_accept"
+        android:textColor="@color/primary_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/friendAcceptFab"
+        app:layout_constraintEnd_toStartOf="@id/friendAcceptFab"
+        app:layout_constraintTop_toTopOf="@id/friendAcceptFab" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

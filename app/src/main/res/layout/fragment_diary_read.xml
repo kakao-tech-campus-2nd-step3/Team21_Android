@@ -131,7 +131,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="27dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
@@ -142,9 +142,11 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="5dp"
                         android:background="@drawable/category_background"
-                        android:padding="3dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="2dp"
                         android:textColor="@color/white"
                         android:visibility="visible"
                         tools:visibility="visible" />
@@ -155,9 +157,11 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="5dp"
                         android:background="@drawable/category_background"
-                        android:padding="3dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="2dp"
                         android:textColor="@color/white"
                         android:visibility="visible"
                         tools:visibility="visible" />
@@ -165,21 +169,22 @@
 
                 <ImageView
                     android:id="@+id/addEmotion"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="3dp"
                     android:layout_marginTop="10dp"
+                    android:padding="2dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/mood_24px"
                     android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/emotion"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="3dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="22sp"
+                    android:textSize="23sp"
                     android:visibility="gone"
                     tools:visibility="gone" />
 

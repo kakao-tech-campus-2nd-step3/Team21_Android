@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.example.everymoment.databinding.FragmentDiaryEditBinding
 import com.example.everymoment.extensions.Bookmarks
 import com.example.everymoment.extensions.CategoryPopup
@@ -52,16 +53,19 @@ class DiaryEditFragment : Fragment() {
 
         binding.image1.setOnClickListener {
             galleryUtil.openGallery(onImageSelected = {
+                binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.image1.setImageURI(it)
+                imagesArray[0] = true
+                binding.image2.visibility = View.VISIBLE
             })
-            imagesArray[0] = true
         }
 
         binding.image2.setOnClickListener {
             galleryUtil.openGallery(onImageSelected = {
+                binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.image2.setImageURI(it)
+                imagesArray[1] = true
             })
-            imagesArray[1] = true
         }
 
         binding.addCategory.setOnClickListener {

@@ -111,6 +111,7 @@ class CategoryPopup(
 
     private fun addCategoryTextView(userInput: String) {
         val textView = TextView(context).apply {
+            textSize = 16f
             layoutParams = GridLayout.LayoutParams().apply {
                 width = GridLayout.LayoutParams.WRAP_CONTENT
                 height = GridLayout.LayoutParams.MATCH_PARENT

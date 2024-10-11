@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,9 @@ class TodayLogFragment : Fragment() {
         // 리스트 예시
         timelineList.add(Timeline("오전 10:00", "빽다방 강원대점", "강원도 춘천시 충열로", "😢", true))
         timelineList.add(Timeline("오후 12:00", "천지관", "강원도 춘천시 충열로", "😢", false))
+
+        val TodayDate = arguments?.getString("selected_date")
+        Log.d("TodayDate", "Selected date: $TodayDate")
 
         checkPermissions()
         setupRecyclerView(timelineList)
