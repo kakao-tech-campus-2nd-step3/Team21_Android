@@ -11,8 +11,10 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DiffUtil
 import com.example.everymoment.databinding.CategoryPopupBinding
 import com.example.everymoment.R
+import com.example.everymoment.data.model.Friends
 
 class CategoryPopup(
     private val fragmentActivity: FragmentActivity,
@@ -111,6 +113,7 @@ class CategoryPopup(
 
     private fun addCategoryTextView(userInput: String) {
         val textView = TextView(context).apply {
+            textSize = 16f
             layoutParams = GridLayout.LayoutParams().apply {
                 width = GridLayout.LayoutParams.WRAP_CONTENT
                 height = GridLayout.LayoutParams.MATCH_PARENT
@@ -139,4 +142,5 @@ class CategoryPopup(
             addButton.visibility = View.GONE
         }
     }
+
 }

@@ -8,42 +8,46 @@
     android:orientation="horizontal"
     android:paddingStart="7dp"
     android:paddingTop="2dp"
-    android:paddingEnd="2dp"
-    android:paddingBottom="2dp">
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/happy"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
         android:text="SMILING FACE WITH SMILING EYES"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/sad"
+        android:layout_marginEnd="5dp"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:text="CRYING FACE"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/insensitive"
+        android:layout_marginEnd="5dp"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:text="NEUTRAL FACE"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/angry"
         android:layout_width="30dp"
+        android:layout_marginEnd="5dp"
         android:layout_height="30dp"
         android:text="ANGRY FACE"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/confounded"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
         android:text="CONFOUNDED FACE"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
 </LinearLayout>

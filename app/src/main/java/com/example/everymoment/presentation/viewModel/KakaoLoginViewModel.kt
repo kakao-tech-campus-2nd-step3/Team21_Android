@@ -56,6 +56,7 @@ class KakaoLoginViewModel(private val userRepository: UserRepository) : ViewMode
                             "\n회원번호: ${user.id}" +
                             "\n닉네임: ${user.kakaoAccount?.profile?.nickname}"
                 )
+                userRepository.requestToken(user.id, user.kakaoAccount?.profile?.nickname)
                 _uiState.value = KakaoLoginUiState(
                     isLoggedIn = true,
                     userId = user.id,

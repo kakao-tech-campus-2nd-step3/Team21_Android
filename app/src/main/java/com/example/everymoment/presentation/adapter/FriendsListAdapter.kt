@@ -3,17 +3,24 @@ package com.example.everymoment.presentation.adapter
 import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.everymoment.data.model.Friends
 import com.example.everymoment.databinding.FriendsListItemBinding
+import com.example.everymoment.extensions.CustomDialog
 
-class FriendsListAdapter(private val onDeleteFriend: (Friends) -> Unit) : ListAdapter<Friends, FriendsListAdapter.FriendViewHolder>(FriendDiffCallback()) {
+class FriendsListAdapter(
+    private val activity: FragmentActivity,
+    private val onDeleteFriend: (Friends) -> Unit
+) :
+    ListAdapter<Friends, FriendsListAdapter.FriendViewHolder>(FriendDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {
-        val binding = FriendsListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FriendViewHolder(binding, onDeleteFriend)
+        val binding =
+            FriendsListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FriendViewHolder(binding, activity, onDeleteFriend)
     }
 
     override fun onBindViewHolder(holder: FriendViewHolder, position: Int) {
@@ -22,6 +29,7 @@ class FriendsListAdapter(private val onDeleteFriend: (Friends) -> Unit) : ListAd
 
     class FriendViewHolder(
         private val binding: FriendsListItemBinding,
+        private val activity: FragmentActivity,
         private val onDeleteFriend: (Friends) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(friends: Friends) {
@@ -34,12 +42,11 @@ class FriendsListAdapter(private val onDeleteFriend: (Friends) -> Unit) : ListAd
         }
 
         private fun showDeleteConfirmationDialog(friends: Friends) {
-            AlertDialog.Builder(itemView.context)
-                .setTitle("친구 삭제")
-                .setMessage("${friends.name}님을 친구에서 삭제하시겠습니까?")
-                .setNegativeButton("아니오") { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton("네") { _, _ -> onDeleteFriend(friends) }
-                .show()
+            CustomDialog(
+                "${friends.name}님을\n친구에서 삭제하시겠습니까?",
+                "아니오",
+                "삭제하기",
+                onPositiveClick = { onDeleteFriend(friends) }).show(activity.supportFragmentManager, "CustomDialog")
         }
     }
 
