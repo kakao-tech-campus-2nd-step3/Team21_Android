@@ -64,6 +64,9 @@ class TodayLogFragment : Fragment() {
             TimelineViewModel::class.java
         )
 
+        val TodayDate = arguments?.getString("selected_date")
+        Log.d("TodayDate", "Selected date: $TodayDate")
+
         checkPermissions()
         updateDateText()
 
