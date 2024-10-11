@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.everymoment.R
+import com.example.everymoment.presentation.view.SearchFilterDialogFragment
 import com.example.everymoment.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
+    private lateinit var filterBottomSheet: SearchFilterDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +35,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun setFilterSheet() {
-
+        filterBottomSheet = SearchFilterDialogFragment()
     }
 
     private fun showFilterSheet() {
-
+        filterBottomSheet.show(parentFragmentManager, SearchFilterDialogFragment.TAG)
     }
 
 }
