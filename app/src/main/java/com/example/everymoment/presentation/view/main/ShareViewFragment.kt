@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.everymoment.R
 import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.data.repository.Member
 import com.example.everymoment.data.repository.Thumbnail
 import com.example.everymoment.databinding.FragmentShareViewBinding
 import com.example.everymoment.presentation.adapter.SharedFriendDiaryListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendListAdapter
+import com.example.everymoment.presentation.view.sub.friends.FriendsListFragment
 
 class ShareViewFragment : Fragment() {
     private lateinit var binding: FragmentShareViewBinding
@@ -34,11 +36,11 @@ class ShareViewFragment : Fragment() {
         setupRecyclerView()
 
         // dummyData1
-        friendList.add(Member(1, "url", "춘식이", "None"))
-        friendList.add(Member(2, "url", "제이지", "None"))
-        friendList.add(Member(3, "url", "프로도", "None"))
-        friendList.add(Member(4, "url", "네오", "None"))
-        friendList.add(Member(5, "url", "피치", "None"))
+        friendList.add(Member(1, "url", "춘식이"))
+        friendList.add(Member(2, "url", "제이지"))
+        friendList.add(Member(3, "url", "프로도"))
+        friendList.add(Member(4, "url", "네오"))
+        friendList.add(Member(5, "url", "피치"))
         friendAdapter.submitList(friendList)
         friendAdapter.notifyDataSetChanged()
 
@@ -47,6 +49,14 @@ class ShareViewFragment : Fragment() {
         diaryList.add(Diary(2, "춘천 강원대", "강원도 춘천시", "Happy", Thumbnail(1, "url"), "Hello", "2024-05-06", false, true))
         diaryAdapter.submitList(diaryList)
         diaryAdapter.notifyDataSetChanged()
+
+        binding.friendListIcon.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, FriendsListFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
     }
 
     private fun setupRecyclerView() {

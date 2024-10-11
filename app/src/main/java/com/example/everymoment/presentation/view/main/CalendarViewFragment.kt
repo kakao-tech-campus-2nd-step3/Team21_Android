@@ -1,6 +1,5 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,16 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.everymoment.R
 import com.example.everymoment.databinding.FragmentCalendarViewBinding
-import com.google.android.material.datepicker.MaterialDatePicker
+import com.example.everymoment.presentation.view.sub.NotificationFragment
 import com.kakao.sdk.common.util.Utility
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import org.threeten.bp.format.DateTimeFormatter
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class CalendarViewFragment : Fragment(), OnDateSelectedListener {
 

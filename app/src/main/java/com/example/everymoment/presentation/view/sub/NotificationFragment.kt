@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.sub
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

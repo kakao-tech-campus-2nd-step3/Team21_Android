@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".presentation.view.TodayLogFragment">
+    tools:context=".presentation.view.main.TodayLogFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

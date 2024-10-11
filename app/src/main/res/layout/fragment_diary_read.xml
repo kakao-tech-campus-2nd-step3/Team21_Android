@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#515151"
     android:orientation="vertical"
-    tools:context=".presentation.view.DiaryReadFragment">
+    tools:context=".presentation.view.sub.diary.DiaryReadFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                     android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
                     android:text="address"
@@ -132,7 +132,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -171,7 +171,7 @@
                     android:id="@+id/addEmotion"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:padding="2dp"
                     android:scaleType="fitCenter"
@@ -182,7 +182,7 @@
                     android:id="@+id/emotion"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:textSize="23sp"
                     android:visibility="gone"
@@ -192,7 +192,7 @@
                     android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:text="content"
                     android:textSize="17sp"
