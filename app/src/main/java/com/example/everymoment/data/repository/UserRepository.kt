@@ -1,6 +1,9 @@
 package com.example.everymoment.data.repository
 
 import android.app.Activity
+import android.util.Log
+import com.example.everymoment.GlobalApplication
+import com.example.everymoment.data.model.NetworkUtil
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.AccessTokenInfo
@@ -33,6 +36,29 @@ class UserRepository {
     fun requestUserInfo(callback: (User?, Throwable?) -> Unit) {
         UserApiClient.instance.me { user, error ->
             callback(user, error)
+        }
+    }
+
+    fun requestToken(userId: Long?, nickname: String?) {
+        NetworkUtil.sendData(
+            "http://13.125.156.74:8080/api/members/login",
+            null,
+            mapOf(
+                "number" to userId,
+                "nickname" to nickname
+            )
+        ) { success, code, message, infoObject->
+            if (success) {
+                val token = infoObject?.get("token")?.asString
+
+                if (token != null) {
+                    GlobalApplication.prefs.setString("token", token)
+                }
+
+                Log.d("arieum", "서버 응답: $token")
+            } else {
+                Log.d("arieum", "Network failed")
+            }
         }
     }
 }
