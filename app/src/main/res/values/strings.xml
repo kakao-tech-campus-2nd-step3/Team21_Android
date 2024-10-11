@@ -82,4 +82,6 @@
     <string name="friend_accept">친구수락</string>
     <string name="no_friend_request">친구요청이 아직 안 왔습니다.</string>
     <string name="friend_request_list">친구요청목록</string>
+    <string name="check_start_date">시작일을 입력해주셔야 합니다</string>
+    <string name="check_end_date">종료일을 입력해주셔야 합니다</string>
 </resources>

@@ -13,9 +13,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.everymoment.R
 import com.example.everymoment.data.model.Emotions
 import com.example.everymoment.databinding.FragmentSearchFilterDialogBinding
+import com.example.everymoment.presentation.adapter.CategoryAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.time.LocalDate
@@ -24,9 +26,9 @@ import java.time.format.DateTimeFormatter
 class SearchFilterDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentSearchFilterDialogBinding
+    private lateinit var categoryAdapter: CategoryAdapter
     private var checkedBookmark: Boolean = false
 
-    private var categoryArray = arrayOf("힐링", "공부", "놀이", "zzzzzzz", "ddddd", "ee")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,17 +69,17 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         }
 
         binding.startDate.setOnClickListener {
-            showCalendarDialog(binding.startDate)
-            if (binding.startDate.text.isNotBlank()) {
+            showCalendarDialog(binding.startDate) {
+            if (binding.startDate.text.isNotEmpty()) {
                 binding.startDate.setBackgroundResource(R.drawable.search_filter_date_background)
-            }
+            }}
         }
 
         binding.endDate.setOnClickListener {
-            showCalendarDialog(binding.endDate)
-            if (binding.endDate.text.isNotBlank()) {
+            showCalendarDialog(binding.endDate) {
+            if (binding.endDate.text.isNotEmpty()) {
                 binding.endDate.setBackgroundResource(R.drawable.search_filter_date_background)
-            }
+            }}
         }
 
         binding.reset.setOnClickListener {
@@ -85,17 +87,39 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         }
 
         binding.apply.setOnClickListener {
-            if (!checkValidTerm()) {
-                Toast.makeText(
-                    context,
-                    resources.getString(R.string.invalid_term),
-                    Toast.LENGTH_SHORT
-                ).show()
+            if (binding.startDate.text.isNullOrEmpty() && binding.endDate.text.isNotEmpty()) {
+                makeToast(resources.getString(R.string.check_start_date))
+            } else if (binding.startDate.text.isNotEmpty() && binding.endDate.text.isNullOrEmpty()) {
+                makeToast(resources.getString(R.string.check_end_date))
+            } else if (binding.startDate.text.isNotEmpty() && binding.endDate.text.isNotEmpty()) {
+                if (!checkValidTerm()) {
+                    makeToast(resources.getString(R.string.invalid_term))
+                }
             } else {
                 dismiss()
             }
         }
 
+    }
+
+    private fun makeToast(string: String) {
+        Toast.makeText(
+            context,
+            string,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun setCategories() {
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
+        binding.categoryRcv.layoutManager = gridLayoutManager
+        categoryAdapter = CategoryAdapter()
+        binding.categoryRcv.adapter = categoryAdapter
+
+        if (categoryAdapter.itemCount != 0) {
+            binding.noCategoryText.visibility = View.GONE
+            binding.categoryRcv.visibility = View.VISIBLE
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -108,7 +132,7 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     private fun checkValidTerm(): Boolean {
         val startDate = binding.startDate.text.toString().toLocalDate()
         val endDate = binding.endDate.text.toString().toLocalDate()
-        return startDate.isBefore(endDate)
+        return !startDate.isAfter(endDate)
     }
 
     private fun resetSelections() {
@@ -131,55 +155,26 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         binding.startDate.setBackgroundResource(R.drawable.search_filter_date_gray_background)
         binding.endDate.text = ""
         binding.endDate.setBackgroundResource(R.drawable.search_filter_date_gray_background)
+
+        categoryAdapter.resetSelected()
     }
 
-    private fun showCalendarDialog(textView: TextView) {
+    private fun changeDateBackground(input: ()->Unit) {
+        input.invoke()
+    }
+
+    private fun showCalendarDialog(textView: TextView, checkInput: ()->Unit) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         context?.let { context ->
-            DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
+            DatePickerDialog(context, R.style.CustomDatePicker, { _, selectedYear, selectedMonth, selectedDay ->
                 val formattedDate =
                     String.format("%04d.%02d.%02d", selectedYear, selectedMonth + 1, selectedDay)
                 textView.text = formattedDate
+                changeDateBackground(checkInput)
             }, year, month, day).show()
-        }
-    }
-
-    private fun setCategories() {
-        if (categoryArray.isNotEmpty()) {
-            for (category in categoryArray) {
-                val textView = TextView(context).apply {
-                    textSize = 16f
-                    layoutParams = GridLayout.LayoutParams().apply {
-                        width = GridLayout.LayoutParams.WRAP_CONTENT
-                        height = GridLayout.LayoutParams.MATCH_PARENT
-
-                        setGravity(Gravity.CENTER)
-                        setMargins(20, 10, 20, 20)
-                    }
-                    text = resources.getString(R.string.category_text, category)
-                    background =
-                        resources.getDrawable(R.drawable.category_gray_background, null)
-                    setPadding(15, 10, 15, 10)
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.search_gray))
-
-                    setOnClickListener {
-                        val currentColor = currentTextColor
-                        val searchGrayColor = ContextCompat.getColor(requireContext(), R.color.search_gray)
-
-                        if (currentColor != searchGrayColor) {
-                            setTextColor(ContextCompat.getColor(requireContext(), R.color.search_gray))
-                            background = resources.getDrawable(R.drawable.category_gray_background, null)
-                        } else {
-                            setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                            background = resources.getDrawable(R.drawable.category_background, null)
-                        }
-                    }
-                }
-                binding.categoryGrid.addView(textView)
-            }
         }
     }
 

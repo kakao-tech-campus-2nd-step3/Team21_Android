@@ -44,7 +44,7 @@ class FriendRequestAdapter(
         }
 
         private fun showFriendRequestConfirmationDialog(user: Member) {
-            CustomDialog("${user.nickname}님에게 친구 신청을 하시겠습니까?", "아니오", "네", onPositiveClick = {
+            CustomDialog("${user.nickname}님에게\n친구 신청을 하시겠습니까?", "아니오", "신청하기", onPositiveClick = {
                 onFriendRequest(user)
                 binding.friendRequestButton.visibility = View.GONE
                 binding.requestCompletedButton.visibility = View.VISIBLE

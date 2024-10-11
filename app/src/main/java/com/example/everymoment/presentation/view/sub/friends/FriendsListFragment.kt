@@ -128,7 +128,7 @@ class FriendsListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = FriendsListAdapter { friend ->
+        adapter = FriendsListAdapter(requireActivity()) { friend ->
             deleteFriend(friend)
         }
         binding.friendsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
