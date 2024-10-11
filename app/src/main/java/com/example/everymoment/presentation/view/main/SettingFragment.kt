@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main
 
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +13,6 @@ import com.example.everymoment.databinding.FragmentSettingBinding
 import com.example.everymoment.extensions.CustomDialog
 import com.example.everymoment.extensions.CustomEditDialog
 import com.example.everymoment.extensions.GalleryUtil
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SettingFragment : Fragment() {
 

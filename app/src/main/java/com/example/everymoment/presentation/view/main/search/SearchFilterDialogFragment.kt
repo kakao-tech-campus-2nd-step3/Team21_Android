@@ -1,7 +1,6 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main.search
 
 import android.app.DatePickerDialog
-import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle

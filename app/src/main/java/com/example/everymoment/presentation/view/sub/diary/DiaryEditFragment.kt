@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.sub.diary
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +12,7 @@ import com.example.everymoment.extensions.CategoryPopup
 import com.example.everymoment.extensions.EmotionPopup
 import com.example.everymoment.extensions.GalleryUtil
 import com.example.everymoment.extensions.ToPxConverter
+import com.example.everymoment.presentation.view.main.MainActivity
 
 class DiaryEditFragment : Fragment() {
 

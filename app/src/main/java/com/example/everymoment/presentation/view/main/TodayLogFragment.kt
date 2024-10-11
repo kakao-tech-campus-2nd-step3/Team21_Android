@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main
 
 import android.content.Intent
 import android.os.Build
@@ -16,10 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.LocationService
 import com.example.everymoment.R
-import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
+import com.example.everymoment.presentation.view.sub.NotificationFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
 import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
 import java.text.SimpleDateFormat

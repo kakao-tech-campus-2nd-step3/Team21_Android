@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main
 
 import android.content.Intent
 import android.os.Bundle

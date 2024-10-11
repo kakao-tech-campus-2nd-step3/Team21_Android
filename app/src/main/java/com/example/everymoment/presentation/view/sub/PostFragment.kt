@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.sub
 
 import android.content.Context
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.everymoment.R
 import com.example.everymoment.databinding.FragmentPostBinding
 import com.example.everymoment.presentation.adapter.PostAdapter
 

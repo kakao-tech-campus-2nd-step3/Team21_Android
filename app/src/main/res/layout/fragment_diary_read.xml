@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#515151"
     android:orientation="vertical"
-    tools:context=".presentation.view.DiaryReadFragment">
+    tools:context=".presentation.view.sub.diary.DiaryReadFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

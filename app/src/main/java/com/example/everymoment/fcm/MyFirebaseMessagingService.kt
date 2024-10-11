@@ -3,17 +3,15 @@ package com.example.everymoment.fcm
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.everymoment.NotificationActionReceiver
 import com.example.everymoment.R
 import com.example.everymoment.data.model.Emotions
-import com.example.everymoment.presentation.view.MainActivity
+import com.example.everymoment.presentation.view.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 

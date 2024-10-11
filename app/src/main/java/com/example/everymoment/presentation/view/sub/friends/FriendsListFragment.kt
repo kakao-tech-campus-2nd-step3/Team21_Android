@@ -1,7 +1,5 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.sub.friends
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import com.example.everymoment.R
 import com.example.everymoment.data.model.Friends
 import com.example.everymoment.databinding.FragmentFriendsListBinding
 import com.example.everymoment.presentation.adapter.FriendsListAdapter
-import com.google.android.material.snackbar.Snackbar
 
 class FriendsListFragment : Fragment() {
 

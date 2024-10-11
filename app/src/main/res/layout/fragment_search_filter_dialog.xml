@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/search_filter_bottomsheet_background"
-    tools:context=".presentation.view.SearchFilterDialogFragment">
+    tools:context=".presentation.view.main.search.SearchFilterDialogFragment">
 
     <ScrollView
         app:layout_constraintTop_toTopOf="parent"

@@ -1,19 +1,14 @@
 package com.example.everymoment.data.repository
 
 data class MemberResponse(
-    val code: Int,
-    val message: String,
-    val info: Info
+    val info: MemberInfo
 )
 
-data class Info(
-    val members: List<Member>,
-    val next: Int
+data class MemberInfo(
+    val members: List<Member>
 )
-
 data class Member(
     val id: Int,
-    val profileImageUrl: String,
     val nickname: String,
-    val friendRequestStatus: String
+    val profileImageUrl: String
 )
