@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.play.services.location)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation ("com.jakewharton.threetenabp:threetenabp:1.2.1")
     implementation ("com.google.android.material:material:1.2.0")

@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = FriendsListFragment()
+                        val fragment = ShareViewFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()

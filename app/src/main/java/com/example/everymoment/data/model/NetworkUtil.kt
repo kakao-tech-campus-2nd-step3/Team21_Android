@@ -105,17 +105,14 @@ object NetworkUtil {
     fun <T> patchRequest(
         url: String,
         jwtToken: String,
-        queryParams: Int? = null,
         data: T? = null,
         callback: (success: Boolean, response: String?) -> Unit
     ) {
-        val fullUrl = if (queryParams != null) "$url?$queryParams" else url
-
         val jsonBody = gson.toJson(data)
         val requestBody = jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         val request = Request.Builder()
-            .url(fullUrl)
+            .url(url)
             .patch(requestBody)
             .addHeader("Authorization", "Bearer $jwtToken")
             .build()
@@ -136,13 +133,11 @@ object NetworkUtil {
     fun deleteRequest(
         url: String,
         jwtToken: String,
-        queryParams: Int,
+        queryParams: Int? = null,
         callback: (success: Boolean, response: String?) -> Unit
     ) {
-        val fullUrl = "$url/$queryParams"
-
         val request = Request.Builder()
-            .url(fullUrl)
+            .url(url)
             .delete()
             .addHeader("Authorization", "Bearer $jwtToken")
             .build()

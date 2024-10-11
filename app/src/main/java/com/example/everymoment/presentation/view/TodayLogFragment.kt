@@ -12,12 +12,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.LocationService
 import com.example.everymoment.R
-import com.example.everymoment.data.model.Timeline
+import com.example.everymoment.data.repository.Diary
+import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
+import com.example.everymoment.presentation.viewModel.TimelineViewModel
+import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class TodayLogFragment : Fragment() {
 
@@ -39,7 +46,9 @@ class TodayLogFragment : Fragment() {
         }
 
     private lateinit var binding: FragmentTodayLogBinding
-
+    private lateinit var viewModel: TimelineViewModel
+    private val diaryRepository = DiaryRepository()
+    private val calendar = Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,19 +60,52 @@ class TodayLogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val timelineList: MutableList<Timeline> = mutableListOf()
-        // 리스트 예시
-        timelineList.add(Timeline("오전 10:00", "빽다방 강원대점", "강원도 춘천시 충열로", "😢", true))
-        timelineList.add(Timeline("오후 12:00", "천지관", "강원도 춘천시 충열로", "😢", false))
+        viewModel = ViewModelProvider(this, TimelineViewModelFactory(diaryRepository)).get(
+            TimelineViewModel::class.java
+        )
 
         val TodayDate = arguments?.getString("selected_date")
         Log.d("TodayDate", "Selected date: $TodayDate")
 
         checkPermissions()
-        setupRecyclerView(timelineList)
+        updateDateText()
+
+        val adapter = TimelineAdapter(viewModel)
+        setupRecyclerView(adapter)
+        observeViewModel(adapter)
+
+        val initialDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+        viewModel.fetchDiaries(initialDate)
+
         binding.notification.setOnClickListener {
             navigateToNotificationFragment()
         }
+
+        binding.nextDate.setOnClickListener {
+            calendar.add(Calendar.DATE, 1)
+            updateDateText()
+            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            viewModel.fetchDiaries(currentDate)
+        }
+
+        binding.prevDate.setOnClickListener {
+            calendar.add(Calendar.DATE, -1)
+            updateDateText()
+            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            viewModel.fetchDiaries(currentDate)
+        }
+    }
+
+    private fun observeViewModel(adapter: TimelineAdapter) {
+        viewModel.diaries.observe(viewLifecycleOwner) { diaryList ->
+            adapter.submitList(diaryList)
+        }
+    }
+
+    private fun updateDateText() {
+        val formattedDate = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR")).format(calendar.time)
+        binding.currentDate.text = formattedDate
     }
 
     private fun navigateToNotificationFragment() {
@@ -74,8 +116,8 @@ class TodayLogFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(timelineList: MutableList<Timeline>) {
-        binding.timeLineRecyclerView.adapter = TimelineAdapter(timelineList)
+    private fun setupRecyclerView(adapter: TimelineAdapter) {
+        binding.timeLineRecyclerView.adapter = adapter
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
