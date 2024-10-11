@@ -21,6 +21,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Everymoment"
         tools:targetApi="31">
+        <receiver
+            android:name=".NotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="HAPPY_ACTION" />
+                <action android:name="SAD_ACTION" />
+                <action android:name="INSENSITIVE_ACTION" />
+                <action android:name="ANGRY_ACTION" />
+                <action android:name="CONFOUNDED_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".fcm.MyFirebaseMessagingService"
             android:enabled="true"

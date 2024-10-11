@@ -8,8 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.example.everymoment.NotificationActionReceiver
 import com.example.everymoment.R
+import com.example.everymoment.data.model.Emotions
 import com.example.everymoment.presentation.view.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -17,6 +20,11 @@ import com.google.firebase.messaging.RemoteMessage
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private lateinit var notificationManager: NotificationManager
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        Log.d("FCM Token", "New token: $token")
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d("testt", "From: ${remoteMessage.from}")
@@ -42,19 +50,46 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent,
             PendingIntent.FLAG_IMMUTABLE
         )
+
+        val remoteViews = RemoteViews(packageName, R.layout.custom_notification)
+        remoteViews.setTextViewText(R.id.happyEmojiTextView, Emotions.HAPPY.getEmotionUnicode())
+        remoteViews.setTextViewText(R.id.sadEmojiTextView, Emotions.SAD.getEmotionUnicode())
+        remoteViews.setTextViewText(R.id.insensitiveEmojiTextView, Emotions.INSENSITIVE.getEmotionUnicode())
+        remoteViews.setTextViewText(R.id.angryEmojiTextView, Emotions.ANGRY.getEmotionUnicode())
+        remoteViews.setTextViewText(R.id.confoundedEmojiTextView, Emotions.CONFOUNDED.getEmotionUnicode())
+
+        val emotions = listOf(
+            R.id.happyEmojiTextView to Emotions.HAPPY,
+            R.id.sadEmojiTextView to Emotions.SAD,
+            R.id.insensitiveEmojiTextView to Emotions.INSENSITIVE,
+            R.id.angryEmojiTextView to Emotions.ANGRY,
+            R.id.confoundedEmojiTextView to Emotions.CONFOUNDED
+        )
+
+        emotions.forEach { (viewId, emotion) ->
+            val emotionIntent = Intent(this, NotificationActionReceiver::class.java).apply {
+                action = "${emotion.name}_ACTION"
+            }
+            val emotionPendingIntent = PendingIntent.getBroadcast(
+                this,
+                viewId,
+                emotionIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            remoteViews.setOnClickPendingIntent(viewId, emotionPendingIntent)
+        }
+
         val builder = NotificationCompat.Builder(
             this,
             CHANNEL_ID
         )
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("[중요] 포그라운드 알림")
-            .setContentText("앱이 실행 중입니다.")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentTitle("EveryMoment")
             .setContentIntent(pendingIntent)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText("앱이 실행 중일 때는 포그라운드 알림이 발생합니다.")
-            )
+            .setContentText("현재 XX 위치에 머무르고 있어요! 지금의 기분은 어떠신가요?")
+            .setCustomBigContentView(remoteViews)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
         notificationManager.notify(NOTIFICATION_ID, builder.build())
