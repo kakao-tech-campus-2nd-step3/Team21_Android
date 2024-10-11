@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.data.model.FriendRequest
+import com.example.everymoment.data.repository.Member
 import com.example.everymoment.databinding.FriendRequestItemBinding
 
 class FriendRequestAdapter(
-    private val onFriendRequest: (FriendRequest) -> Unit
-) : ListAdapter<FriendRequest, FriendRequestAdapter.FriendRequestViewHolder>(
+    private val onFriendRequest: (Member) -> Unit
+) : ListAdapter<Member, FriendRequestAdapter.FriendRequestViewHolder>(
     FriendRequestDiffCallback()
 ) {
 
@@ -28,20 +28,20 @@ class FriendRequestAdapter(
 
     class FriendRequestViewHolder(
         private val binding: FriendRequestItemBinding,
-        private val onFriendRequest: (FriendRequest) -> Unit
+        private val onFriendRequest: (Member) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: FriendRequest) {
-            binding.userNickname.text = user.name
+        fun bind(user: Member) {
+            binding.userNickname.text = user.nickname
 
             binding.friendRequestButton.setOnClickListener {
                 showFriendRequestConfirmationDialog(user)
             }
         }
 
-        private fun showFriendRequestConfirmationDialog(user: FriendRequest) {
+        private fun showFriendRequestConfirmationDialog(user: Member) {
             AlertDialog.Builder(itemView.context)
                 .setTitle("친구 신청")
-                .setMessage("${user.name}님에게 친구 신청을 하시겠습니까?")
+                .setMessage("${user.nickname}님에게 친구 신청을 하시겠습니까?")
                 .setNegativeButton("아니오") { dialog, _ -> dialog.dismiss() }
                 .setPositiveButton("네") { _, _ ->
                     onFriendRequest(user)
@@ -52,12 +52,12 @@ class FriendRequestAdapter(
         }
     }
 
-    class FriendRequestDiffCallback : DiffUtil.ItemCallback<FriendRequest>() {
-        override fun areItemsTheSame(oldItem: FriendRequest, newItem: FriendRequest): Boolean {
-            return oldItem.name == newItem.name
+    class FriendRequestDiffCallback : DiffUtil.ItemCallback<Member>() {
+        override fun areItemsTheSame(oldItem: Member, newItem: Member): Boolean {
+            return oldItem.nickname == newItem.nickname
         }
 
-        override fun areContentsTheSame(oldItem: FriendRequest, newItem: FriendRequest): Boolean {
+        override fun areContentsTheSame(oldItem: Member, newItem: Member): Boolean {
             return oldItem == newItem
         }
     }

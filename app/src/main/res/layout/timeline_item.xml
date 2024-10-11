@@ -25,6 +25,7 @@
                 android:id="@+id/timeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:hint="오전 10:00"
                 android:textSize="10sp" />
 
@@ -43,25 +44,25 @@
                 <!-- 즐겨찾기 아이콘 -->
                 <ImageView
                     android:id="@+id/bookmarkIcon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/baseline_bookmark_border_24"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/bookmark_26dp_5f6368_fill0_wght300_grad0_opsz24"
                     android:layout_marginEnd="6dp" />
 
                 <!-- 공유 아이콘 -->
                 <ImageView
                     android:id="@+id/shareIcon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_share"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/share_26dp_5f6368_fill0_wght300_grad0_opsz24"
                     android:layout_marginEnd="6dp" />
 
                 <!-- 삭제 아이콘 -->
                 <ImageView
                     android:id="@+id/deleteIcon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_delete" />
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/delete_26dp_5f6368_fill0_wght300_grad0_opsz24" />
             </LinearLayout>
         </LinearLayout>
 
@@ -84,8 +85,8 @@
             <!-- 수정 아이콘 -->
             <ImageView
                 android:id="@+id/editIcon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/ic_edit_location_name" />

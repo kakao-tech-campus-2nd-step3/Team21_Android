@@ -17,7 +17,9 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.everymoment.data.model.NetworkUtil
+import com.example.everymoment.data.repository.DiaryEntry
 import com.example.everymoment.data.repository.GooglePlacesResponse
+import com.example.everymoment.data.repository.LocationPoint
 import com.google.android.gms.location.*
 
 class LocationService : Service() {
@@ -55,6 +57,7 @@ class LocationService : Service() {
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, LOCATION_UPDATE_INTERVAL)
             .setMinUpdateIntervalMillis(LOCATION_UPDATE_INTERVAL)
             .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL)
+            .setWaitForAccurateLocation(false)
             .build()
 
         locationCallback = object : LocationCallback() {
@@ -84,20 +87,38 @@ class LocationService : Service() {
         val latitude = location.latitude
         val longitude = location.longitude
 
-        getPlaceNamesFromCoordinates(latitude, longitude) { currentPlaceNames ->
+        getPlaceNamesFromCoordinates(latitude, longitude) { currentPlaceNames, currentAddresses ->
             if (currentPlaceNames.isNotEmpty()) {
                 Log.d("myplace", "$currentPlaceNames")
                 val currentPlace = currentPlaceNames.firstOrNull()
+                val currentAddress = currentAddresses.firstOrNull()
 
-                // 처음 위치 측정이거나 현재 위치가 이전과 다를 때
                 if (initialPlaceName == null || (currentPlace != null && !currentPlaceNames.contains(initialPlaceName!!))) {
                     initialPlaceName = currentPlace
-                    Log.d("arieum", "새 장소 측정: $initialPlaceName, 아직 전달 안함")
+                    Log.d("arieum", "새 장소 측정: $initialPlaceName, $currentAddress 아직 전달 안함")
                 } else {
-                    // 장소가 같을 때
                     if (isFirstLocationUpdateAfterChange) {
-                        Log.d("arieum", "백엔드로 전달: $initialPlaceName")
-                        isFirstLocationUpdateAfterChange = false // 첫 전달 이후에는 false로 설정하여 다시 전달 안함
+                        Log.d("arieum", "백엔드로 전달: $initialPlaceName, $currentAddress")
+
+                        val locationData = DiaryEntry(
+                            locationPoint = LocationPoint(latitude, longitude),
+                            locationName = currentPlace ?: "알 수 없는 장소",
+                            address = currentAddress ?: "알 수 없는 위치"
+                        )
+
+                        NetworkUtil.sendData(
+                            "http://13.125.156.74:8080/api/diaries/auto",
+                            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzI4NTM4MDgzLCJleHAiOjE3Mjg3MTA4ODN9.ohkjWMb5haJ-aNzXdivYTskLeKPHd-EIw9FYfbQerBo",
+                            locationData
+                        ) {  success, code, message, infoObject ->
+                            if (success) {
+                                Log.d("arieum", "성공! 코드: $code, 메시지: $message, 정보: $infoObject")
+                            } else {
+                                Log.d("arieum", "실패!")
+                            }
+                        }
+
+                        isFirstLocationUpdateAfterChange = false
                     } else {
                         Log.d("arieum", "세 번 이상 장소: $initialPlaceName, 더이상 전달 안함")
                     }
@@ -140,7 +161,7 @@ class LocationService : Service() {
     private fun getPlaceNamesFromCoordinates(
         latitude: Double,
         longitude: Double,
-        callback: (List<String>) -> Unit
+        callback: (List<String>, List<String>) -> Unit
     ) {
         val apiKey = BuildConfig.API_KEY
         val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
@@ -160,18 +181,19 @@ class LocationService : Service() {
             if (success && response != null) {
                 try {
                     val placeNames = response.results.map { it.name }
-                    callback(placeNames)
+                    val addresses = response.results.map { it.vicinity }
+                    callback(placeNames, addresses)
                 } catch (e: Exception) {
-                    callback(emptyList())
+                    callback(emptyList(), emptyList())
                 }
             } else {
-                callback(emptyList())
+                callback(emptyList(), emptyList())
             }
         }
     }
 
     companion object {
         private const val NOTIFICATION_ID = 1
-        private const val LOCATION_UPDATE_INTERVAL = 5 * 60 * 1000L // 5분
+        private const val LOCATION_UPDATE_INTERVAL = 3 * 60 * 1000L
     }
 }
