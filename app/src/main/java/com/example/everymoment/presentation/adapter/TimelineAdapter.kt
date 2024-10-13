@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.everymoment.R
 import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.databinding.TimelineItemBinding
@@ -70,11 +73,17 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
                 binding.root.context.showToast(
                     if (isShared) R.string.is_public else R.string.is_private
                 )
-                // SERVER : patch
             }
 
-            // 상세 일기 표시 여부
-            // binding.detailedDiaryContainer.isGone = !item.thumbnailResponse
+            if (item.thumbnailResponse == null) {
+                binding.detailedDiaryContainer.isGone = true
+            } else {
+                binding.detailedDiaryContainer.isVisible = true
+
+                Glide.with(itemView.context)
+                    .load(item.thumbnailResponse.imageUrl)
+                    .into(binding.diaryImageContent)
+            }
 
             binding.deleteIcon.setOnClickListener {
                 AlertDialog.Builder(binding.root.context)

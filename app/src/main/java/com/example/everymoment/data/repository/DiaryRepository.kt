@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.everymoment.data.model.NetworkUtil
 
 class DiaryRepository {
-    private val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzI4NTM4MDgzLCJleHAiOjE3Mjg3MTA4ODN9.ohkjWMb5haJ-aNzXdivYTskLeKPHd-EIw9FYfbQerBo"
+    private val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiaWF0IjoxNzI4Nzk3NDg1LCJleHAiOjE3Mjg5NzAyODV9.28nxIHOKBHQ2WsUAdbsNokuB-96gNFyKkJPOLKfxuic"
 
     fun getDiaries(
         date: String,
@@ -19,6 +19,7 @@ class DiaryRepository {
             params,
             DiaryResponse::class.java
         ) { success, response ->
+            Log.d("arieum","$response")
             callback(success, response)
         }
     }

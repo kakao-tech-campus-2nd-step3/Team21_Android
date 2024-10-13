@@ -16,7 +16,7 @@ data class Diary(
     val locationName: String,
     val address: String,
     val emoji: String,
-    val thumbnailResponse: Thumbnail,
+    val thumbnailResponse: Thumbnail?,
     val content: String,
     val createAt: String,
     val `public`: Boolean,
