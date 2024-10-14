@@ -1,73 +1,97 @@
 package com.example.everymoment.data.repository
 
 import android.util.Log
-import com.example.everymoment.data.model.NetworkUtil
+import com.example.everymoment.data.model.NetworkModule
+import com.example.everymoment.data.model.PotatoCakeApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DiaryRepository {
-    private val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzI4NTM4MDgzLCJleHAiOjE3Mjg3MTA4ODN9.ohkjWMb5haJ-aNzXdivYTskLeKPHd-EIw9FYfbQerBo"
-
+    private val apiService: PotatoCakeApiService = NetworkModule.provideApiService(NetworkModule.provideRetrofit())
+    private val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiaWF0IjoxNzI4Nzk3NDg1LCJleHAiOjE3Mjg5NzAyODV9.28nxIHOKBHQ2WsUAdbsNokuB-96gNFyKkJPOLKfxuic"
+    private val token = "Bearer $jwtToken"
     fun getDiaries(
         date: String,
         callback: (Boolean, DiaryResponse?) -> Unit
     ) {
-        val url = "http://13.125.156.74:8080/api/diaries/my"
-        val params = mapOf("date" to date)
+        apiService.getDiaries(token, date).enqueue(object : Callback<DiaryResponse> {
+            override fun onResponse(p0: Call<DiaryResponse>, p1: Response<DiaryResponse>) {
+                if (p1.isSuccessful) {
+                    Log.d("arieum", "${p1.body()}")
+                    callback(true, p1.body())
+                } else {
+                    callback(false, null)
+                }
+            }
 
-        NetworkUtil.getData(
-            url,
-            jwtToken,
-            params,
-            DiaryResponse::class.java
-        ) { success, response ->
-            callback(success, response)
-        }
+            override fun onFailure(p0: Call<DiaryResponse>, p1: Throwable) {
+                Log.d("arieum", "Failed to fetch diaries: ${p1.message}")
+                callback(false, null)
+            }
+        })
     }
 
     fun updateBookmarkStatus(
         diaryId: Int,
         callback: (Boolean, String?) -> Unit
     ) {
-        val url = "http://13.125.156.74:8080/api/diaries/$diaryId/bookmark"
+        apiService.updateBookmarkStatus(token, diaryId).enqueue(object : Callback<ServerResponse> {
+            override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
+                if (p1.isSuccessful) {
+                    Log.d("arieum", "${p1.body()}")
+                    callback(true, p1.message())
+                } else {
+                    callback(false, null)
+                }
+            }
 
-        NetworkUtil.patchRequest(
-            url,
-            jwtToken,
-            null
-        ) { success, message ->
-            Log.d("arieum", "$message")
-            callback(success, message)
-        }
+            override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
+                Log.d("arieum", "Failed to update bookmark state: ${p1.message}")
+                callback(false, null)
+            }
+        })
     }
 
     fun updateShareStatus(
         diaryId: Int,
         callback: (Boolean, String?) -> Unit
     ) {
-        val url = "http://13.125.156.74:8080/api/diaries/$diaryId/privacy"
+        apiService.updateShareStatus(token, diaryId).enqueue(object : Callback<ServerResponse> {
+            override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
+                if (p1.isSuccessful) {
+                    Log.d("arieum", "${p1.body()}")
+                    callback(true, p1.message())
+                } else {
+                    callback(false, null)
+                }
+            }
 
-        NetworkUtil.patchRequest(
-            url,
-            jwtToken,
-            null
-        ) { success, message ->
-            Log.d("arieum", "$message")
-            callback(success, message)
-        }
+            override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
+                Log.d("arieum", "Failed to update share state: ${p1.message}")
+                callback(false, null)
+            }
+        })
     }
 
     fun deleteDiary(
         diaryId: Int,
         callback: (Boolean, String?) -> Unit
     ) {
-        val url = "http://13.125.156.74:8080/api/diaries/$diaryId"
+        apiService.deleteDiary(token, diaryId).enqueue(object : Callback<ServerResponse> {
+            override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
+                if (p1.isSuccessful) {
+                    Log.d("arieum", "${p1.body()}")
+                    callback(true, p1.message())
+                } else {
+                    callback(false, null)
+                }
+            }
 
-        NetworkUtil.deleteRequest(
-            url,
-            jwtToken,
-            null
-        ) { success, response ->
-            Log.d("arieum", "$response")
-            callback(success, response)
-        }
+            override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
+                Log.d("arieum", "Failed to delete diary: ${p1.message}")
+                callback(false, null)
+            }
+        })
     }
 }

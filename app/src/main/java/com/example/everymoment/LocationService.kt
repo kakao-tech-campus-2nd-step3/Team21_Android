@@ -108,7 +108,7 @@ class LocationService : Service() {
 
                         NetworkUtil.sendData(
                             "http://13.125.156.74:8080/api/diaries/auto",
-                            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzI4NTM4MDgzLCJleHAiOjE3Mjg3MTA4ODN9.ohkjWMb5haJ-aNzXdivYTskLeKPHd-EIw9FYfbQerBo",
+                            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiaWF0IjoxNzI4Nzk3NDg1LCJleHAiOjE3Mjg5NzAyODV9.28nxIHOKBHQ2WsUAdbsNokuB-96gNFyKkJPOLKfxuic",
                             locationData
                         ) {  success, code, message, infoObject ->
                             if (success) {
