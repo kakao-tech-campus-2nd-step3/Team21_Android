@@ -11,8 +11,10 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DiffUtil
 import com.example.everymoment.databinding.CategoryPopupBinding
 import com.example.everymoment.R
+import com.example.everymoment.data.model.Friends
 
 class CategoryPopup(
     private val fragmentActivity: FragmentActivity,
@@ -140,4 +142,5 @@ class CategoryPopup(
             addButton.visibility = View.GONE
         }
     }
+
 }

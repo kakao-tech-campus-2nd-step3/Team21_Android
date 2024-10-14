@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.main
 
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +13,6 @@ import com.example.everymoment.databinding.FragmentSettingBinding
 import com.example.everymoment.extensions.CustomDialog
 import com.example.everymoment.extensions.CustomEditDialog
 import com.example.everymoment.extensions.GalleryUtil
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SettingFragment : Fragment() {
 
@@ -50,17 +49,33 @@ class SettingFragment : Fragment() {
             profileNameDialog.show(requireActivity().supportFragmentManager, "CustomDialog")
         }
 
-        binding.notificationToggle.setOnCheckedChangeListener { _, isChecked ->
+        binding.autoNotificationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 Toast.makeText(
                     requireContext(),
-                    resources.getString(R.string.notification_isChecked),
+                    resources.getString(R.string.auto_notification_isChecked),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    resources.getString(R.string.notification_isUnChecked),
+                    resources.getString(R.string.auto_notification_isUnChecked),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        binding.pushNotificationToggle.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.push_notification_isChecked),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.push_notification_isUnChecked),
                     Toast.LENGTH_SHORT
                 ).show()
             }

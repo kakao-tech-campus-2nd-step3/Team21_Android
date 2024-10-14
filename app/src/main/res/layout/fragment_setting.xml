@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".presentation.view.SettingFragment">
+    tools:context=".presentation.view.main.SettingFragment">
 
     <TextView
         android:id="@+id/account"
@@ -52,7 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:text="이름"
+        android:text="user"
+        android:textColor="@color/primary_color"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,30 +73,57 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/notification"
+        android:id="@+id/autoNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="70dp"
-        android:text="@string/notification"
+        android:text="@string/lock_screen_notification"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountName" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/notificationToggle"
+        android:id="@+id/autoNotificationToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="30dp"
         android:checked="true"
+        android:textOff=""
+        android:textOn=""
         android:thumb="@drawable/switch_track_thumb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountName"
         app:switchMinWidth="0dp"
         app:thumbTextPadding="24dp"
+        app:track="@drawable/switch_track_selector" />
+
+    <TextView
+        android:id="@+id/pushNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/push_notification"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/autoNotification" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/pushNotificationToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="30dp"
+        android:checked="true"
         android:textOff=""
         android:textOn=""
+        android:thumb="@drawable/switch_track_thumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountName"
+        app:switchMinWidth="0dp"
+        app:thumbTextPadding="24dp"
         app:track="@drawable/switch_track_selector" />
 
     <TextView
@@ -103,11 +131,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="40dp"
         android:text="@string/time_interval_setting"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notification" />
+        app:layout_constraintTop_toBottomOf="@id/pushNotification" />
 
     <RadioGroup
         android:id="@+id/timeRadioGroup"
@@ -117,34 +145,34 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
         app:layout_constraintDimensionRatio="9:1"
-        app:layout_constraintTop_toBottomOf="@id/timeInterval"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeInterval">
 
         <RadioButton
             android:id="@+id/time15m"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="15sp"
             android:background="@drawable/selector_radio_button"
             android:button="@null"
             android:checked="true"
             android:gravity="center"
             android:text="@string/time_15min"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/time20m"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:background="@drawable/selector_radio_button"
             android:button="@null"
             android:gravity="center"
             android:text="@string/time_20min"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/time25m"
@@ -154,24 +182,24 @@
             android:layout_weight="1"
             android:background="@drawable/selector_radio_button"
             android:button="@null"
-            android:textSize="15sp"
             android:gravity="center"
             android:text="@string/time_25min"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/time30m"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textSize="15sp"
             android:layout_marginEnd="40dp"
             android:layout_weight="1"
             android:background="@drawable/selector_radio_button"
             android:button="@null"
             android:gravity="center"
             android:text="@string/time_30min"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="15sp" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

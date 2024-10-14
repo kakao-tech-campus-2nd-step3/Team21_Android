@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.sub.friends
 
 import android.os.Bundle
 import android.util.Log
@@ -80,7 +80,7 @@ class FriendRequestFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = FriendRequestAdapter { user ->
+        adapter = FriendRequestAdapter (requireActivity()) { user ->
         }
         binding.friendRequestRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.friendRequestRecyclerView.adapter = adapter

@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation.view
+package com.example.everymoment.presentation.view.sub.friends
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,12 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
 import com.example.everymoment.data.model.FriendRequestList
-import com.example.everymoment.data.model.Friends
-import com.example.everymoment.databinding.FragmentFriendRequestBinding
 import com.example.everymoment.databinding.FragmentFriendRequestListBinding
-import com.example.everymoment.presentation.adapter.FriendRequestAdapter
 import com.example.everymoment.presentation.adapter.FriendRequestListAdapter
-import com.example.everymoment.presentation.adapter.FriendsListAdapter
 
 
 class FriendRequestListFragment : Fragment() {
