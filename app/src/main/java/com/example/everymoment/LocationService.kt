@@ -84,6 +84,8 @@ class LocationService : Service() {
     }
 
     private fun handleNewLocation(location: Location) {
+        val jwtToken = GlobalApplication.prefs.getString("token", "null")
+
         val latitude = location.latitude
         val longitude = location.longitude
 
@@ -108,7 +110,7 @@ class LocationService : Service() {
 
                         NetworkUtil.sendData(
                             "http://13.125.156.74:8080/api/diaries/auto",
-                            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiaWF0IjoxNzI4Nzk3NDg1LCJleHAiOjE3Mjg5NzAyODV9.28nxIHOKBHQ2WsUAdbsNokuB-96gNFyKkJPOLKfxuic",
+                            jwtToken,
                             locationData
                         ) {  success, code, message, infoObject ->
                             if (success) {
