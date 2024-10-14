@@ -1,6 +1,7 @@
 package com.example.everymoment.data.repository
 
 import android.util.Log
+import com.example.everymoment.GlobalApplication
 import com.example.everymoment.data.model.NetworkModule
 import com.example.everymoment.data.model.PotatoCakeApiService
 import retrofit2.Call
@@ -9,8 +10,9 @@ import retrofit2.Response
 
 class DiaryRepository {
     private val apiService: PotatoCakeApiService = NetworkModule.provideApiService(NetworkModule.provideRetrofit())
-    private val jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiaWF0IjoxNzI4Nzk3NDg1LCJleHAiOjE3Mjg5NzAyODV9.28nxIHOKBHQ2WsUAdbsNokuB-96gNFyKkJPOLKfxuic"
+    private val jwtToken = GlobalApplication.prefs.getString("token", "null")
     private val token = "Bearer $jwtToken"
+
     fun getDiaries(
         date: String,
         callback: (Boolean, DiaryResponse?) -> Unit
