@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.everymoment.GlobalApplication
 import com.example.everymoment.R
 import com.example.everymoment.data.model.NetworkUtil
 import com.example.everymoment.data.repository.Member
@@ -51,8 +52,9 @@ class FriendRequestFragment : Fragment() {
 
     private fun fetchMembersFromServer() {
         val url = "http://13.125.156.74:8080/api/members?size=30"
-        val jwtToken =
-            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiaWF0IjoxNzI4NjA5ODk3LCJleHAiOjE3Mjg3ODI2OTd9.JaJ2Ut7M_YePTXZZNODRu6eGBXwbO2kLtDXl2jz9Ock"
+        val token = GlobalApplication.prefs.getString("token", "Default")
+        val jwtToken = token
+        Log.d("memberNetwork", token)
 
         NetworkUtil.getData(
             url,

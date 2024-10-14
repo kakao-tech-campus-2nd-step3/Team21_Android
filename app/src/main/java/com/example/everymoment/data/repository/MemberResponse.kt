@@ -10,5 +10,6 @@ data class MemberInfo(
 data class Member(
     val id: Int,
     val nickname: String,
-    val profileImageUrl: String
+    val profileImageUrl: String,
+    val friendRequestStatus: String
 )
