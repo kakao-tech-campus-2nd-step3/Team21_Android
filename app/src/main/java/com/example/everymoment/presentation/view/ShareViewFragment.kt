@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.data.repository.Member
-import com.example.everymoment.data.repository.Thumbnail
+import com.example.everymoment.data.repository.ThumbnailResponse
 import com.example.everymoment.databinding.FragmentShareViewBinding
 import com.example.everymoment.presentation.adapter.SharedFriendDiaryListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendListAdapter
@@ -43,8 +43,8 @@ class ShareViewFragment : Fragment() {
         friendAdapter.notifyDataSetChanged()
 
         // dummyData2
-        diaryList.add(Diary(1, "춘천 한림대", "강원도 춘천시", "Happy", Thumbnail(1, "url"), "Hello", "2024-05-06", false, true))
-        diaryList.add(Diary(2, "춘천 강원대", "강원도 춘천시", "Happy", Thumbnail(1, "url"), "Hello", "2024-05-06", false, true))
+        diaryList.add(Diary(1, "춘천 한림대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
+        diaryList.add(Diary(2, "춘천 강원대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
         diaryAdapter.submitList(diaryList)
         diaryAdapter.notifyDataSetChanged()
     }
