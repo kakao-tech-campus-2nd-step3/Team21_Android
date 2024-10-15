@@ -99,10 +99,11 @@
 
     <ImageView
         android:id="@+id/addEmotion"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
+        android:padding="2dp"
         android:scaleType="fitCenter"
         android:src="@drawable/mood_24px"
         android:visibility="visible"
@@ -111,11 +112,11 @@
 
     <TextView
         android:id="@+id/emotion"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:textSize="22sp"
+        android:textSize="23sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/images" />
@@ -125,7 +126,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:text="content"
         android:textSize="17sp"
         android:visibility="visible"
