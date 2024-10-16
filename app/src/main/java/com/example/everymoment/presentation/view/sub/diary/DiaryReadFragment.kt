@@ -39,6 +39,7 @@ class DiaryReadFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("ariuem", "${arguments?.getInt("diary_id")}")
 
         bookmark = Bookmark(requireContext(), binding.bookmark)
         diaryId = 23
