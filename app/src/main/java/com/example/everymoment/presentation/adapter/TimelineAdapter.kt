@@ -1,12 +1,14 @@
 package com.example.everymoment.presentation.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -18,6 +20,8 @@ import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.databinding.TimelineItemBinding
 import com.example.everymoment.extensions.EmotionPopup
 import com.example.everymoment.extensions.ToPxConverter
+import com.example.everymoment.presentation.view.main.TodayLogFragment
+import com.example.everymoment.presentation.view.sub.diary.DiaryReadFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
 
 class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
@@ -33,6 +37,20 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
 ) {
     inner class TimelineViewHolder(private val binding: TimelineItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Diary) {
+            binding.root.setOnClickListener {
+                val diaryReadFragment = DiaryReadFragment()
+                val bundle = Bundle().apply {
+                    putInt("diary_id", item.id)
+                }
+                diaryReadFragment.arguments = bundle
+
+                val fragmentManager = (binding.root.context as AppCompatActivity).supportFragmentManager
+                fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, diaryReadFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+
             binding.timeText.text = item.createAt.substring(11, 16)
             binding.locationNameText.text = item.locationName
             binding.addressText.text = item.address
