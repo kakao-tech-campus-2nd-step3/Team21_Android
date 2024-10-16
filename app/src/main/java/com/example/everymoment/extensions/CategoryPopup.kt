@@ -11,14 +11,16 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.DiffUtil
 import com.example.everymoment.databinding.CategoryPopupBinding
 import com.example.everymoment.R
-import com.example.everymoment.data.model.Friends
+import com.example.everymoment.data.repository.DiaryRepository
+import com.example.everymoment.presentation.viewModel.DiaryViewModel
+import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
 
 class CategoryPopup(
     private val fragmentActivity: FragmentActivity,
-    private val context: Context
+    private val context: Context,
+    private val viewModel: DiaryViewModel
 ) {
 
     private lateinit var categoryPopup: PopupWindow
@@ -31,6 +33,8 @@ class CategoryPopup(
 
     private var listener: ((String?) -> Unit)? = null
     private lateinit var addCategoryDialog: CustomEditDialog
+    private lateinit var delCategoryDialog: CustomDialog
+    private lateinit var delSelectedCategory: TextView
 
 
     fun showCategoryPopup(
@@ -44,6 +48,7 @@ class CategoryPopup(
         if (!::categoryPopup.isInitialized) {
             setCategryPopup()
             setAddCategoryDialog()
+            setDelCategoryDialog()
         }
 
         categoryPopup = PopupWindow(
@@ -81,6 +86,17 @@ class CategoryPopup(
                 addCategoryDialog.show(fragmentActivity.supportFragmentManager, "CustomEditDialog")
             }
         }
+
+        val size = viewModel.getCategoryListSize()
+        if (size != null && size != 0) {
+            val categoryList = viewModel.categories.value
+            if (categoryList != null) {
+                for (category in categoryList) {
+                    addCategoryTextView(category.categoryName)
+                }
+            }
+        }
+
     }
 
     private fun setAddCategoryDialog() {
@@ -99,10 +115,33 @@ class CategoryPopup(
                     addCategoryDialog.setWrongInstruction(context.getString(R.string.category_more_six))
                 } else {
                     addCategoryTextView(category)
+                    viewModel.postCategory(category)
                     addCategoryDialog.dismiss()
                 }
             },
-            removeEditText = true)
+            removeEditText = true
+        )
+    }
+
+    private fun setDelCategoryDialog() {
+        delCategoryDialog = CustomDialog(
+            context.resources.getString(R.string.del_category_dialog),
+            context.resources.getString(R.string.cancel),
+            context.resources.getString(R.string.delete),
+            onPositiveClick = {
+                delCategory(delSelectedCategory)
+            }
+        )
+    }
+
+    private fun delCategory(textView: TextView) {
+        viewModel.getCategoryId(textView.text.toString())
+            ?.let {
+                viewModel.delCategory(it)
+                gridLayout.removeView(textView)
+                categoryCount -= 1
+                moveAddButtonToNext()
+            }
     }
 
     private fun checkCategory(userInput: String): Int {
@@ -128,6 +167,12 @@ class CategoryPopup(
 
             setOnClickListener {
                 listener?.invoke(this.text.toString())
+            }
+
+            setOnLongClickListener {
+                delCategoryDialog.show(fragmentActivity.supportFragmentManager, "delCategoryDialog")
+                delSelectedCategory = this
+                true
             }
         }
         gridLayout.addView(textView)

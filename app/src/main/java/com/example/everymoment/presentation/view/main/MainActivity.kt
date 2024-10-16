@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.everymoment.R
 import com.example.everymoment.databinding.ActivityMainBinding
 import com.example.everymoment.presentation.view.main.search.SearchFragment
+import com.example.everymoment.presentation.view.sub.PostFragment
+import com.example.everymoment.presentation.view.sub.diary.DiaryEditFragment
+import com.example.everymoment.presentation.view.sub.diary.DiaryReadFragment
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -75,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = ShareViewFragment()
+                        val fragment = DiaryReadFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()

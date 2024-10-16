@@ -44,8 +44,8 @@ class FriendsListAdapter(
         private fun showDeleteConfirmationDialog(friends: Friends) {
             CustomDialog(
                 "${friends.name}님을\n친구에서 삭제하시겠습니까?",
-                "아니오",
-                "삭제하기",
+                "취소",
+                "삭제",
                 onPositiveClick = { onDeleteFriend(friends) }).show(activity.supportFragmentManager, "CustomDialog")
         }
     }

@@ -70,7 +70,7 @@ class TodayLogFragment : Fragment() {
         checkPermissions()
         updateDateText()
 
-        val adapter = TimelineAdapter(viewModel)
+        val adapter = TimelineAdapter(requireActivity(), viewModel)
         setupRecyclerView(adapter)
         observeViewModel(adapter)
 

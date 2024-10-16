@@ -10,4 +10,11 @@ enum class Emotions(private val unicode: String) {
     fun getEmotionUnicode(): String {
         return unicode
     }
+
+    companion object {
+        fun fromString(emotionString: String?): Emotions? {
+            return entries.find { it.name.equals(emotionString, ignoreCase = true) }
+        }
+    }
+
 }

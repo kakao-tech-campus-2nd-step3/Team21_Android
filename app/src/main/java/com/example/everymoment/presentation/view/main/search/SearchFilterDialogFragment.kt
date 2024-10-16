@@ -70,16 +70,18 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
 
         binding.startDate.setOnClickListener {
             showCalendarDialog(binding.startDate) {
-            if (binding.startDate.text.isNotEmpty()) {
-                binding.startDate.setBackgroundResource(R.drawable.search_filter_date_background)
-            }}
+                if (binding.startDate.text.isNotEmpty()) {
+                    binding.startDate.setBackgroundResource(R.drawable.search_filter_date_background)
+                }
+            }
         }
 
         binding.endDate.setOnClickListener {
             showCalendarDialog(binding.endDate) {
-            if (binding.endDate.text.isNotEmpty()) {
-                binding.endDate.setBackgroundResource(R.drawable.search_filter_date_background)
-            }}
+                if (binding.endDate.text.isNotEmpty()) {
+                    binding.endDate.setBackgroundResource(R.drawable.search_filter_date_background)
+                }
+            }
         }
 
         binding.reset.setOnClickListener {
@@ -159,23 +161,23 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         categoryAdapter.resetSelected()
     }
 
-    private fun changeDateBackground(input: ()->Unit) {
+    private fun changeDateBackground(input: () -> Unit) {
         input.invoke()
     }
 
-    private fun showCalendarDialog(textView: TextView, checkInput: ()->Unit) {
+    private fun showCalendarDialog(textView: TextView, checkInput: () -> Unit) {
+        val customContext =
+            androidx.appcompat.view.ContextThemeWrapper(context, R.style.CustomDatePicker)
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        context?.let { context ->
-            DatePickerDialog(context, R.style.CustomDatePicker, { _, selectedYear, selectedMonth, selectedDay ->
-                val formattedDate =
-                    String.format("%04d.%02d.%02d", selectedYear, selectedMonth + 1, selectedDay)
-                textView.text = formattedDate
-                changeDateBackground(checkInput)
-            }, year, month, day).show()
-        }
+        DatePickerDialog(customContext, { _, selectedYear, selectedMonth, selectedDay ->
+            val formattedDate =
+                String.format("%04d.%02d.%02d", selectedYear, selectedMonth + 1, selectedDay)
+            textView.text = formattedDate
+            changeDateBackground(checkInput)
+        }, year, month, day).show()
     }
 
     private fun setEmoji() {

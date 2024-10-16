@@ -84,4 +84,7 @@
     <string name="friend_request_list">친구요청목록</string>
     <string name="check_start_date">시작일을 입력해주셔야 합니다</string>
     <string name="check_end_date">종료일을 입력해주셔야 합니다</string>
+    <string name="del_image_dialog">이 사진을 삭제하시겠습니까?</string>
+    <string name="del_category_dialog">이 카테고리를 삭제하시겠습니까?</string>
+    <string name="check">확인</string>
 </resources>
