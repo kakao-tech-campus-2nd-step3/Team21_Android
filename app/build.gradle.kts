@@ -83,6 +83,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-config-ktx:22.0.0")
     implementation("com.google.firebase:firebase-messaging-ktx:24.0.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,9 +1,12 @@
 package com.example.everymoment.data.model
 
 import com.example.everymoment.data.repository.DiaryResponse
+import com.example.everymoment.data.repository.FriendRequestListResponse
+import com.example.everymoment.data.repository.FriendsListResponse
 import com.example.everymoment.data.repository.MemberResponse
 import com.example.everymoment.data.repository.ServerResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -42,4 +45,22 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Path("memberId") memberId: Int
     ): Call<MemberResponse>
+
+    @GET("api/friend-requests")
+    fun getFriendRequestList(
+        @Header("Authorization") token: String,
+        @Query("senderId") senderId: Int
+    ): Call<FriendRequestListResponse>
+
+    @GET("api/friends/friends")
+    suspend fun getFriendsList(
+        @Header("Authorization") token: String,
+    ): Response<FriendsListResponse>
+
+    @DELETE("api/friends/{friendId}")
+    fun deleteFriend(
+        @Header("Authorization") token: String,
+        @Path("friendId") friendId: Int
+    ): Call<ServerResponse>
+
 }

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.data.model.Friends
+import com.example.everymoment.data.repository.Friends
 import com.example.everymoment.databinding.FriendsListItemBinding
 import com.example.everymoment.extensions.CustomDialog
 
@@ -33,7 +33,7 @@ class FriendsListAdapter(
         private val onDeleteFriend: (Friends) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(friends: Friends) {
-            binding.userNickname.text = friends.name
+            binding.userNickname.text = friends.nickname
 
             itemView.setOnLongClickListener {
                 showDeleteConfirmationDialog(friends)
@@ -43,7 +43,7 @@ class FriendsListAdapter(
 
         private fun showDeleteConfirmationDialog(friends: Friends) {
             CustomDialog(
-                "${friends.name}님을\n친구에서 삭제하시겠습니까?",
+                "${friends.nickname}님을\n친구에서 삭제하시겠습니까?",
                 "아니오",
                 "삭제하기",
                 onPositiveClick = { onDeleteFriend(friends) }).show(activity.supportFragmentManager, "CustomDialog")
@@ -52,7 +52,7 @@ class FriendsListAdapter(
 
     class FriendDiffCallback : DiffUtil.ItemCallback<Friends>() {
         override fun areItemsTheSame(oldItem: Friends, newItem: Friends): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Friends, newItem: Friends): Boolean {
