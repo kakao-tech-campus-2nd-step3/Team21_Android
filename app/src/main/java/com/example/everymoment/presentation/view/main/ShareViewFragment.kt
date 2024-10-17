@@ -5,18 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
 import com.example.everymoment.data.repository.Diary
+import com.example.everymoment.data.repository.FriendDiaryRepository
+import com.example.everymoment.data.repository.FriendRepository
 import com.example.everymoment.data.repository.Member
 import com.example.everymoment.data.repository.ThumbnailResponse
 import com.example.everymoment.databinding.FragmentShareViewBinding
 import com.example.everymoment.presentation.adapter.SharedFriendDiaryListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendListAdapter
 import com.example.everymoment.presentation.view.sub.friends.FriendsListFragment
+import com.example.everymoment.presentation.viewModel.ShareViewModel
+import com.example.everymoment.presentation.viewModel.ShareViewModelFactory
+import com.example.everymoment.presentation.viewModel.TimelineViewModel
+import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
 
 class ShareViewFragment : Fragment() {
     private lateinit var binding: FragmentShareViewBinding
+    private lateinit var viewModel: ShareViewModel
+    private val friendDiaryRepository = FriendDiaryRepository()
+    private val friendRepository = FriendRepository()
 
     private val friendAdapter = SharedFriendListAdapter()
     private val diaryAdapter = SharedFriendDiaryListAdapter()
@@ -33,6 +43,8 @@ class ShareViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, ShareViewModelFactory(friendDiaryRepository, friendRepository)).get(ShareViewModel::class.java)
+
         setupRecyclerView()
 
         // dummyData1
