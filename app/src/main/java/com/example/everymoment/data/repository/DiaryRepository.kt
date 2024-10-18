@@ -21,6 +21,7 @@ class DiaryRepository {
             override fun onResponse(p0: Call<DiaryResponse>, p1: Response<DiaryResponse>) {
                 if (p1.isSuccessful) {
                     Log.d("arieum", "${p1.body()}")
+                    Log.d("arieum", token)
                     callback(true, p1.body())
                 } else {
                     callback(false, null)

@@ -5,24 +5,35 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.everymoment.R
+import com.example.everymoment.data.repository.Friends
 import com.example.everymoment.data.repository.Member
 import com.example.everymoment.databinding.FriendItemBinding
+import com.example.everymoment.presentation.viewModel.ShareViewModel
 
-class SharedFriendListAdapter : ListAdapter<Member, SharedFriendListAdapter.SharedFriendListViewHolder>(
-    object : DiffUtil.ItemCallback<Member>() {
-        override fun areItemsTheSame(oldItem: Member, newItem: Member): Boolean {
+class SharedFriendListAdapter(private val viewModel: ShareViewModel) : ListAdapter<Friends, SharedFriendListAdapter.SharedFriendListViewHolder>(
+    object : DiffUtil.ItemCallback<Friends>() {
+        override fun areItemsTheSame(oldItem: Friends, newItem: Friends): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Member, newItem: Member): Boolean {
+        override fun areContentsTheSame(oldItem: Friends, newItem: Friends): Boolean {
             return oldItem == newItem
         }
     }
 ) {
     inner class SharedFriendListViewHolder(private val binding: FriendItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Member) {
+        fun bind(item: Friends) {
             binding.friendName.text = item.nickname
-            // binding.friendImage.setImageResource(item.profileImageUrl)
+
+            if (item.profileImageUrl == null) {
+                binding.friendImage.setImageResource(R.drawable.account_circle_24px)
+            } else {
+                Glide.with(itemView.context)
+                    .load(item.profileImageUrl)
+                    .into(binding.friendImage)
+            }
 
             binding.friendContainer.setOnClickListener {
 

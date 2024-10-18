@@ -21,7 +21,7 @@ data class Friends(
     val nickname: String,
 
     @SerializedName("profileImageUrl")
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
 
     @SerializedName("close")
     val close: Boolean
