@@ -19,15 +19,10 @@ class ShareViewModel(
 
     fun fetchFriendsList() {
         viewModelScope.launch {
-            try {
-                friendRepository.getFriendsList(
-                    onSuccess = { response ->
-                        _friends.postValue(response.info.friends)
-                                Log.d("arieum", "${response.info.friends}")},
-                    onError = { errorMessage -> }
-                )
-            } catch (e: Exception) {
-                Log.d("arieum", "Failed to fetch friends list: ${e.message}")
+            friendRepository.getFriendsList() { success, response ->
+                if (success && response != null) {
+                    _friends.postValue(response.info.friends)
+                }
             }
         }
     }
