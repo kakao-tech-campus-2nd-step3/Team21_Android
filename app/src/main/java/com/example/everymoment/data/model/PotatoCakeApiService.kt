@@ -49,13 +49,12 @@ interface PotatoCakeApiService {
     @GET("api/friend-requests")
     fun getFriendRequestList(
         @Header("Authorization") token: String,
-        @Query("senderId") senderId: Int
     ): Call<FriendRequestListResponse>
 
     @GET("api/friends/friends")
-    suspend fun getFriendsList(
+    fun getFriendsList(
         @Header("Authorization") token: String,
-    ): Response<FriendsListResponse>
+    ): Call<FriendRequestListResponse>
 
     @DELETE("api/friends/{friendId}")
     fun deleteFriend(
@@ -63,4 +62,15 @@ interface PotatoCakeApiService {
         @Path("friendId") friendId: Int
     ): Call<ServerResponse>
 
+    @POST("api/friend-requests/{requestId}/accept")
+    fun acceptFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("requestId") requestId: Int
+    ): Call<ServerResponse>
+
+    @DELETE("api/friend-requests/{requestId}/reject")
+    fun rejectFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("requestId") requestId: Int
+    ): Call<ServerResponse>
 }

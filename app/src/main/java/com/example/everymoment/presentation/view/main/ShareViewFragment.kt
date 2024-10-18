@@ -81,7 +81,8 @@ class ShareViewFragment : Fragment() {
         binding.friendList.adapter = adapter1
         binding.timeLineRecyclerView.adapter = adapter2
 
-        binding.friendList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.friendList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 }
