@@ -17,7 +17,7 @@ data class Member(
     val nickname: String,
 
     @SerializedName("profileImageUrl")
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
 
     @SerializedName("friendRequestStatus")
     val friendRequestStatus: String

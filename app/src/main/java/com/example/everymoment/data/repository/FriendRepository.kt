@@ -123,4 +123,28 @@ class FriendRepository {
             }
         })
     }
+
+    fun getMembers(
+        callback: (Boolean, MemberResponse?) -> Unit
+    ) {
+        apiService.getMembers(token)
+            .enqueue(object : Callback<MemberResponse> {
+                override fun onResponse(
+                    p0: Call<MemberResponse>,
+                    p1: Response<MemberResponse>
+                ) {
+                    if (p1.isSuccessful) {
+                        Log.d("AllMembers", "${p1.body()}")
+                        callback(true, p1.body())
+                    } else {
+                        callback(false, null)
+                    }
+                }
+
+                override fun onFailure(p0: Call<MemberResponse>, p1: Throwable) {
+                    Log.d("AllMembers", "Failed to fetch all members: ${p1.message}")
+                    callback(false, null)
+                }
+            })
+    }
 }

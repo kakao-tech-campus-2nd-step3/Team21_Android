@@ -24,5 +24,5 @@ data class FriendRequests(
     val nickname: String,
 
     @SerializedName("profileImageUrl")
-    val profileImageUrl: String
+    val profileImageUrl: String?
 )
