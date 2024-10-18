@@ -61,4 +61,16 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Path("friendId") friendId: Int
     ): Call<ServerResponse>
+
+    @POST("api/friend-requests/{requestId}/accept")
+    fun acceptFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("requestId") requestId: Int
+    ): Call<ServerResponse>
+
+    @DELETE("api/friend-requests/{requestId}/reject")
+    fun rejectFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("requestId") requestId: Int
+    ): Call<ServerResponse>
 }

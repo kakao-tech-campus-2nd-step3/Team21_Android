@@ -98,10 +98,6 @@ class FriendsListFragment : Fragment() {
             allFriends.addAll(friends)
             updateAdapterList()
         }
-
-        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
-        }
     }
 
     private fun expandFab() {
