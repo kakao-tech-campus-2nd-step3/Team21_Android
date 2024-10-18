@@ -2,14 +2,18 @@ package com.example.everymoment.data.repository
 
 import com.google.gson.annotations.SerializedName
 
-data class MemberResponse(
-    val info: MemberInfo
+data class FriendsListResponse(
+    val code: Int,
+    val message: String,
+    val info: FriendListInfo
 )
 
-data class MemberInfo(
-    val members: List<Member>
+data class FriendListInfo(
+    val friends: List<Friends>,
+    val next: Int
 )
-data class Member(
+
+data class Friends(
     @SerializedName("id")
     val id: Int,
 
@@ -19,6 +23,6 @@ data class Member(
     @SerializedName("profileImageUrl")
     val profileImageUrl: String,
 
-    @SerializedName("friendRequestStatus")
-    val friendRequestStatus: String
+    @SerializedName("close")
+    val close: Boolean
 )

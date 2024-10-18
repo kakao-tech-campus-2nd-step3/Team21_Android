@@ -36,17 +36,41 @@ class ShareViewFragment : Fragment() {
         setupRecyclerView()
 
         // dummyData1
-        friendList.add(Member(1, "url", "춘식이"))
-        friendList.add(Member(2, "url", "제이지"))
-        friendList.add(Member(3, "url", "프로도"))
-        friendList.add(Member(4, "url", "네오"))
-        friendList.add(Member(5, "url", "피치"))
+        friendList.add(Member(1, "url", "춘식이", "NONE"))
+        friendList.add(Member(2, "url", "제이지", "NONE"))
+        friendList.add(Member(3, "url", "프로도", "NONE"))
+        friendList.add(Member(4, "url", "네오", "NONE"))
+        friendList.add(Member(5, "url", "피치", "NONE"))
         friendAdapter.submitList(friendList)
         friendAdapter.notifyDataSetChanged()
 
         // dummyData2
-        diaryList.add(Diary(1, "춘천 한림대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
-        diaryList.add(Diary(2, "춘천 강원대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
+        diaryList.add(
+            Diary(
+                1,
+                "춘천 한림대",
+                "강원도 춘천시",
+                "Happy",
+                ThumbnailResponse(1, "url"),
+                "Hello",
+                "2024-05-06",
+                false,
+                true
+            )
+        )
+        diaryList.add(
+            Diary(
+                2,
+                "춘천 강원대",
+                "강원도 춘천시",
+                "Happy",
+                ThumbnailResponse(1, "url"),
+                "Hello",
+                "2024-05-06",
+                false,
+                true
+            )
+        )
         diaryAdapter.submitList(diaryList)
         diaryAdapter.notifyDataSetChanged()
 
@@ -63,7 +87,8 @@ class ShareViewFragment : Fragment() {
         binding.friendList.adapter = friendAdapter
         binding.timeLineRecyclerView.adapter = diaryAdapter
 
-        binding.friendList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.friendList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 }

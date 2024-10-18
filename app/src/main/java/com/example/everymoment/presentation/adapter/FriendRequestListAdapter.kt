@@ -2,23 +2,23 @@ package com.example.everymoment.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.data.model.FriendRequestList
+import com.example.everymoment.data.repository.FriendRequests
 import com.example.everymoment.databinding.FriendRequestListItemBinding
 
 class FriendRequestListAdapter(
-    private val onFriendRequestList: (FriendRequestList) -> Unit
-) : ListAdapter<FriendRequestList, FriendRequestListAdapter.FriendRequestListViewHolder>(
+    private val onAcceptClick: (FriendRequests) -> Unit,
+    private val onRejectClick: (FriendRequests) -> Unit
+) : ListAdapter<FriendRequests, FriendRequestListAdapter.FriendRequestListViewHolder>(
     FriendRequestListDiffCallback()
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendRequestListViewHolder {
         val binding =
             FriendRequestListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FriendRequestListViewHolder(binding, onFriendRequestList)
+        return FriendRequestListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FriendRequestListViewHolder, position: Int) {
@@ -32,30 +32,29 @@ class FriendRequestListAdapter(
     }
 
     inner class FriendRequestListViewHolder(
-        private val binding: FriendRequestListItemBinding,
-        private val onFriendRequestList: (FriendRequestList) -> Unit
+        private val binding: FriendRequestListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: FriendRequestList) {
-            binding.userNickname.text = user.name
+        fun bind(friendRequest: FriendRequests) {
+            binding.apply {
+                userNickname.text = friendRequest.nickname
 
-            binding.friendRequestAcceptButton.setOnClickListener {
-                Toast.makeText(itemView.context, "${user.name}님의 친구요청을 수락했습니다.", Toast.LENGTH_SHORT).show()
-                removeItem(adapterPosition)
-            }
+                friendRequestAcceptButton.setOnClickListener {
+                    onAcceptClick(friendRequest)
+                }
 
-            binding.friendRequestRefuseButton.setOnClickListener {
-                Toast.makeText(itemView.context, "${user.name}님의 친구요청을 거절했습니다.", Toast.LENGTH_SHORT).show()
-                removeItem(adapterPosition)
+                friendRequestRefuseButton.setOnClickListener {
+                    onRejectClick(friendRequest)
+                }
             }
         }
     }
 
-    class FriendRequestListDiffCallback : DiffUtil.ItemCallback<FriendRequestList>() {
-        override fun areItemsTheSame(oldItem: FriendRequestList, newItem: FriendRequestList): Boolean {
-            return oldItem.name == newItem.name
+    class FriendRequestListDiffCallback : DiffUtil.ItemCallback<FriendRequests>() {
+        override fun areItemsTheSame(oldItem: FriendRequests, newItem: FriendRequests): Boolean {
+            return oldItem.senderId == newItem.senderId
         }
 
-        override fun areContentsTheSame(oldItem: FriendRequestList, newItem: FriendRequestList): Boolean {
+        override fun areContentsTheSame(oldItem: FriendRequests, newItem: FriendRequests): Boolean {
             return oldItem == newItem
         }
     }

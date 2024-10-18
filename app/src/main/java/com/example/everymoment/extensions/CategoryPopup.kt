@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import com.example.everymoment.databinding.CategoryPopupBinding
 import com.example.everymoment.R
-import com.example.everymoment.data.model.Friends
+
 
 class CategoryPopup(
     private val fragmentActivity: FragmentActivity,
