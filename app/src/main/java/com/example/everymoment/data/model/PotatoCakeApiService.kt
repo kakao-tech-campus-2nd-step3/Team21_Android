@@ -54,7 +54,7 @@ interface PotatoCakeApiService {
     @GET("api/friends/friends")
     fun getFriendsList(
         @Header("Authorization") token: String,
-    ): Call<FriendRequestListResponse>
+    ): Call<FriendsListResponse>
 
     @DELETE("api/friends/{friendId}")
     fun deleteFriend(
