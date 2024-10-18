@@ -14,6 +14,7 @@ import com.example.everymoment.data.repository.FriendRepository
 import com.example.everymoment.data.repository.Member
 import com.example.everymoment.data.repository.ThumbnailResponse
 import com.example.everymoment.databinding.FragmentShareViewBinding
+import com.example.everymoment.presentation.adapter.FriendsListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendDiaryListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendListAdapter
 import com.example.everymoment.presentation.view.sub.friends.FriendsListFragment
@@ -21,6 +22,7 @@ import com.example.everymoment.presentation.viewModel.ShareViewModel
 import com.example.everymoment.presentation.viewModel.ShareViewModelFactory
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
 import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
+import com.kakao.sdk.talk.model.Friend
 
 class ShareViewFragment : Fragment() {
     private lateinit var binding: FragmentShareViewBinding
@@ -28,9 +30,6 @@ class ShareViewFragment : Fragment() {
     private val friendDiaryRepository = FriendDiaryRepository()
     private val friendRepository = FriendRepository()
 
-    private val friendAdapter = SharedFriendListAdapter()
-    private val diaryAdapter = SharedFriendDiaryListAdapter()
-    private var friendList: MutableList<Member> = mutableListOf()
     private var diaryList: MutableList<Diary> = mutableListOf()
 
     override fun onCreateView(
@@ -45,22 +44,19 @@ class ShareViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, ShareViewModelFactory(friendDiaryRepository, friendRepository)).get(ShareViewModel::class.java)
 
-        setupRecyclerView()
+        val friendListAdapter = SharedFriendListAdapter(viewModel)
+        val friendDiaryAdapter = SharedFriendDiaryListAdapter()
+        setupRecyclerView(friendListAdapter, friendDiaryAdapter)
+        observeFriendList(friendListAdapter)
+        observeFriendDiaryList(friendDiaryAdapter)
 
-        // dummyData1
-        friendList.add(Member(1, "url", "춘식이"))
-        friendList.add(Member(2, "url", "제이지"))
-        friendList.add(Member(3, "url", "프로도"))
-        friendList.add(Member(4, "url", "네오"))
-        friendList.add(Member(5, "url", "피치"))
-        friendAdapter.submitList(friendList)
-        friendAdapter.notifyDataSetChanged()
+        viewModel.fetchFriendsList()
 
         // dummyData2
         diaryList.add(Diary(1, "춘천 한림대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
         diaryList.add(Diary(2, "춘천 강원대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
-        diaryAdapter.submitList(diaryList)
-        diaryAdapter.notifyDataSetChanged()
+        friendDiaryAdapter.submitList(diaryList)
+        friendDiaryAdapter.notifyDataSetChanged()
 
         binding.friendListIcon.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -71,9 +67,19 @@ class ShareViewFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
-        binding.friendList.adapter = friendAdapter
-        binding.timeLineRecyclerView.adapter = diaryAdapter
+    private fun observeFriendDiaryList(adapter: SharedFriendDiaryListAdapter) {
+
+    }
+
+    private fun observeFriendList(adapter: SharedFriendListAdapter) {
+        viewModel.friends.observe(viewLifecycleOwner) { friendList ->
+            adapter.submitList(friendList)
+        }
+    }
+
+    private fun setupRecyclerView(adapter1: SharedFriendListAdapter, adapter2: SharedFriendDiaryListAdapter) {
+        binding.friendList.adapter = adapter1
+        binding.timeLineRecyclerView.adapter = adapter2
 
         binding.friendList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
