@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.everymoment.GlobalApplication
+import com.example.everymoment.R
 import com.example.everymoment.data.model.NetworkModule
 import com.example.everymoment.data.model.NetworkUtil
 import com.example.everymoment.data.model.PotatoCakeApiService
@@ -50,6 +52,14 @@ class FriendRequestAdapter(
         private val token = "Bearer $jwtToken"
         fun bind(user: Member) {
             binding.userNickname.text = user.nickname
+
+            if (user.profileImageUrl == null) {
+                binding.profile.setImageResource(R.drawable.account_circle_24px)
+            } else {
+                Glide.with(itemView.context)
+                    .load(user.profileImageUrl)
+                    .into(binding.profile)
+            }
 
             binding.friendRequestButton.setOnClickListener {
                 showFriendRequestConfirmationDialog(user)

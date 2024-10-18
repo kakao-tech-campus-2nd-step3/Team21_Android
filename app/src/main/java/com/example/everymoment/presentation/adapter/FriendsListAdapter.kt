@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.everymoment.R
 import com.example.everymoment.data.repository.Friends
 import com.example.everymoment.databinding.FriendsListItemBinding
 import com.example.everymoment.extensions.CustomDialog
@@ -34,6 +36,14 @@ class FriendsListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(friends: Friends) {
             binding.userNickname.text = friends.nickname
+
+            if (friends.profileImageUrl == null) {
+                binding.profile.setImageResource(R.drawable.account_circle_24px)
+            } else {
+                Glide.with(itemView.context)
+                    .load(friends.profileImageUrl)
+                    .into(binding.profile)
+            }
 
             itemView.setOnLongClickListener {
                 showDeleteConfirmationDialog(friends)

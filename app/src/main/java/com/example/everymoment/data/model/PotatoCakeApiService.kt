@@ -73,4 +73,9 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Path("requestId") requestId: Int
     ): Call<ServerResponse>
+
+    @GET("api/members")
+    fun getMembers(
+        @Header("Authorization") token: String,
+    ): Call<MemberResponse>
 }
