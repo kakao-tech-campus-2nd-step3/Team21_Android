@@ -1,6 +1,8 @@
 package com.example.everymoment.presentation.view.sub.friends
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,9 +23,7 @@ class FriendRequestFragment : Fragment() {
     private lateinit var binding: FragmentFriendRequestBinding
     private lateinit var adapter: FriendRequestAdapter
 
-    // 테스트용 더미 데이터
     private var allMembers = mutableListOf<Member>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,18 +90,39 @@ class FriendRequestFragment : Fragment() {
     }
 
     private fun setupSearch() {
-        binding.searchUserEditText.addTextChangedListener { editable ->
-            val searchText = editable.toString()
-            val filteredList =
-                allMembers.filter { it.nickname.contains(searchText, ignoreCase = true) }
-            adapter.submitList(filteredList)
+        binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            if (filteredList.isEmpty()) {
-                binding.searchFriend.visibility = View.VISIBLE
-                binding.searchFriend.setHint(R.string.search_nothing)
-            } else {
-                binding.searchFriend.visibility = View.GONE
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchText = s.toString()
+
+                if (searchText.isEmpty()) {
+                    // 검색어가 비어 있으면 RecyclerView를 숨기고 빈 화면을 표시합니다.
+                    adapter.submitList(emptyList(), Runnable {
+                        binding.friendRequestRecyclerView.visibility = View.GONE
+                        binding.searchFriend.visibility = View.VISIBLE
+                        binding.searchFriend.setHint(R.string.search_nothing)
+                    })
+                    return
+                }
+
+                // 검색어가 있을 때 필터링 실행
+                val filteredList = allMembers.filter { it.nickname.contains(searchText, ignoreCase = true) }
+
+                // 리스트가 업데이트된 후 콜백에서 UI를 조정
+                adapter.submitList(filteredList, Runnable {
+                    if (filteredList.isEmpty()) {
+                        binding.friendRequestRecyclerView.visibility = View.GONE
+                        binding.searchFriend.visibility = View.VISIBLE
+                        binding.searchFriend.setHint(R.string.search_nothing)
+                    } else {
+                        binding.searchFriend.visibility = View.GONE
+                        binding.friendRequestRecyclerView.visibility = View.VISIBLE
+                    }
+                })
             }
-        }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 }

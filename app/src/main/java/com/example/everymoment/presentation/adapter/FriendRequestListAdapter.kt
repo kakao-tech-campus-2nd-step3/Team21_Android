@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.everymoment.data.model.FriendRequestList
+import com.example.everymoment.data.repository.FriendRequests
 import com.example.everymoment.databinding.FriendRequestListItemBinding
 
 class FriendRequestListAdapter(
-    private val onFriendRequestList: (FriendRequestList) -> Unit
-) : ListAdapter<FriendRequestList, FriendRequestListAdapter.FriendRequestListViewHolder>(
+    private val onFriendRequestList: (FriendRequests) -> Unit
+) : ListAdapter<FriendRequests, FriendRequestListAdapter.FriendRequestListViewHolder>(
     FriendRequestListDiffCallback()
 ) {
 
@@ -33,29 +34,29 @@ class FriendRequestListAdapter(
 
     inner class FriendRequestListViewHolder(
         private val binding: FriendRequestListItemBinding,
-        private val onFriendRequestList: (FriendRequestList) -> Unit
+        private val onFriendRequestList: (FriendRequests) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: FriendRequestList) {
-            binding.userNickname.text = user.name
+        fun bind(user: FriendRequests) {
+            binding.userNickname.text = user.nickname
 
             binding.friendRequestAcceptButton.setOnClickListener {
-                Toast.makeText(itemView.context, "${user.name}님의 친구요청을 수락했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(itemView.context, "${user.nickname}님의 친구요청을 수락했습니다.", Toast.LENGTH_SHORT).show()
                 removeItem(adapterPosition)
             }
 
             binding.friendRequestRefuseButton.setOnClickListener {
-                Toast.makeText(itemView.context, "${user.name}님의 친구요청을 거절했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(itemView.context, "${user.nickname}님의 친구요청을 거절했습니다.", Toast.LENGTH_SHORT).show()
                 removeItem(adapterPosition)
             }
         }
     }
 
-    class FriendRequestListDiffCallback : DiffUtil.ItemCallback<FriendRequestList>() {
-        override fun areItemsTheSame(oldItem: FriendRequestList, newItem: FriendRequestList): Boolean {
-            return oldItem.name == newItem.name
+    class FriendRequestListDiffCallback : DiffUtil.ItemCallback<FriendRequests>() {
+        override fun areItemsTheSame(oldItem: FriendRequests, newItem: FriendRequests): Boolean {
+            return oldItem.senderId == newItem.senderId
         }
 
-        override fun areContentsTheSame(oldItem: FriendRequestList, newItem: FriendRequestList): Boolean {
+        override fun areContentsTheSame(oldItem: FriendRequests, newItem: FriendRequests): Boolean {
             return oldItem == newItem
         }
     }

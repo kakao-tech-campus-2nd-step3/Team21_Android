@@ -18,5 +18,11 @@ data class FriendRequests(
     val id: Int,
 
     @SerializedName("senderId")
-    val senderId: Int
+    val senderId: Int,
+
+    @SerializedName("nickname")
+    val nickname: String,
+
+    @SerializedName("profileImageUrl")
+    val profileImageUrl: String
 )

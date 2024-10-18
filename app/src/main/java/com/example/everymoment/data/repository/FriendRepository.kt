@@ -4,8 +4,6 @@ import android.util.Log
 import com.example.everymoment.GlobalApplication
 import com.example.everymoment.data.model.NetworkModule
 import com.example.everymoment.data.model.PotatoCakeApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,23 +14,27 @@ class FriendRepository {
     private val jwtToken = GlobalApplication.prefs.getString("token", "null")
     private val token = "Bearer $jwtToken"
 
-    suspend fun getFriendsList(
-        onSuccess: (FriendsListResponse) -> Unit,
-        onError: (String) -> Unit
+    fun getFriendsList(
+        callback: (Boolean, FriendsListResponse?) -> Unit
     ) {
-        withContext(Dispatchers.IO) {
-            try {
-                val response = apiService.getFriendsList(token)
-                if (response.isSuccessful && response.body() != null) {
-                    onSuccess(response.body()!!)
+        apiService.getFriendsList(token).enqueue(object : Callback<FriendsListResponse> {
+            override fun onResponse(
+                p0: Call<FriendsListResponse>,
+                p1: Response<FriendsListResponse>
+            ) {
+                if (p1.isSuccessful) {
+                    Log.d("FriendsList", "${p1.body()}")
+                    callback(true, p1.body())
                 } else {
-                    onError("Failed to fetch friends list: ${response.code()}")
+                    callback(false, null)
                 }
-            } catch (e: Exception) {
-                Log.e("FriendRepository", "Error fetching friends list", e)
-                onError("Failed to fetch friends list: ${e.message}")
             }
-        }
+
+            override fun onFailure(p0: Call<FriendsListResponse>, p1: Throwable) {
+                Log.d("FriendsList", "Failed to fetch friends list: ${p1.message}")
+                callback(false, null)
+            }
+        })
     }
 
     fun deleteFriend(
@@ -42,7 +44,7 @@ class FriendRepository {
         apiService.deleteFriend(token, friendId).enqueue(object : Callback<ServerResponse> {
             override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
                 if (p1.isSuccessful) {
-                    Log.d("arieum", "${p1.body()}")
+                    Log.d("DeleteFriend", "${p1.body()}")
                     callback(true, p1.message())
                 } else {
                     callback(false, null)
@@ -50,9 +52,33 @@ class FriendRepository {
             }
 
             override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
-                Log.d("arieum", "Failed to delete diary: ${p1.message}")
+                Log.d("DeleteFriend", "Failed to delete friend: ${p1.message}")
                 callback(false, null)
             }
         })
+    }
+
+    fun getFriendRequestList(
+        callback: (Boolean, FriendRequestListResponse?) -> Unit
+    ) {
+        apiService.getFriendRequestList(token)
+            .enqueue(object : Callback<FriendRequestListResponse> {
+                override fun onResponse(
+                    p0: Call<FriendRequestListResponse>,
+                    p1: Response<FriendRequestListResponse>
+                ) {
+                    if (p1.isSuccessful) {
+                        Log.d("FriendRequestList", "${p1.body()}")
+                        callback(true, p1.body())
+                    } else {
+                        callback(false, null)
+                    }
+                }
+
+                override fun onFailure(p0: Call<FriendRequestListResponse>, p1: Throwable) {
+                    Log.d("FriendRequestList", "Failed to fetch friend request list: ${p1.message}")
+                    callback(false, null)
+                }
+            })
     }
 }
