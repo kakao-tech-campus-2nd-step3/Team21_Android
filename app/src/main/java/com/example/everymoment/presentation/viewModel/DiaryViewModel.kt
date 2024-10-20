@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.everymoment.data.dto.Category
-import com.example.everymoment.data.dto.DetailDiary
-import com.example.everymoment.data.repository.Diary
+import com.example.everymoment.data.model.network.dto.vo.Category
+import com.example.everymoment.data.model.network.dto.vo.DetailDiary
+import com.example.everymoment.data.model.network.dto.vo.File
+import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
 import com.example.everymoment.data.repository.DiaryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,9 +21,14 @@ class DiaryViewModel(private val diaryRepository: DiaryRepository) : ViewModel()
     private var isbookmarked: Boolean = false
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> get() = _categories
+    private var imagesArray: List<File> = listOf()
 
     init {
         getCategories()
+    }
+
+    fun getFilesArray(): List<File> {
+        return imagesArray
     }
 
     fun getCategoryId(categoryName: String): Int? {
@@ -110,5 +116,22 @@ class DiaryViewModel(private val diaryRepository: DiaryRepository) : ViewModel()
         }
     }
 
+    fun getFiles(diaryId: Int) {
+        viewModelScope.launch {
+            diaryRepository.getFiles(diaryId) { success, response ->
+                if (success && response != null) {
+                    imagesArray = response.info
+                }
+            }
+        }
+    }
+
+    fun postFiles(diaryId: Int, imgArray: List<File>) {
+        viewModelScope.launch {
+            val files = PostFilesRequest(imgArray)
+            diaryRepository.postFiles(diaryId, files) { _, _ ->
+            }
+        }
+    }
 
 }

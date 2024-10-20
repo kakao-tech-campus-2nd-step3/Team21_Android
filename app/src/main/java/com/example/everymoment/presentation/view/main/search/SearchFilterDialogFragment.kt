@@ -13,13 +13,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.everymoment.R
 import com.example.everymoment.data.model.Emotions
+import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentSearchFilterDialogBinding
 import com.example.everymoment.presentation.adapter.CategoryAdapter
+import com.example.everymoment.presentation.viewModel.DiaryViewModel
+import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -28,6 +34,9 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentSearchFilterDialogBinding
     private lateinit var categoryAdapter: CategoryAdapter
     private var checkedBookmark: Boolean = false
+    private val viewModel: DiaryViewModel by activityViewModels { DiaryViewModelFactory(
+        DiaryRepository()
+    ) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,12 +105,13 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
             } else if (binding.startDate.text.isNotEmpty() && binding.endDate.text.isNotEmpty()) {
                 if (!checkValidTerm()) {
                     makeToast(resources.getString(R.string.invalid_term))
+                } else {
+                    dismiss()
                 }
             } else {
                 dismiss()
             }
         }
-
     }
 
     private fun makeToast(string: String) {
@@ -113,14 +123,26 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setCategories() {
-        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
-        binding.categoryRcv.layoutManager = gridLayoutManager
-        categoryAdapter = CategoryAdapter()
-        binding.categoryRcv.adapter = categoryAdapter
+        lifecycleScope.launch {
+            val gridLayoutManager = GridLayoutManager(requireContext(), 3)
+            binding.categoryRcv.layoutManager = gridLayoutManager
+            categoryAdapter = CategoryAdapter(requireContext(), viewModel.categories.value)
+            binding.categoryRcv.adapter = categoryAdapter
 
-        if (categoryAdapter.itemCount != 0) {
-            binding.noCategoryText.visibility = View.GONE
-            binding.categoryRcv.visibility = View.VISIBLE
+            viewModel.categories.observe(viewLifecycleOwner) { categories ->
+                categoryAdapter = CategoryAdapter(requireContext(), categories)
+                binding.categoryRcv.adapter = categoryAdapter
+
+                if (categoryAdapter.itemCount != 0) {
+                    binding.noCategoryText.visibility = View.GONE
+                    binding.categoryRcv.visibility = View.VISIBLE
+                }
+            }
+
+            if (categoryAdapter.itemCount != 0) {
+                binding.noCategoryText.visibility = View.GONE
+                binding.categoryRcv.visibility = View.VISIBLE
+            }
         }
     }
 

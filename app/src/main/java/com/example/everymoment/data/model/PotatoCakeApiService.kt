@@ -1,9 +1,10 @@
 package com.example.everymoment.data.model
 
-import android.telecom.Call.Details
-import com.example.everymoment.data.dto.CategoryRequest
-import com.example.everymoment.data.dto.DetailDiaryResponse
-import com.example.everymoment.data.dto.GetCategoriesResponse
+import com.example.everymoment.data.model.network.dto.response.GetDetailDiaryResponse
+import com.example.everymoment.data.model.network.dto.response.GetCategoriesResponse
+import com.example.everymoment.data.model.network.dto.response.GetFilesResponse
+import com.example.everymoment.data.model.network.dto.request.PostCategoryRequest
+import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
 import com.example.everymoment.data.repository.DiaryResponse
 import com.example.everymoment.data.repository.ServerResponse
 import retrofit2.Call
@@ -42,15 +43,15 @@ interface PotatoCakeApiService {
     ): Call<ServerResponse>
 
     @GET("/api/diaries/my/{diaryId}")
-    fun getDiaryinDetail(
+    fun getDiaryInDetail(
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId: Int
-    ): Call<DetailDiaryResponse>
+    ): Call<GetDetailDiaryResponse>
 
     @POST("/api/categories")
     fun postCategory(
         @Header("Authorization") token: String,
-        @Body categoryRequest: CategoryRequest
+        @Body categoryRequest: PostCategoryRequest
     ): Call<ServerResponse>
 
     @DELETE("/api/categories/{categoryId}")
@@ -63,5 +64,18 @@ interface PotatoCakeApiService {
     fun getCategories(
         @Header("Authorization") token: String
     ): Call<GetCategoriesResponse>
+
+    @GET("/api/diaries/{diaryId}/files")
+    fun getFiles(
+        @Header("Authorization") token: String,
+        @Path("diaryId") diaryId: Int
+    ): Call<GetFilesResponse>
+
+    @POST("/api/diaries/{diaryId}/files")
+    fun postFiles(
+        @Header("Authorization") token: String,
+        @Path("diaryId") diaryId: Int,
+        @Body files: PostFilesRequest
+    ): Call<ServerResponse>
 
 }

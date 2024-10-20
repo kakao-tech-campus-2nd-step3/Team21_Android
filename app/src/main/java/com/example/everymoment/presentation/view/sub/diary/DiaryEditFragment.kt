@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.dto.DetailDiary
 import com.example.everymoment.data.model.Emotions
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentDiaryEditBinding
@@ -24,7 +21,6 @@ import com.example.everymoment.extensions.ToPxConverter
 import com.example.everymoment.presentation.view.main.MainActivity
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
 import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
-import kotlinx.coroutines.launch
 
 class DiaryEditFragment : Fragment() {
 
@@ -42,7 +38,11 @@ class DiaryEditFragment : Fragment() {
     private lateinit var bookmark: Bookmark
     private var diaryId: Int? = null
 
-    private val viewModel: DiaryViewModel by activityViewModels { DiaryViewModelFactory(DiaryRepository()) }
+    private val viewModel: DiaryViewModel by activityViewModels {
+        DiaryViewModelFactory(
+            DiaryRepository()
+        )
+    }
 
     private var emotionXOffset = toPxConverter.dpToPx(10)
     private var categoryYOffset = toPxConverter.dpToPx(75)
@@ -71,6 +71,11 @@ class DiaryEditFragment : Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as? MainActivity)?.showNavigationBar()
+    }
+
     private fun setDiaryContent() {
         val diary = viewModel.getDiary()
         diary?.let { it ->
@@ -82,8 +87,8 @@ class DiaryEditFragment : Fragment() {
             binding.address.setText(it.address)
             bookmark.setBookmark(viewModel.getIsBookmarked())
             binding.time.text = it.createAt.substring(11, 16)
-            val date = "8월 21일"
-            binding.date.text = date
+            val date = it.createAt.substring(5, 10).replace("-", "월 ")
+            binding.date.text = resources.getString(R.string.formatted_date, date)
 
             if (it.content.isNullOrEmpty()) {
                 binding.content.setText("")
@@ -102,26 +107,32 @@ class DiaryEditFragment : Fragment() {
                 binding.category1.visibility = View.VISIBLE
                 binding.category1.text =
                     resources.getString(R.string.category_text, it.categories[0].categoryName)
-                binding.categories.visibility = View.VISIBLE
                 categoriesArray[0] = true
             }
+        }
 
-            if (it.file.isNotEmpty()) {
-                if (it.file.size == 2) {
+        setImages()
+        binding.toolBar.visibility = View.VISIBLE
+        binding.scrollView.visibility = View.VISIBLE
+    }
+
+    private fun setImages() {
+        diaryId?.let {
+            val imagesArray2 = viewModel.getFilesArray()
+            if (!imagesArray2.isNullOrEmpty()) {
+                if (imagesArray.size == 2) {
                     binding.image2.visibility = View.VISIBLE
                     binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(requireContext()).load(it.file[1].imageUrl).into(binding.image2)
+                    Glide.with(requireContext()).load(imagesArray2[1].imageUrl).into(binding.image2)
                     imagesArray[1] = true
                 }
                 binding.image1.visibility = View.VISIBLE
                 binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
-                Glide.with(requireContext()).load(it.file[0].imageUrl).into(binding.image1)
+                Glide.with(requireContext()).load(imagesArray2[0].imageUrl).into(binding.image1)
                 binding.images.visibility = View.VISIBLE
                 binding.image2.visibility = View.VISIBLE
                 imagesArray[0] = true
             }
-            binding.toolBar.visibility = View.VISIBLE
-            binding.scrollView.visibility = View.VISIBLE
         }
     }
 
@@ -256,13 +267,19 @@ class DiaryEditFragment : Fragment() {
         }
 
         binding.category1.setOnLongClickListener {
-            delCategoryDialog.show(requireActivity().supportFragmentManager, "delCategoryDialog")
+            delCategoryDialog.show(
+                requireActivity().supportFragmentManager,
+                "delCategoryDialog"
+            )
             delSelectedCategoryNum = 1
             true
         }
 
         binding.category2.setOnLongClickListener {
-            delCategoryDialog.show(requireActivity().supportFragmentManager, "delCategoryDialog")
+            delCategoryDialog.show(
+                requireActivity().supportFragmentManager,
+                "delCategoryDialog"
+            )
             delSelectedCategoryNum = 2
             true
         }
@@ -278,11 +295,6 @@ class DiaryEditFragment : Fragment() {
         binding.diaryDoneButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as? MainActivity)?.showNavigationBar()
     }
 
     private fun addCategory(category: String?) {

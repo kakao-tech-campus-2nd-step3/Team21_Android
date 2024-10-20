@@ -2,9 +2,11 @@ package com.example.everymoment.data.repository
 
 import android.util.Log
 import com.example.everymoment.GlobalApplication
-import com.example.everymoment.data.dto.CategoryRequest
-import com.example.everymoment.data.dto.DetailDiaryResponse
-import com.example.everymoment.data.dto.GetCategoriesResponse
+import com.example.everymoment.data.model.network.dto.response.GetDetailDiaryResponse
+import com.example.everymoment.data.model.network.dto.response.GetCategoriesResponse
+import com.example.everymoment.data.model.network.dto.response.GetFilesResponse
+import com.example.everymoment.data.model.network.dto.request.PostCategoryRequest
+import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
 import com.example.everymoment.data.model.NetworkModule
 import com.example.everymoment.data.model.PotatoCakeApiService
 import retrofit2.Call
@@ -16,7 +18,7 @@ class DiaryRepository {
         NetworkModule.provideApiService(NetworkModule.provideRetrofit())
     private val jwtToken = GlobalApplication.prefs.getString("token", "null")
     private val token =
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6OCwiaWF0IjoxNzI4OTcxOTEzLCJleHAiOjE3MjkxNDQ3MTN9.2zDfm4HdW8D4QcZm4hxXx4WJTOyPxnZ-sqvMraKTOT8"
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6OCwiaWF0IjoxNzI5MDgzNDgyLCJleHAiOjE3MjkyNTYyODJ9.hEFZ6F-4hXFIv7xWX34JqC32hceW-kVk_Qj5GfLzWq0"
 
     fun getDiaries(
         date: String,
@@ -104,12 +106,12 @@ class DiaryRepository {
 
     fun getDiaryinDetail(
         diaryId: Int,
-        callback: (Boolean, DetailDiaryResponse?) -> Unit
+        callback: (Boolean, GetDetailDiaryResponse?) -> Unit
     ) {
-        apiService.getDiaryinDetail(token, diaryId).enqueue(object : Callback<DetailDiaryResponse> {
+        apiService.getDiaryInDetail(token, diaryId).enqueue(object : Callback<GetDetailDiaryResponse> {
             override fun onResponse(
-                p0: Call<DetailDiaryResponse>,
-                p1: Response<DetailDiaryResponse>
+                p0: Call<GetDetailDiaryResponse>,
+                p1: Response<GetDetailDiaryResponse>
             ) {
                 if (p1.isSuccessful) {
                     Log.d("settle54", "${p1.body()}")
@@ -119,7 +121,7 @@ class DiaryRepository {
                 }
             }
 
-            override fun onFailure(p0: Call<DetailDiaryResponse>, p1: Throwable) {
+            override fun onFailure(p0: Call<GetDetailDiaryResponse>, p1: Throwable) {
                 Log.d("settle54", "Failed to get diaryInDetail: ${p1.message}")
                 callback(false, null)
             }
@@ -129,7 +131,7 @@ class DiaryRepository {
     fun postCategory(
         categoryName: String, callback: (Boolean, String?) -> Unit
     ) {
-        val categoryRequest = CategoryRequest(categoryName)
+        val categoryRequest = PostCategoryRequest(categoryName)
         apiService.postCategory(token, categoryRequest).enqueue(object : Callback<ServerResponse> {
             override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
                 if (p1.isSuccessful) {
@@ -187,5 +189,46 @@ class DiaryRepository {
         })
     }
 
+    fun getFiles(diaryId: Int, callback: (Boolean, GetFilesResponse?) -> Unit) {
+        apiService.getFiles(token, diaryId).enqueue(object : Callback<GetFilesResponse> {
+            override fun onResponse(
+                p0: Call<GetFilesResponse>,
+                p1: Response<GetFilesResponse>
+            ) {
+                if (p1.isSuccessful) {
+                    Log.d("settle54", "${p1.body()}")
+                    callback(true, p1.body())
+                } else {
+                    callback(false, null)
+                }
+            }
+
+            override fun onFailure(p0: Call<GetFilesResponse>, p1: Throwable) {
+                Log.d("settle54", "Failed to Get Files: ${p1.message}")
+                callback(false, null)
+            }
+        })
+    }
+
+    fun postFiles(diaryId: Int, files: PostFilesRequest, callback: (Boolean, String?) -> Unit) {
+        apiService.postFiles(token, diaryId, files).enqueue(object : Callback<ServerResponse> {
+            override fun onResponse(
+                p0: Call<ServerResponse>,
+                p1: Response<ServerResponse>
+            ) {
+                if (p1.isSuccessful) {
+                    Log.d("settle54", "${p1.body()}")
+                    callback(true, p1.message())
+                } else {
+                    callback(false, null)
+                }
+            }
+
+            override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
+                Log.d("settle54", "Failed to Post Files: ${p1.message}")
+                callback(false, null)
+            }
+        })
+    }
 
 }

@@ -9,11 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.dto.DetailDiary
+import com.example.everymoment.data.model.network.dto.vo.DetailDiary
 import com.example.everymoment.data.model.Emotions
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentDiaryReadBinding
@@ -25,7 +24,11 @@ import kotlinx.coroutines.launch
 class DiaryReadFragment : Fragment() {
 
     private lateinit var binding: FragmentDiaryReadBinding
-    private val viewModel: DiaryViewModel by activityViewModels { DiaryViewModelFactory(DiaryRepository()) }
+    private val viewModel: DiaryViewModel by activityViewModels {
+        DiaryViewModelFactory(
+            DiaryRepository()
+        )
+    }
     private var diaryId: Int? = null
     private lateinit var bookmark: Bookmark
 
@@ -42,7 +45,8 @@ class DiaryReadFragment : Fragment() {
         Log.d("ariuem", "${arguments?.getInt("diary_id")}")
 
         bookmark = Bookmark(requireContext(), binding.bookmark)
-        diaryId = 23
+        diaryId = arguments?.getInt("diary_id")
+        Log.d("diaryId", diaryId.toString())
         getDiaryinDetail()
         setClickListeners()
 
@@ -64,8 +68,8 @@ class DiaryReadFragment : Fragment() {
             binding.address.text = it.address
             bookmark.setBookmark(it.bookmark)
             binding.time.text = it.createAt.substring(11, 16)
-            val date = "8월 21일"
-            binding.date.text = date
+            val date = it.createAt.substring(5, 10).replace("-", "월 ")
+            binding.date.text = resources.getString(R.string.formatted_date, date)
 
             if (it.content.isNullOrEmpty()) {
                 binding.content.text = ""
@@ -76,26 +80,36 @@ class DiaryReadFragment : Fragment() {
             if (it.categories.isNotEmpty()) {
                 if (it.categories.size == 2) {
                     binding.category2.visibility = View.VISIBLE
-                    binding.category2.text = resources.getString(R.string.category_text, it.categories[1].categoryName)
+                    binding.category2.text =
+                        resources.getString(R.string.category_text, it.categories[1].categoryName)
                 }
                 binding.category1.visibility = View.VISIBLE
-                binding.category1.text = resources.getString(R.string.category_text, it.categories[0].categoryName)
+                binding.category1.text =
+                    resources.getString(R.string.category_text, it.categories[0].categoryName)
                 binding.categories.visibility = View.VISIBLE
             }
 
-            if (it.file.isNotEmpty()) {
-                if (it.file.size == 2) {
+            setImages()
+            binding.toolBar.visibility = View.VISIBLE
+            binding.scrollView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setImages() {
+        diaryId?.let {
+            viewModel.getFiles(it)
+            val imagesArray = viewModel.getFilesArray()
+            if (!imagesArray.isNullOrEmpty()) {
+                if (imagesArray.size == 2) {
                     binding.image2.visibility = View.VISIBLE
                     binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(requireContext()).load(it.file[1].imageUrl).into(binding.image2)
+                    Glide.with(requireContext()).load(imagesArray[1].imageUrl).into(binding.image2)
                 }
                 binding.image1.visibility = View.VISIBLE
                 binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
-                Glide.with(requireContext()).load(it.file[0].imageUrl).into(binding.image1)
+                Glide.with(requireContext()).load(imagesArray[0].imageUrl).into(binding.image1)
                 binding.images.visibility = View.VISIBLE
             }
-            binding.toolBar.visibility = View.VISIBLE
-            binding.scrollView.visibility = View.VISIBLE
         }
     }
 

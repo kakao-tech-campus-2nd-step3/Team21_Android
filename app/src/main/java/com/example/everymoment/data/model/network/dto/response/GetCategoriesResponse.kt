@@ -1,5 +1,6 @@
-package com.example.everymoment.data.dto
+package com.example.everymoment.data.model.network.dto.response
 
+import com.example.everymoment.data.model.network.dto.vo.Category
 import com.google.gson.annotations.SerializedName
 
 data class GetCategoriesResponse(
@@ -9,11 +10,4 @@ data class GetCategoriesResponse(
     val categories: List<Category>,
     @SerializedName("message")
     val message: String
-)
-
-data class Category(
-    @SerializedName("categoryName")
-    val categoryName: String,
-    @SerializedName("id")
-    val id: Int
 )

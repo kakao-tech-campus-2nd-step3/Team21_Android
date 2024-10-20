@@ -31,7 +31,8 @@ class TodayLogFragment : Fragment() {
     private val permissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-            val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+            val coarseLocationGranted =
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
             val notificationGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 permissions[Manifest.permission.POST_NOTIFICATIONS] ?: false
             } else {
@@ -82,14 +83,16 @@ class TodayLogFragment : Fragment() {
         binding.nextDate.setOnClickListener {
             calendar.add(Calendar.DATE, 1)
             updateDateText()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             viewModel.fetchDiaries(currentDate)
         }
 
         binding.prevDate.setOnClickListener {
             calendar.add(Calendar.DATE, -1)
             updateDateText()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             viewModel.fetchDiaries(currentDate)
         }
     }

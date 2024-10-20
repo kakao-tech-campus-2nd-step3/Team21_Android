@@ -3,13 +3,17 @@ package com.example.everymoment.presentation.view.main
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.everymoment.R
+import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.ActivityMainBinding
 import com.example.everymoment.presentation.view.main.search.SearchFragment
 import com.example.everymoment.presentation.view.sub.PostFragment
 import com.example.everymoment.presentation.view.sub.diary.DiaryEditFragment
 import com.example.everymoment.presentation.view.sub.diary.DiaryReadFragment
+import com.example.everymoment.presentation.viewModel.DiaryViewModel
+import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -17,6 +21,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel: DiaryViewModel by viewModels { DiaryViewModelFactory(DiaryRepository()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.feed -> {
-                        val fragment = DiaryReadFragment()
+                        val fragment = ShareViewFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, fragment)
                             .commit()

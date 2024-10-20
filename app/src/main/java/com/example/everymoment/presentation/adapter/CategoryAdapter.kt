@@ -1,17 +1,26 @@
 package com.example.everymoment.presentation.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.everymoment.R
+import com.example.everymoment.data.model.network.dto.vo.Category
 import com.example.everymoment.databinding.CategoryLayoutBinding
 
-class CategoryAdapter() :
+class CategoryAdapter(private val context: Context, categoryList: List<Category>?) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    private var categoryList: List<String> = listOf("#힐링", "#공부", "#놀이", "#zzzzzzz", "#ddddd", "#ee")
+    private var categoryList: List<Category>
     private var selectedCategories = mutableSetOf<Int>()
+
+    init {
+        if (categoryList.isNullOrEmpty())
+            this.categoryList = listOf()
+        else
+            this.categoryList = categoryList
+    }
 
 
     fun resetSelected() {
@@ -22,15 +31,25 @@ class CategoryAdapter() :
     inner class ViewHolder(private val binding: CategoryLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: String, isSelected: Boolean) {
-            binding.category.text = item
+        fun bind(item: Category, isSelected: Boolean) {
+            binding.category.text = context.getString(R.string.category_text, item.categoryName)
 
             if (isSelected) {
                 binding.category.setBackgroundResource(R.drawable.category_background)
-                binding.category.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
+                binding.category.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.white
+                    )
+                )
             } else {
                 binding.category.setBackgroundResource(R.drawable.category_gray_background)
-                binding.category.setTextColor(ContextCompat.getColor(itemView.context, R.color.search_gray))
+                binding.category.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.search_gray
+                    )
+                )
             }
         }
     }
@@ -56,5 +75,6 @@ class CategoryAdapter() :
             }
             notifyItemChanged(holder.adapterPosition)
         }
+
     }
 }
