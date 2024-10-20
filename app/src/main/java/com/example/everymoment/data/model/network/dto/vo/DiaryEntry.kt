@@ -1,4 +1,4 @@
-package com.example.everymoment.data.repository
+package com.example.everymoment.data.model.network.dto.vo
 
 data class DiaryEntry(
     val locationPoint: LocationPoint,

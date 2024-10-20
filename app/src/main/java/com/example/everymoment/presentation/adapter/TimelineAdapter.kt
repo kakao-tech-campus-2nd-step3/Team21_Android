@@ -1,23 +1,30 @@
 package com.example.everymoment.presentation.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.repository.Diary
+import com.example.everymoment.data.model.network.dto.response.Diary
 import com.example.everymoment.databinding.TimelineItemBinding
+import com.example.everymoment.extensions.CustomDialog
 import com.example.everymoment.extensions.EmotionPopup
 import com.example.everymoment.extensions.ToPxConverter
+import com.example.everymoment.presentation.view.sub.diary.DiaryReadFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
 
-class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
+class TimelineAdapter(private val activity: FragmentActivity, private val viewModel: TimelineViewModel) : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
     object : DiffUtil.ItemCallback<Diary>() {
         override fun areItemsTheSame(oldItem: Diary, newItem: Diary): Boolean {
             return oldItem.id == newItem.id
@@ -30,6 +37,20 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
 ) {
     inner class TimelineViewHolder(private val binding: TimelineItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Diary) {
+            binding.root.setOnClickListener {
+                val diaryReadFragment = DiaryReadFragment()
+                val bundle = Bundle().apply {
+                    putInt("diary_id", item.id)
+                }
+                diaryReadFragment.arguments = bundle
+
+                val fragmentManager = (binding.root.context as AppCompatActivity).supportFragmentManager
+                fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, diaryReadFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+
             binding.timeText.text = item.createAt.substring(11, 16)
             binding.locationNameText.text = item.locationName
             binding.addressText.text = item.address
@@ -70,21 +91,23 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
                 binding.root.context.showToast(
                     if (isShared) R.string.is_public else R.string.is_private
                 )
-                // SERVER : patch
             }
 
-            // 상세 일기 표시 여부
-            // binding.detailedDiaryContainer.isGone = !item.thumbnailResponse
+            if (item.thumbnailResponse == null) {
+                binding.detailedDiaryContainer.isGone = true
+            } else {
+                binding.detailedDiaryContainer.isVisible = true
+
+                Glide.with(itemView.context)
+                    .load(item.thumbnailResponse.imageUrl)
+                    .into(binding.diaryImageContent)
+            }
 
             binding.deleteIcon.setOnClickListener {
-                AlertDialog.Builder(binding.root.context)
-                    .setMessage("삭제하시겠습니까?")
-                    .setPositiveButton("삭제") { _, _ ->
-                        removeItem(adapterPosition)
-                        viewModel.deleteDiary(item.id)
-                    }
-                    .setNegativeButton("취소", null)
-                    .show()
+                CustomDialog("삭제하시겠습니까?", "취소", "삭제", onPositiveClick = {
+                    removeItem(adapterPosition)
+                    viewModel.deleteDiary(item.id)
+                }).show(activity.supportFragmentManager, "delAutoDiary")
             }
 
             binding.editIcon.setOnClickListener {

@@ -1,4 +1,4 @@
-package com.example.everymoment.presentation
+package com.example.everymoment.data.model.network.dto.vo
 
 data class KakaoLoginUiState(
     val isLoggedIn: Boolean = false,

@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.everymoment.LocationService
+import com.example.everymoment.services.location.LocationService
 import com.example.everymoment.R
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
 import com.example.everymoment.presentation.view.sub.NotificationFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
-import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.TimelineViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -31,7 +30,8 @@ class TodayLogFragment : Fragment() {
     private val permissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-            val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+            val coarseLocationGranted =
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
             val notificationGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 permissions[Manifest.permission.POST_NOTIFICATIONS] ?: false
             } else {
@@ -64,13 +64,10 @@ class TodayLogFragment : Fragment() {
             TimelineViewModel::class.java
         )
 
-        val TodayDate = arguments?.getString("selected_date")
-        Log.d("TodayDate", "Selected date: $TodayDate")
-
         checkPermissions()
         updateDateText()
 
-        val adapter = TimelineAdapter(viewModel)
+        val adapter = TimelineAdapter(requireActivity(), viewModel)
         setupRecyclerView(adapter)
         observeViewModel(adapter)
 
@@ -85,14 +82,16 @@ class TodayLogFragment : Fragment() {
         binding.nextDate.setOnClickListener {
             calendar.add(Calendar.DATE, 1)
             updateDateText()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             viewModel.fetchDiaries(currentDate)
         }
 
         binding.prevDate.setOnClickListener {
             calendar.add(Calendar.DATE, -1)
             updateDateText()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             viewModel.fetchDiaries(currentDate)
         }
     }

@@ -1,10 +1,10 @@
-package com.example.everymoment
+package com.example.everymoment.services.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.example.everymoment.data.model.Emotions
+import com.example.everymoment.data.model.entity.Emotions
 
 class NotificationActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

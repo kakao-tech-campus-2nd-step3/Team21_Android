@@ -116,7 +116,7 @@ class SettingFragment : Fragment() {
                 resources.getString(R.string.change),
                 onPositiveClick = {
                     galleryUtil.openGallery(onImageSelected = {
-                        addImage(it)
+                        addLocalImage(it)
                     })
                 }).apply {
                 isCancelable = false
@@ -165,7 +165,7 @@ class SettingFragment : Fragment() {
         else return 0
     }
 
-    private fun addImage(imageUri: Uri?) {
+    private fun addLocalImage(imageUri: Uri?) {
         Glide.with(this)
             .load(imageUri)
             .circleCrop()

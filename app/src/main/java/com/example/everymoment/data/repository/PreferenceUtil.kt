@@ -1,4 +1,4 @@
-package com.example.everymoment.data.model
+package com.example.everymoment.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
