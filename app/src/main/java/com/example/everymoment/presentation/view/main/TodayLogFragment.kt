@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.everymoment.LocationService
+import com.example.everymoment.services.location.LocationService
 import com.example.everymoment.R
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
 import com.example.everymoment.presentation.view.sub.NotificationFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
-import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.TimelineViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

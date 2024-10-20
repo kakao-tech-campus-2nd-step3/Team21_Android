@@ -13,9 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.example.everymoment.databinding.CategoryPopupBinding
 import com.example.everymoment.R
-import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
-import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
 
 class CategoryPopup(
     private val fragmentActivity: FragmentActivity,

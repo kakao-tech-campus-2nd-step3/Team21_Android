@@ -9,7 +9,7 @@ import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.model.Emotions
+import com.example.everymoment.data.model.entity.Emotions
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentDiaryEditBinding
 import com.example.everymoment.extensions.Bookmark
@@ -20,7 +20,7 @@ import com.example.everymoment.extensions.GalleryUtil
 import com.example.everymoment.extensions.ToPxConverter
 import com.example.everymoment.presentation.view.main.MainActivity
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
-import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
 
 class DiaryEditFragment : Fragment() {
 

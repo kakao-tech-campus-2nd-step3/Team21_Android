@@ -9,11 +9,8 @@ import com.example.everymoment.R
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.ActivityMainBinding
 import com.example.everymoment.presentation.view.main.search.SearchFragment
-import com.example.everymoment.presentation.view.sub.PostFragment
-import com.example.everymoment.presentation.view.sub.diary.DiaryEditFragment
-import com.example.everymoment.presentation.view.sub.diary.DiaryReadFragment
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
-import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig

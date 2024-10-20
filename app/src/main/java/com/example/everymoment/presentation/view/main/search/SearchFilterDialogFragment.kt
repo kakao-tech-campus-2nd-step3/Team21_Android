@@ -4,11 +4,9 @@ import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -17,12 +15,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.everymoment.R
-import com.example.everymoment.data.model.Emotions
+import com.example.everymoment.data.model.entity.Emotions
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentSearchFilterDialogBinding
 import com.example.everymoment.presentation.adapter.CategoryAdapter
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
-import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch

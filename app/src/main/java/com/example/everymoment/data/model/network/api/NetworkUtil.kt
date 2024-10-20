@@ -1,4 +1,4 @@
-package com.example.everymoment.data.model
+package com.example.everymoment.data.model.network.api
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -98,59 +98,6 @@ object NetworkUtil {
                 } else {
                     callback(false, null)
                 }
-            }
-        })
-    }
-
-    fun <T> patchRequest(
-        url: String,
-        jwtToken: String,
-        data: T? = null,
-        callback: (success: Boolean, response: String?) -> Unit
-    ) {
-        val jsonBody = gson.toJson(data)
-        val requestBody = jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType())
-
-        val request = Request.Builder()
-            .url(url)
-            .patch(requestBody)
-            .addHeader("Authorization", "Bearer $jwtToken")
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                callback(false, null)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.let { responseBody ->
-                    callback(true, responseBody.string())
-                } ?: callback(false, null)
-            }
-        })
-    }
-
-    fun deleteRequest(
-        url: String,
-        jwtToken: String,
-        queryParams: Int? = null,
-        callback: (success: Boolean, response: String?) -> Unit
-    ) {
-        val request = Request.Builder()
-            .url(url)
-            .delete()
-            .addHeader("Authorization", "Bearer $jwtToken")
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                callback(false, null)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.let { responseBody ->
-                    callback(true, responseBody.string())
-                } ?: callback(false, null)
             }
         })
     }

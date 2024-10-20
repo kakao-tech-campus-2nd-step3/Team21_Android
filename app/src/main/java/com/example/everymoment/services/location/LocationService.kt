@@ -1,4 +1,4 @@
-package com.example.everymoment
+package com.example.everymoment.services.location
 
 import android.Manifest
 import android.app.Notification
@@ -16,10 +16,12 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.example.everymoment.data.model.NetworkUtil
-import com.example.everymoment.data.repository.DiaryEntry
-import com.example.everymoment.data.repository.GooglePlacesResponse
-import com.example.everymoment.data.repository.LocationPoint
+import com.example.everymoment.BuildConfig
+import com.example.everymoment.R
+import com.example.everymoment.data.model.network.api.NetworkUtil
+import com.example.everymoment.data.model.network.dto.vo.DiaryEntry
+import com.example.everymoment.data.model.network.dto.response.GooglePlacesResponse
+import com.example.everymoment.data.model.network.dto.vo.LocationPoint
 import com.google.android.gms.location.*
 
 class LocationService : Service() {

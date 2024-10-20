@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.everymoment.data.repository.UserRepository
-import com.example.everymoment.presentation.KakaoLoginUiState
+import com.example.everymoment.data.model.network.dto.vo.KakaoLoginUiState
 
 class KakaoLoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 

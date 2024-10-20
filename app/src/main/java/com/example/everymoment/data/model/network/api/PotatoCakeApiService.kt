@@ -1,12 +1,15 @@
-package com.example.everymoment.data.model
+package com.example.everymoment.data.model.network.api
 
 import com.example.everymoment.data.model.network.dto.response.GetDetailDiaryResponse
 import com.example.everymoment.data.model.network.dto.response.GetCategoriesResponse
 import com.example.everymoment.data.model.network.dto.response.GetFilesResponse
 import com.example.everymoment.data.model.network.dto.request.PostCategoryRequest
 import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
-import com.example.everymoment.data.repository.DiaryResponse
-import com.example.everymoment.data.repository.ServerResponse
+import com.example.everymoment.data.model.network.dto.response.DiaryResponse
+import com.example.everymoment.data.model.network.dto.response.FriendRequestListResponse
+import com.example.everymoment.data.model.network.dto.response.FriendsListResponse
+import com.example.everymoment.data.model.network.dto.response.MemberResponse
+import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -78,4 +81,43 @@ interface PotatoCakeApiService {
         @Body files: PostFilesRequest
     ): Call<ServerResponse>
 
+
+    @POST("api/members/{memberId}/friend-requests")
+    fun sendFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("memberId") memberId: Int
+    ): Call<MemberResponse>
+
+    @GET("api/friend-requests")
+    fun getFriendRequestList(
+        @Header("Authorization") token: String,
+    ): Call<FriendRequestListResponse>
+
+    @GET("api/friends/friends")
+    fun getFriendsList(
+        @Header("Authorization") token: String,
+    ): Call<FriendsListResponse>
+
+    @DELETE("api/friends/{friendId}")
+    fun deleteFriend(
+        @Header("Authorization") token: String,
+        @Path("friendId") friendId: Int
+    ): Call<ServerResponse>
+
+    @POST("api/friend-requests/{requestId}/accept")
+    fun acceptFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("requestId") requestId: Int
+    ): Call<ServerResponse>
+
+    @DELETE("api/friend-requests/{requestId}/reject")
+    fun rejectFriendRequest(
+        @Header("Authorization") token: String,
+        @Path("requestId") requestId: Int
+    ): Call<ServerResponse>
+
+    @GET("api/members")
+    fun getMembers(
+        @Header("Authorization") token: String,
+    ): Call<MemberResponse>
 }

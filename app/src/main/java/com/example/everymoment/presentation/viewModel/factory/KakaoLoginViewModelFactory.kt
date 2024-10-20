@@ -1,8 +1,9 @@
-package com.example.everymoment.presentation.viewModel
+package com.example.everymoment.presentation.viewModel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.everymoment.data.repository.UserRepository
+import com.example.everymoment.presentation.viewModel.KakaoLoginViewModel
 
 class KakaoLoginViewModelFactory(
     private val userRepository: UserRepository

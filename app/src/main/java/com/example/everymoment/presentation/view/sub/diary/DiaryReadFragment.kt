@@ -13,12 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
 import com.example.everymoment.data.model.network.dto.vo.DetailDiary
-import com.example.everymoment.data.model.Emotions
+import com.example.everymoment.data.model.entity.Emotions
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentDiaryReadBinding
 import com.example.everymoment.extensions.Bookmark
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
-import com.example.everymoment.presentation.viewModel.DiaryViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
 import kotlinx.coroutines.launch
 
 class DiaryReadFragment : Fragment() {
