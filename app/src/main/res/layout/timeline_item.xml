@@ -151,8 +151,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:layout_marginStart="5dp"
-                android:visibility="visible"
-                android:text=""/>
+                android:visibility="gone"
+                android:text=""
+                android:maxLines="3"/>
         </LinearLayout>
     </LinearLayout>
 

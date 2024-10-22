@@ -73,4 +73,16 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Path("requestId") requestId: Int
     ): Call<ServerResponse>
+    @GET("/api/friends/{friendId}/diaries")
+    fun gi(
+        @Header("Authorization") token: String,
+        @Query("friendId") friendId: Int,
+        @Query("date") date: String
+    ): Call<DiaryResponse>
+
+    @GET("/api/diaries/friend")
+    fun getTotalFriendDiaries(
+        @Header("Authorization") token: String,
+        @Query("date") date: String
+    ): Call<DiaryResponse>
 }

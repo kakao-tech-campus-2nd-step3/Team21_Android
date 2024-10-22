@@ -23,14 +23,17 @@ import com.example.everymoment.presentation.viewModel.ShareViewModelFactory
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
 import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
 import com.kakao.sdk.talk.model.Friend
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class ShareViewFragment : Fragment() {
     private lateinit var binding: FragmentShareViewBinding
     private lateinit var viewModel: ShareViewModel
     private val friendDiaryRepository = FriendDiaryRepository()
     private val friendRepository = FriendRepository()
+    private val calendar = Calendar.getInstance()
 
-    private var diaryList: MutableList<Diary> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,19 +47,17 @@ class ShareViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, ShareViewModelFactory(friendDiaryRepository, friendRepository)).get(ShareViewModel::class.java)
 
+        updateDateText()
+
         val friendListAdapter = SharedFriendListAdapter(viewModel)
         val friendDiaryAdapter = SharedFriendDiaryListAdapter()
         setupRecyclerView(friendListAdapter, friendDiaryAdapter)
         observeFriendList(friendListAdapter)
         observeFriendDiaryList(friendDiaryAdapter)
 
+        val initialDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
         viewModel.fetchFriendsList()
-
-        // dummyData2
-        diaryList.add(Diary(1, "춘천 한림대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
-        diaryList.add(Diary(2, "춘천 강원대", "강원도 춘천시", "Happy", ThumbnailResponse(1, "url"), "Hello", "2024-05-06", false, true))
-        friendDiaryAdapter.submitList(diaryList)
-        friendDiaryAdapter.notifyDataSetChanged()
+        viewModel.fetchTotalFriendDiaryList(initialDate)
 
         binding.friendListIcon.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -65,10 +66,26 @@ class ShareViewFragment : Fragment() {
                 commit()
             }
         }
+
+        binding.nextDate.setOnClickListener {
+            calendar.add(Calendar.DATE, 1)
+            updateDateText()
+            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            viewModel.fetchTotalFriendDiaryList(currentDate)
+        }
+
+        binding.prevDate.setOnClickListener {
+            calendar.add(Calendar.DATE, -1)
+            updateDateText()
+            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            viewModel.fetchTotalFriendDiaryList(currentDate)
+        }
     }
 
     private fun observeFriendDiaryList(adapter: SharedFriendDiaryListAdapter) {
-
+        viewModel.diaries.observe(viewLifecycleOwner) { friendDiaryList ->
+            adapter.submitList(friendDiaryList)
+        }
     }
 
     private fun observeFriendList(adapter: SharedFriendListAdapter) {
@@ -84,5 +101,10 @@ class ShareViewFragment : Fragment() {
         binding.friendList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun updateDateText() {
+        val formattedDate = SimpleDateFormat("M월 d일 (E)", Locale("ko", "KR")).format(calendar.time)
+        binding.currentDate.text = formattedDate
     }
 }

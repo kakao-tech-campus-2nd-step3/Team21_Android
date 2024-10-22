@@ -103,6 +103,13 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
                     .into(binding.diaryImageContent)
             }
 
+            if (item.content == null) {
+                binding.diaryTextContent.isGone = true
+            } else {
+                binding.diaryTextContent.isVisible = true
+                binding.diaryTextContent.text = item.content
+            }
+
             binding.deleteIcon.setOnClickListener {
                 AlertDialog.Builder(binding.root.context)
                     .setMessage("삭제하시겠습니까?")
