@@ -65,7 +65,7 @@ class FriendRequestAdapter(
 
 
         private fun showFriendRequestConfirmationDialog(user: Member) {
-            CustomDialog("${user.nickname}님에게\n친구 신청을 하시겠습니까?", "아니오", "신청하기", onPositiveClick = {
+            CustomDialog("${user.nickname}님에게\n친구 신청을 하시겠습니까?", "취소", "신청", onPositiveClick = {
                 sendFriendRequest(user.id) { success, _ ->
                     if (success) {
                         activity.runOnUiThread {

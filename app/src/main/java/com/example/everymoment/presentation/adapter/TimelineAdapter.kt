@@ -2,6 +2,7 @@ package com.example.everymoment.presentation.adapter
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,14 +105,14 @@ class TimelineAdapter(private val activity: FragmentActivity, private val viewMo
             }
 
             binding.deleteIcon.setOnClickListener {
-                CustomDialog("삭제하시겠습니까?", "취소", "삭제", onPositiveClick = {
+                CustomDialog("이 일기를 삭제하시겠습니까?", "취소", "삭제", onPositiveClick = {
                     removeItem(adapterPosition)
                     viewModel.deleteDiary(item.id)
                 }).show(activity.supportFragmentManager, "delAutoDiary")
             }
 
             binding.editIcon.setOnClickListener {
-                val popupMenu = PopupMenu(it.context, it)
+                val popupMenu = PopupMenu(it.context, it, Gravity.CENTER, 0, R.style.CustomPopupMenu)
                 popupMenu.menuInflater.inflate(R.menu.location_candidate_menu, popupMenu.menu)
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     binding.locationNameText.text = menuItem.title

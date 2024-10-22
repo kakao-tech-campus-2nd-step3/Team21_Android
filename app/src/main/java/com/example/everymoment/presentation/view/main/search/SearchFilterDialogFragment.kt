@@ -56,11 +56,11 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
 
         binding.bookmark.setOnClickListener {
             if (!checkedBookmark) {
-                binding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
+                binding.bookmarkIcon.setImageResource(R.drawable.search_selected_bookmark)
                 binding.bookmarkDesc.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.primary_color
+                        R.color.primary_color2
                     )
                 )
             } else {

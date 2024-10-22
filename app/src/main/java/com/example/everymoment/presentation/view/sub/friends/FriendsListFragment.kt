@@ -15,6 +15,7 @@ import com.example.everymoment.data.repository.FriendRepository
 import com.example.everymoment.data.model.network.dto.response.Friends
 import com.example.everymoment.databinding.FragmentFriendsListBinding
 import com.example.everymoment.presentation.adapter.FriendsListAdapter
+import com.example.everymoment.presentation.view.main.ShareViewFragment
 import com.example.everymoment.presentation.viewModel.FriendsListViewModel
 import com.example.everymoment.presentation.viewModel.factory.FriendsListViewModelFactory
 
@@ -56,6 +57,12 @@ class FriendsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.friendListBackButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ShareViewFragment())
+                .commit()
+        }
 
         binding.mainFab.setOnClickListener {
             if (isFabExpanded) {

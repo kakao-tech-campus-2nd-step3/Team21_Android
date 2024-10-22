@@ -2,12 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".presentation.view.main.TodayLogFragment">
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -57,13 +55,13 @@
         <!--                android:textColor="@color/primary_color" />-->
         <!--        </LinearLayout>-->
 
-<!--        <View-->
-<!--            android:id="@+id/verticalLine"-->
-<!--            android:layout_width="2dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:background="@color/line_color"-->
-<!--            app:layout_constraintStart_toEndOf="@id/friendListIcon" />-->
+        <!--        <View-->
+        <!--            android:id="@+id/verticalLine"-->
+        <!--            android:layout_width="2dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:background="@color/line_color"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/friendListIcon" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friendList"
@@ -126,12 +124,4 @@
             app:tint="@drawable/backbutton" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timeLineRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="16dp"
-        android:visibility="visible" />
 </LinearLayout>
