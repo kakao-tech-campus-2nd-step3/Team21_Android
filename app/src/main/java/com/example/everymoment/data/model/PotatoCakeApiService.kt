@@ -74,7 +74,7 @@ interface PotatoCakeApiService {
         @Path("requestId") requestId: Int
     ): Call<ServerResponse>
     @GET("/api/friends/{friendId}/diaries")
-    fun gi(
+    fun getFriendDiaries(
         @Header("Authorization") token: String,
         @Query("friendId") friendId: Int,
         @Query("date") date: String
