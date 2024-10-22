@@ -39,7 +39,7 @@ class FriendDiaryRepository {
         date: String,
         callback: (Boolean, DiaryResponse?) -> Unit
     ) {
-        apiService.getTotalFriendDiaries(date, token).enqueue(object : Callback<DiaryResponse> {
+        apiService.getTotalFriendDiaries(token, date).enqueue(object : Callback<DiaryResponse> {
             override fun onResponse(p0: Call<DiaryResponse>, p1: Response<DiaryResponse>) {
                 if (p1.isSuccessful) {
                     Log.d("arieum", "${p1.body()}")

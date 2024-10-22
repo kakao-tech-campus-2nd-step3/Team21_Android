@@ -24,7 +24,7 @@ class SharedFriendDiaryListAdapter : ListAdapter<Diary, SharedFriendDiaryListAda
 ) {
     inner class ViewHolder(private val binding: ShareItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Diary) {
-            binding.timeText.text = item.createAt
+            binding.timeText.text = item.createAt.substring(11, 16)
             binding.locationNameText.text = item.locationName
             binding.addressText.text = item.address
 
