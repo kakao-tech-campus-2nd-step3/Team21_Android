@@ -93,6 +93,13 @@ class FriendsListFragment : Fragment() {
             allFriends.clear()
             allFriends.addAll(friends)
             updateAdapterList()
+
+            if (allFriends.isEmpty()) {
+                binding.addFriend.visibility = View.VISIBLE
+                binding.addFriend.hint = getString(R.string.add_friends)
+            } else {
+                binding.addFriend.visibility = View.GONE
+            }
         }
     }
 

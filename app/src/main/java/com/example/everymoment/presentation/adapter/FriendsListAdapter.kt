@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.everymoment.R
 import com.example.everymoment.data.model.network.dto.response.Friends
 import com.example.everymoment.databinding.FriendsListItemBinding

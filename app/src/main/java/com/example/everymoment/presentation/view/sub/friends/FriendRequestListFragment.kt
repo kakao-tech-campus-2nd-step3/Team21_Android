@@ -56,6 +56,13 @@ class FriendRequestListFragment : Fragment() {
             allRequestedFriend.clear()
             allRequestedFriend.addAll(requestedFriends)
             updateAdapterList()
+
+            if (allRequestedFriend.isEmpty()) {
+                binding.searchFriend.visibility = View.VISIBLE
+                binding.searchFriend.hint = getString(R.string.no_friend_request)
+            } else {
+                binding.searchFriend.visibility = View.GONE
+            }
         }
     }
 

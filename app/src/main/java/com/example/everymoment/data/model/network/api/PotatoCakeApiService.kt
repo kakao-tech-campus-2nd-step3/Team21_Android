@@ -116,7 +116,7 @@ interface PotatoCakeApiService {
         @Path("requestId") requestId: Int
     ): Call<ServerResponse>
 
-    @GET("api/members")
+    @GET("api/members?size=30")
     fun getMembers(
         @Header("Authorization") token: String,
     ): Call<MemberResponse>
