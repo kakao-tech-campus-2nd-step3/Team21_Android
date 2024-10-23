@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.everymoment.data.repository.UserRepository
 import com.example.everymoment.databinding.ActivityKakaoLoginBinding
 import com.example.everymoment.presentation.viewModel.KakaoLoginViewModel
-import com.example.everymoment.presentation.viewModel.KakaoLoginViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.KakaoLoginViewModelFactory
 import com.kakao.sdk.user.UserApiClient
 
 class KakaoLoginActivity : AppCompatActivity() {

@@ -1,11 +1,11 @@
 package com.example.everymoment.data.model
 
-import com.example.everymoment.data.repository.DiaryResponse
-import com.example.everymoment.data.repository.FriendRequestListResponse
-import com.example.everymoment.data.repository.FriendsListResponse
-import com.example.everymoment.data.repository.MemberResponse
+import com.example.everymoment.data.model.network.dto.response.DiaryResponse
+import com.example.everymoment.data.model.network.dto.response.FriendRequestListResponse
+import com.example.everymoment.data.model.network.dto.response.FriendsListResponse
+import com.example.everymoment.data.model.network.dto.response.MemberResponse
+import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import com.example.everymoment.data.repository.NotificationResponse
-import com.example.everymoment.data.repository.ServerResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.GET

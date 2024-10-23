@@ -1,14 +1,13 @@
 package com.example.everymoment.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.everymoment.data.repository.Diary
+import com.example.everymoment.data.model.network.dto.response.Diary
 import com.example.everymoment.data.repository.FriendDiaryRepository
 import com.example.everymoment.data.repository.FriendRepository
-import com.example.everymoment.data.repository.Friends
+import com.example.everymoment.data.model.network.dto.response.Friends
 import kotlinx.coroutines.launch
 
 class ShareViewModel(

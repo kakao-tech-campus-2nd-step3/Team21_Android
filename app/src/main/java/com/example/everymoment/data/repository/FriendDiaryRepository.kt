@@ -1,9 +1,10 @@
 package com.example.everymoment.data.repository
 
 import android.util.Log
-import com.example.everymoment.GlobalApplication
-import com.example.everymoment.data.model.NetworkModule
-import com.example.everymoment.data.model.PotatoCakeApiService
+import com.example.everymoment.data.model.network.api.PotatoCakeApiService
+import com.example.everymoment.data.model.network.api.NetworkModule
+import com.example.everymoment.data.model.network.dto.response.DiaryResponse
+import com.example.everymoment.services.location.GlobalApplication
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

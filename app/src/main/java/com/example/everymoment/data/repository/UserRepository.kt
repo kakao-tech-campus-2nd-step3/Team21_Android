@@ -2,8 +2,8 @@ package com.example.everymoment.data.repository
 
 import android.app.Activity
 import android.util.Log
-import com.example.everymoment.GlobalApplication
-import com.example.everymoment.data.model.NetworkUtil
+import com.example.everymoment.services.location.GlobalApplication
+import com.example.everymoment.data.model.network.api.NetworkUtil
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.AccessTokenInfo

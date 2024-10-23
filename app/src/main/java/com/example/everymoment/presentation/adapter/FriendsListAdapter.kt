@@ -1,13 +1,15 @@
 package com.example.everymoment.presentation.adapter
 
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.data.repository.Friends
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.example.everymoment.R
+import com.example.everymoment.data.model.network.dto.response.Friends
 import com.example.everymoment.databinding.FriendsListItemBinding
 import com.example.everymoment.extensions.CustomDialog
 
@@ -35,6 +37,15 @@ class FriendsListAdapter(
         fun bind(friends: Friends) {
             binding.userNickname.text = friends.nickname
 
+            if (friends.profileImageUrl == null) {
+                binding.profile.setImageResource(R.drawable.account_circle_24px)
+            } else {
+                Glide.with(itemView.context)
+                    .load(friends.profileImageUrl)
+                    .circleCrop()
+                    .into(binding.profile)
+            }
+
             itemView.setOnLongClickListener {
                 showDeleteConfirmationDialog(friends)
                 true
@@ -44,8 +55,9 @@ class FriendsListAdapter(
         private fun showDeleteConfirmationDialog(friends: Friends) {
             CustomDialog(
                 "${friends.nickname}님을\n친구에서 삭제하시겠습니까?",
-                "아니오",
-                "삭제하기",
+                "취소",
+                "삭제",
+
                 onPositiveClick = { onDeleteFriend(friends) }).show(activity.supportFragmentManager, "CustomDialog")
         }
     }

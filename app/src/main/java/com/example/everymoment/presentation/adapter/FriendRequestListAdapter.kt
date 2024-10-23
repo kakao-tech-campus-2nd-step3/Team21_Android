@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.data.repository.FriendRequests
+import com.bumptech.glide.Glide
+import com.example.everymoment.R
+import com.example.everymoment.data.model.network.dto.response.FriendRequests
 import com.example.everymoment.databinding.FriendRequestListItemBinding
 
 class FriendRequestListAdapter(
@@ -37,6 +39,15 @@ class FriendRequestListAdapter(
         fun bind(friendRequest: FriendRequests) {
             binding.apply {
                 userNickname.text = friendRequest.nickname
+
+                if (friendRequest.profileImageUrl == null) {
+                    binding.profile.setImageResource(R.drawable.account_circle_24px)
+                } else {
+                    Glide.with(itemView.context)
+                        .load(friendRequest.profileImageUrl)
+                        .circleCrop()
+                        .into(binding.profile)
+                }
 
                 friendRequestAcceptButton.setOnClickListener {
                     onAcceptClick(friendRequest)

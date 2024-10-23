@@ -10,11 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
 import com.example.everymoment.data.repository.FriendRepository
-import com.example.everymoment.data.repository.FriendRequests
+import com.example.everymoment.data.model.network.dto.response.FriendRequests
 import com.example.everymoment.databinding.FragmentFriendRequestListBinding
 import com.example.everymoment.presentation.adapter.FriendRequestListAdapter
 import com.example.everymoment.presentation.viewModel.FriendRequestListViewModel
-import com.example.everymoment.presentation.viewModel.FriendRequestListViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.FriendRequestListViewModelFactory
 
 
 class FriendRequestListFragment : Fragment() {
@@ -56,6 +56,13 @@ class FriendRequestListFragment : Fragment() {
             allRequestedFriend.clear()
             allRequestedFriend.addAll(requestedFriends)
             updateAdapterList()
+
+            if (allRequestedFriend.isEmpty()) {
+                binding.searchFriend.visibility = View.VISIBLE
+                binding.searchFriend.hint = getString(R.string.no_friend_request)
+            } else {
+                binding.searchFriend.visibility = View.GONE
+            }
         }
     }
 

@@ -1,9 +1,13 @@
 package com.example.everymoment.data.repository
 
 import android.util.Log
-import com.example.everymoment.GlobalApplication
-import com.example.everymoment.data.model.NetworkModule
-import com.example.everymoment.data.model.PotatoCakeApiService
+import com.example.everymoment.services.location.GlobalApplication
+import com.example.everymoment.data.model.network.api.NetworkModule
+import com.example.everymoment.data.model.network.api.PotatoCakeApiService
+import com.example.everymoment.data.model.network.dto.response.FriendRequestListResponse
+import com.example.everymoment.data.model.network.dto.response.FriendsListResponse
+import com.example.everymoment.data.model.network.dto.response.MemberResponse
+import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -110,7 +114,7 @@ class FriendRepository {
         apiService.rejectFriendRequest(token, requestId).enqueue(object : Callback<ServerResponse> {
             override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
                 if (p1.isSuccessful) {
-                    Log.d("acceptFriendRequest", "${p1.body()}")
+                    Log.d("rejectFriendRequest", "${p1.body()}")
                     callback(true, p1.message())
                 } else {
                     callback(false, null)
@@ -118,9 +122,33 @@ class FriendRepository {
             }
 
             override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
-                Log.d("acceptFriendRequest", "Failed to accept friend request: ${p1.message}")
+                Log.d("rejectFriendRequest", "Failed to reject friend request: ${p1.message}")
                 callback(false, null)
             }
         })
+    }
+
+    fun getMembers(
+        callback: (Boolean, MemberResponse?) -> Unit
+    ) {
+        apiService.getMembers(token)
+            .enqueue(object : Callback<MemberResponse> {
+                override fun onResponse(
+                    p0: Call<MemberResponse>,
+                    p1: Response<MemberResponse>
+                ) {
+                    if (p1.isSuccessful) {
+                        Log.d("AllMembers", "${p1.body()}")
+                        callback(true, p1.body())
+                    } else {
+                        callback(false, null)
+                    }
+                }
+
+                override fun onFailure(p0: Call<MemberResponse>, p1: Throwable) {
+                    Log.d("AllMembers", "Failed to fetch all members: ${p1.message}")
+                    callback(false, null)
+                }
+            })
     }
 }

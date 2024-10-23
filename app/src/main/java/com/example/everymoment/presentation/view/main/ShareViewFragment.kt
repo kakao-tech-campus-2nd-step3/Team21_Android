@@ -8,24 +8,17 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
-import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.data.repository.FriendDiaryRepository
 import com.example.everymoment.data.repository.FriendRepository
-import com.example.everymoment.data.repository.Member
-import com.example.everymoment.data.repository.ThumbnailResponse
 import com.example.everymoment.databinding.FragmentShareViewBinding
-import com.example.everymoment.presentation.adapter.FriendsListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendDiaryListAdapter
 import com.example.everymoment.presentation.adapter.SharedFriendListAdapter
 import com.example.everymoment.presentation.view.sub.friends.FriendsListFragment
 import com.example.everymoment.presentation.viewModel.ShareViewModel
-import com.example.everymoment.presentation.viewModel.ShareViewModelFactory
-import com.example.everymoment.presentation.viewModel.TimelineViewModel
-import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
-import com.kakao.sdk.talk.model.Friend
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.example.everymoment.presentation.viewModel.factory.ShareViewModelFactory
 
 class ShareViewFragment : Fragment() {
     private lateinit var binding: FragmentShareViewBinding

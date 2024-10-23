@@ -17,12 +17,15 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:visibility="invisible"
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/bookmark"
@@ -51,7 +54,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/diary_edit_button"
-                android:textColor="#1B3C69"
+                android:textColor="@drawable/text_button"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -59,8 +62,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,12 +83,14 @@
                     android:textColor="#919191" />
 
                 <LinearLayout
+                    android:id="@+id/images"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
                     android:orientation="horizontal"
-                    android:visibility="visible">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <ImageButton
                         android:id="@+id/image1"
@@ -93,7 +101,8 @@
                         android:background="@drawable/image_background"
                         android:clipToOutline="true"
                         android:src="@drawable/outline_broken_image_24"
-                        android:visibility="visible" />
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
 
                     <ImageButton
                         android:id="@+id/image2"
@@ -124,17 +133,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="7dp"
                     android:gravity="center_vertical"
                     android:text="address"
                     android:textSize="17sp" />
 
                 <LinearLayout
+                    android:id="@+id/categories"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/category1"
@@ -148,7 +160,8 @@
                         android:paddingEnd="5dp"
                         android:paddingBottom="2dp"
                         android:textColor="@color/white"
-                        android:visibility="visible"
+                        android:textSize="16sp"
+                        android:visibility="gone"
                         tools:visibility="visible" />
 
                     <TextView
@@ -163,20 +176,10 @@
                         android:paddingEnd="5dp"
                         android:paddingBottom="2dp"
                         android:textColor="@color/white"
-                        android:visibility="visible"
+                        android:textSize="16sp"
+                        android:visibility="gone"
                         tools:visibility="visible" />
                 </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/addEmotion"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="2dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/mood_24px"
-                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/emotion"
@@ -186,7 +189,7 @@
                     android:layout_marginTop="10dp"
                     android:textSize="23sp"
                     android:visibility="gone"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/content"

@@ -10,17 +10,14 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.everymoment.GlobalApplication
 import com.example.everymoment.R
-import com.example.everymoment.data.model.NetworkModule
-import com.example.everymoment.data.model.PotatoCakeApiService
 import com.example.everymoment.data.repository.FriendRepository
-import com.example.everymoment.data.repository.Friends
+import com.example.everymoment.data.model.network.dto.response.Friends
 import com.example.everymoment.databinding.FragmentFriendsListBinding
 import com.example.everymoment.presentation.adapter.FriendsListAdapter
+import com.example.everymoment.presentation.view.main.ShareViewFragment
 import com.example.everymoment.presentation.viewModel.FriendsListViewModel
-import com.example.everymoment.presentation.viewModel.FriendsListViewModelFactory
-import com.google.android.material.snackbar.Snackbar
+import com.example.everymoment.presentation.viewModel.factory.FriendsListViewModelFactory
 
 class FriendsListFragment : Fragment() {
 
@@ -90,6 +87,22 @@ class FriendsListFragment : Fragment() {
         observeViewModel()
 
         viewModel.fetchFriendsList()
+
+        binding.friendsListBackButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, ShareViewFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (isFabExpanded) {
+            shrinkFab()
+        }
     }
 
     private fun observeViewModel() {
@@ -97,6 +110,13 @@ class FriendsListFragment : Fragment() {
             allFriends.clear()
             allFriends.addAll(friends)
             updateAdapterList()
+
+            if (allFriends.isEmpty()) {
+                binding.addFriend.visibility = View.VISIBLE
+                binding.addFriend.hint = getString(R.string.add_friends)
+            } else {
+                binding.addFriend.visibility = View.GONE
+            }
         }
     }
 

@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.repository.Friends
-import com.example.everymoment.data.repository.Member
+import com.example.everymoment.data.model.network.dto.response.Friends
 import com.example.everymoment.databinding.FriendItemBinding
 import com.example.everymoment.presentation.viewModel.ShareViewModel
 

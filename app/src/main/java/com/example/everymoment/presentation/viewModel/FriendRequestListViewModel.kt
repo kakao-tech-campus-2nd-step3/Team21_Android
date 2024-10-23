@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.everymoment.data.repository.FriendRepository
-import com.example.everymoment.data.repository.FriendRequests
+import com.example.everymoment.data.model.network.dto.response.FriendRequests
 import kotlinx.coroutines.launch
 
 class FriendRequestListViewModel(private val friendRepository: FriendRepository) : ViewModel() {

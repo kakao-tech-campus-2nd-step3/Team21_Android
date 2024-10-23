@@ -7,24 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.repository.Diary
+import com.example.everymoment.data.model.network.dto.response.Diary
 import com.example.everymoment.databinding.TimelineItemBinding
+import com.example.everymoment.extensions.CustomDialog
 import com.example.everymoment.extensions.EmotionPopup
 import com.example.everymoment.extensions.ToPxConverter
-import com.example.everymoment.presentation.view.main.TodayLogFragment
 import com.example.everymoment.presentation.view.sub.diary.DiaryReadFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
 
-class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
+class TimelineAdapter(private val activity: FragmentActivity, private val viewModel: TimelineViewModel) : ListAdapter<Diary, TimelineAdapter.TimelineViewHolder>(
     object : DiffUtil.ItemCallback<Diary>() {
         override fun areItemsTheSame(oldItem: Diary, newItem: Diary): Boolean {
             return oldItem.id == newItem.id
@@ -112,14 +112,10 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
             }
 
             binding.deleteIcon.setOnClickListener {
-                AlertDialog.Builder(binding.root.context)
-                    .setMessage("삭제하시겠습니까?")
-                    .setPositiveButton("삭제") { _, _ ->
-                        removeItem(adapterPosition)
-                        viewModel.deleteDiary(item.id)
-                    }
-                    .setNegativeButton("취소", null)
-                    .show()
+                CustomDialog("삭제하시겠습니까?", "취소", "삭제", onPositiveClick = {
+                    removeItem(adapterPosition)
+                    viewModel.deleteDiary(item.id)
+                }).show(activity.supportFragmentManager, "delAutoDiary")
             }
 
             binding.editIcon.setOnClickListener {

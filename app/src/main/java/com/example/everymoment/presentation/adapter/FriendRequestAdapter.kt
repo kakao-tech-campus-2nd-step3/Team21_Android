@@ -1,22 +1,22 @@
 package com.example.everymoment.presentation.adapter
 
-import android.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.everymoment.GlobalApplication
-import com.example.everymoment.data.model.NetworkModule
-import com.example.everymoment.data.model.NetworkUtil
-import com.example.everymoment.data.model.PotatoCakeApiService
-import com.example.everymoment.data.repository.DiaryResponse
-import com.example.everymoment.data.repository.Member
-import com.example.everymoment.data.repository.MemberResponse
+import com.bumptech.glide.Glide
+import com.example.everymoment.services.location.GlobalApplication
+import com.example.everymoment.R
+import com.example.everymoment.data.model.network.api.NetworkModule
+import com.example.everymoment.data.model.network.api.PotatoCakeApiService
+import com.example.everymoment.data.model.network.dto.response.Member
+import com.example.everymoment.data.model.network.dto.response.MemberResponse
 import com.example.everymoment.databinding.FriendRequestItemBinding
 import com.example.everymoment.extensions.CustomDialog
 import retrofit2.Call
@@ -50,6 +50,26 @@ class FriendRequestAdapter(
         private val token = "Bearer $jwtToken"
         fun bind(user: Member) {
             binding.userNickname.text = user.nickname
+
+            if (user.friendRequestStatus == "FRIEND") {
+                binding.friendButton.visibility = VISIBLE
+                binding.friendRequestButton.visibility = GONE
+            } else if(user.friendRequestStatus == "SELF") {
+                binding.friendButton.visibility = GONE
+                binding.friendRequestButton.visibility = GONE
+            } else {
+                binding.friendButton.visibility = GONE
+                binding.friendRequestButton.visibility = VISIBLE
+            }
+
+            if (user.profileImageUrl == null) {
+                binding.profile.setImageResource(R.drawable.account_circle_24px)
+            } else {
+                Glide.with(itemView.context)
+                    .load(user.profileImageUrl)
+                    .circleCrop()
+                    .into(binding.profile)
+            }
 
             binding.friendRequestButton.setOnClickListener {
                 showFriendRequestConfirmationDialog(user)
