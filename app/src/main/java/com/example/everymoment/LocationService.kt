@@ -31,6 +31,7 @@ class LocationService : Service() {
     private lateinit var handlerThread: HandlerThread
 
     private var initialPlaceName: String? = null
+    private var previousPlaceNames: List<String> = emptyList()
     private var isFirstLocationUpdateAfterChange = true
 
     override fun onCreate() {
@@ -95,7 +96,9 @@ class LocationService : Service() {
                 val currentPlace = currentPlaceNames.firstOrNull()
                 val currentAddress = currentAddresses.firstOrNull()
 
-                if (initialPlaceName == null || (currentPlace != null && !currentPlaceNames.contains(initialPlaceName!!))) {
+                if (initialPlaceName == null || (currentPlace != null && !previousPlaceNames.contains(currentPlace))) {
+                    isFirstLocationUpdateAfterChange = true
+                    previousPlaceNames = currentPlaceNames
                     initialPlaceName = currentPlace
                     Log.d("arieum", "새 장소 측정: $initialPlaceName, $currentAddress 아직 전달 안함")
                 } else {
