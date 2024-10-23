@@ -3,6 +3,8 @@ package com.example.everymoment.presentation.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
@@ -49,11 +51,23 @@ class FriendRequestAdapter(
         fun bind(user: Member) {
             binding.userNickname.text = user.nickname
 
+            if (user.friendRequestStatus == "FRIEND") {
+                binding.friendButton.visibility = VISIBLE
+                binding.friendRequestButton.visibility = GONE
+            } else if(user.friendRequestStatus == "SELF") {
+                binding.friendButton.visibility = GONE
+                binding.friendRequestButton.visibility = GONE
+            } else {
+                binding.friendButton.visibility = GONE
+                binding.friendRequestButton.visibility = VISIBLE
+            }
+
             if (user.profileImageUrl == null) {
                 binding.profile.setImageResource(R.drawable.account_circle_24px)
             } else {
                 Glide.with(itemView.context)
                     .load(user.profileImageUrl)
+                    .circleCrop()
                     .into(binding.profile)
             }
 

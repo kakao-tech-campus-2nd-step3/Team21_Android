@@ -45,6 +45,7 @@ class FriendRequestListAdapter(
                 } else {
                     Glide.with(itemView.context)
                         .load(friendRequest.profileImageUrl)
+                        .circleCrop()
                         .into(binding.profile)
                 }
 

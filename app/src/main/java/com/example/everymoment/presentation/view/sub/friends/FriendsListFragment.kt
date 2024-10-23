@@ -15,6 +15,7 @@ import com.example.everymoment.data.repository.FriendRepository
 import com.example.everymoment.data.model.network.dto.response.Friends
 import com.example.everymoment.databinding.FragmentFriendsListBinding
 import com.example.everymoment.presentation.adapter.FriendsListAdapter
+import com.example.everymoment.presentation.view.main.ShareViewFragment
 import com.example.everymoment.presentation.viewModel.FriendsListViewModel
 import com.example.everymoment.presentation.viewModel.factory.FriendsListViewModelFactory
 
@@ -86,6 +87,22 @@ class FriendsListFragment : Fragment() {
         observeViewModel()
 
         viewModel.fetchFriendsList()
+
+        binding.friendsListBackButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, ShareViewFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (isFabExpanded) {
+            shrinkFab()
+        }
     }
 
     private fun observeViewModel() {
@@ -93,6 +110,13 @@ class FriendsListFragment : Fragment() {
             allFriends.clear()
             allFriends.addAll(friends)
             updateAdapterList()
+
+            if (allFriends.isEmpty()) {
+                binding.addFriend.visibility = View.VISIBLE
+                binding.addFriend.hint = getString(R.string.add_friends)
+            } else {
+                binding.addFriend.visibility = View.GONE
+            }
         }
     }
 

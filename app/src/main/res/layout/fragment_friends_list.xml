@@ -19,6 +19,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/friendsListBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
@@ -47,17 +58,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line" />
 
-    <!--    <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/friendAddButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:background="@null"
-            android:src="@drawable/person_add_40px"
-            android:tint="@color/primary_color"
-            app:layout_constraintStart_toEndOf="@id/searchNicknameEditText"
-            app:layout_constraintTop_toTopOf="@id/searchNicknameEditText" />-->
-
     <TextView
         android:id="@+id/addFriend"
         android:layout_width="wrap_content"
@@ -65,6 +65,7 @@
         android:hint="@string/add_friends"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +100,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
-        android:visibility="invisible"
         android:clickable="false"
+        android:visibility="invisible"
         app:backgroundTint="@color/primary_color"
         app:fabCustomSize="60dp"
         app:layout_constraintBottom_toTopOf="@id/mainFab"
@@ -131,8 +132,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:visibility="invisible"
         android:clickable="false"
+        android:visibility="invisible"
         app:backgroundTint="@color/primary_color"
         app:fabCustomSize="60dp"
         app:layout_constraintBottom_toTopOf="@id/friendRequestFab"

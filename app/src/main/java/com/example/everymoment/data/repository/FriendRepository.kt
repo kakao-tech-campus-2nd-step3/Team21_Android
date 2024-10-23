@@ -114,7 +114,7 @@ class FriendRepository {
         apiService.rejectFriendRequest(token, requestId).enqueue(object : Callback<ServerResponse> {
             override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
                 if (p1.isSuccessful) {
-                    Log.d("acceptFriendRequest", "${p1.body()}")
+                    Log.d("rejectFriendRequest", "${p1.body()}")
                     callback(true, p1.message())
                 } else {
                     callback(false, null)
@@ -122,7 +122,7 @@ class FriendRepository {
             }
 
             override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
-                Log.d("acceptFriendRequest", "Failed to accept friend request: ${p1.message}")
+                Log.d("rejectFriendRequest", "Failed to reject friend request: ${p1.message}")
                 callback(false, null)
             }
         })

@@ -6,11 +6,11 @@
 
     <ImageView
         android:id="@+id/profile"
-        android:layout_width="0dp"
+        android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/account_circle_24px" />
@@ -38,7 +38,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/userNickname"/>
+        app:layout_constraintTop_toTopOf="@id/userNickname" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/friendButton"
@@ -62,8 +62,8 @@
         android:background="@drawable/request_completed_background"
         android:text="@string/request_completed"
         android:textSize="15sp"
-        android:visibility="gone"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/userNickname" />
 
