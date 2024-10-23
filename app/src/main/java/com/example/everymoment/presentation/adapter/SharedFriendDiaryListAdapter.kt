@@ -2,9 +2,12 @@ package com.example.everymoment.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.everymoment.data.model.network.dto.response.Diary
 import com.example.everymoment.databinding.ShareItemBinding
 
@@ -21,10 +24,26 @@ class SharedFriendDiaryListAdapter : ListAdapter<Diary, SharedFriendDiaryListAda
 ) {
     inner class ViewHolder(private val binding: ShareItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Diary) {
-            binding.timeText.text = item.createAt
+            binding.timeText.text = item.createAt.substring(11, 16)
             binding.locationNameText.text = item.locationName
             binding.addressText.text = item.address
 
+            if (item.thumbnailResponse == null) {
+                binding.detailedDiaryContainer.isGone = true
+            } else {
+                binding.detailedDiaryContainer.isVisible = true
+
+                Glide.with(itemView.context)
+                    .load(item.thumbnailResponse.imageUrl)
+                    .into(binding.diaryImageContent1)
+            }
+
+            if (item.content == null) {
+                binding.diaryTextContent.isGone = true
+            } else {
+                binding.diaryTextContent.isVisible = true
+                binding.diaryTextContent.text = item.content
+            }
         }
     }
 

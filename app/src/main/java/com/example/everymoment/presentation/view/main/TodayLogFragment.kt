@@ -24,24 +24,34 @@ import com.example.everymoment.presentation.viewModel.factory.TimelineViewModelF
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.provider.Settings
 
 class TodayLogFragment : Fragment() {
 
-    private val permissionRequest =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-            val coarseLocationGranted =
-                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
-            val notificationGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                permissions[Manifest.permission.POST_NOTIFICATIONS] ?: false
+    private val fineLocationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                checkCoarseLocationPermission()
             } else {
-                true
+                showPermissionDeniedDialog("위치 권한")
             }
+        }
 
-            if ((fineLocationGranted || coarseLocationGranted) && notificationGranted) {
+    private val coarseLocationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                checkNotificationPermission()
+            } else {
+                showPermissionDeniedDialog("위치 권한")
+            }
+        }
+
+    private val notificationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
                 startLocationService()
             } else {
-                showPermissionDeniedDialog()
+                showPermissionDeniedDialog("알림 권한")
             }
         }
 
@@ -64,7 +74,7 @@ class TodayLogFragment : Fragment() {
             TimelineViewModel::class.java
         )
 
-        checkPermissions()
+        checkFineLocationPermission()
         updateDateText()
 
         val adapter = TimelineAdapter(requireActivity(), viewModel)
@@ -120,56 +130,55 @@ class TodayLogFragment : Fragment() {
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun getNeededPermissions(): List<String> {
-        val permissionsNeeded = mutableListOf<String>()
-
+    private fun checkFineLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+            fineLocationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            checkCoarseLocationPermission()
         }
+    }
+
+    private fun checkCoarseLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+            coarseLocationPermissionRequest.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        } else {
+            checkNotificationPermission()
         }
+    }
 
+    private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                permissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
+                notificationPermissionRequest.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                startLocationService()
             }
-        }
-
-        return permissionsNeeded
-    }
-
-    private fun requestPermissions(permissionsNeeded: List<String>) {
-        if (permissionsNeeded.isNotEmpty()) {
-            permissionRequest.launch(permissionsNeeded.toTypedArray())
         } else {
             startLocationService()
         }
     }
 
-    private fun checkPermissions() {
-        val permissionsNeeded = getNeededPermissions()
-        requestPermissions(permissionsNeeded)
-    }
-
-    private fun showPermissionDeniedDialog() {
+    private fun showPermissionDeniedDialog(permissionName: String) {
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle("Request Permission")
-            .setMessage("위치 권한과 알림 권한이 허용되어야 앱이 실행됩니다.")
-            .setPositiveButton("재시도") { _, _ ->
-                checkPermissions()
+            .setTitle("알림")
+            .setMessage("${permissionName}이 허용되어야 앱이 실행됩니다.")
+            .setPositiveButton("설정으로 이동") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = android.net.Uri.fromParts("package", requireContext().packageName, null)
+                }
+                startActivity(intent)
             }
             .setNegativeButton("종료") { _, _ ->
                 requireActivity().finish()

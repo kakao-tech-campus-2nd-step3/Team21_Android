@@ -100,7 +100,15 @@ class TimelineAdapter(private val activity: FragmentActivity, private val viewMo
 
                 Glide.with(itemView.context)
                     .load(item.thumbnailResponse.imageUrl)
+                    .circleCrop()
                     .into(binding.diaryImageContent)
+            }
+
+            if (item.content == null) {
+                binding.diaryTextContent.isGone = true
+            } else {
+                binding.diaryTextContent.isVisible = true
+                binding.diaryTextContent.text = item.content
             }
 
             binding.deleteIcon.setOnClickListener {

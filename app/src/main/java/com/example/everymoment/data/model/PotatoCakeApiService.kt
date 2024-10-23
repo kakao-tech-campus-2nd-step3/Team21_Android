@@ -1,10 +1,5 @@
-package com.example.everymoment.data.model.network.api
+package com.example.everymoment.data.model
 
-import com.example.everymoment.data.model.network.dto.response.GetDetailDiaryResponse
-import com.example.everymoment.data.model.network.dto.response.GetCategoriesResponse
-import com.example.everymoment.data.model.network.dto.response.GetFilesResponse
-import com.example.everymoment.data.model.network.dto.request.PostCategoryRequest
-import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
 import com.example.everymoment.data.model.network.dto.response.DiaryResponse
 import com.example.everymoment.data.model.network.dto.response.FriendRequestListResponse
 import com.example.everymoment.data.model.network.dto.response.FriendsListResponse
@@ -12,7 +7,6 @@ import com.example.everymoment.data.model.network.dto.response.MemberResponse
 import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import com.example.everymoment.data.repository.NotificationResponse
 import retrofit2.Call
-import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -45,43 +39,6 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId: Int
     ): Call<ServerResponse>
-
-    @GET("/api/diaries/my/{diaryId}")
-    fun getDiaryInDetail(
-        @Header("Authorization") token: String,
-        @Path("diaryId") diaryId: Int
-    ): Call<GetDetailDiaryResponse>
-
-    @POST("/api/categories")
-    fun postCategory(
-        @Header("Authorization") token: String,
-        @Body categoryRequest: PostCategoryRequest
-    ): Call<ServerResponse>
-
-    @DELETE("/api/categories/{categoryId}")
-    fun delCategory(
-        @Header("Authorization") token: String,
-        @Path("categoryId") categoryId: Int
-    ): Call<ServerResponse>
-
-    @GET("/api/categories")
-    fun getCategories(
-        @Header("Authorization") token: String
-    ): Call<GetCategoriesResponse>
-
-    @GET("/api/diaries/{diaryId}/files")
-    fun getFiles(
-        @Header("Authorization") token: String,
-        @Path("diaryId") diaryId: Int
-    ): Call<GetFilesResponse>
-
-    @POST("/api/diaries/{diaryId}/files")
-    fun postFiles(
-        @Header("Authorization") token: String,
-        @Path("diaryId") diaryId: Int,
-        @Body files: PostFilesRequest
-    ): Call<ServerResponse>
-
 
     @POST("api/members/{memberId}/friend-requests")
     fun sendFriendRequest(
@@ -116,12 +73,6 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Path("requestId") requestId: Int
     ): Call<ServerResponse>
-
-    @GET("api/members?size=30")
-    fun getMembers(
-        @Header("Authorization") token: String,
-    ): Call<MemberResponse>
-
     @GET("/api/friends/{friendId}/diaries")
     fun getFriendDiaries(
         @Header("Authorization") token: String,

@@ -19,8 +19,7 @@ class DiaryRepository {
     private val apiService: PotatoCakeApiService =
         NetworkModule.provideApiService(NetworkModule.provideRetrofit())
     private val jwtToken = GlobalApplication.prefs.getString("token", "null")
-    private val token =
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6OCwiaWF0IjoxNzI5MDgzNDgyLCJleHAiOjE3MjkyNTYyODJ9.hEFZ6F-4hXFIv7xWX34JqC32hceW-kVk_Qj5GfLzWq0"
+    private val token = "Bearer $jwtToken"
 
     fun getDiaries(
         date: String,
