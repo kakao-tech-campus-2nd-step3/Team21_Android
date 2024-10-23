@@ -4,9 +4,9 @@ import com.example.everymoment.data.repository.DiaryResponse
 import com.example.everymoment.data.repository.FriendRequestListResponse
 import com.example.everymoment.data.repository.FriendsListResponse
 import com.example.everymoment.data.repository.MemberResponse
+import com.example.everymoment.data.repository.NotificationResponse
 import com.example.everymoment.data.repository.ServerResponse
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -85,4 +85,9 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Query("date") date: String
     ): Call<DiaryResponse>
+
+    @GET("/api/notifications")
+    fun getNotifications(
+        @Header("Authorization") token: String,
+    ): Call<NotificationResponse>
 }

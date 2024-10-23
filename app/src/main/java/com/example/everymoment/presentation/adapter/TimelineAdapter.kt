@@ -100,6 +100,7 @@ class TimelineAdapter(private val viewModel: TimelineViewModel) : ListAdapter<Di
 
                 Glide.with(itemView.context)
                     .load(item.thumbnailResponse.imageUrl)
+                    .circleCrop()
                     .into(binding.diaryImageContent)
             }
 

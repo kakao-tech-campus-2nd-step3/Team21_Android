@@ -2,26 +2,42 @@ package com.example.everymoment.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.everymoment.data.model.NotificationTypeConstants
+import com.example.everymoment.data.repository.MyNotification
 import com.example.everymoment.databinding.NotificationItemBinding
+import com.example.everymoment.presentation.viewModel.NotificationViewModel
 
-class NotificationAdapter(private val onClick: (String) -> Unit) :
-    RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+class NotificationAdapter(private val viewModel: NotificationViewModel) :
+    ListAdapter<MyNotification, NotificationAdapter.ViewHolder>(
+        object : DiffUtil.ItemCallback<MyNotification>() {
+            override fun areItemsTheSame(oldItem: MyNotification, newItem: MyNotification): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    private var notiList: List<String> = emptyList()
+            override fun areContentsTheSame(oldItem: MyNotification, newItem: MyNotification): Boolean {
+                return oldItem == newItem
+            }
+        }
+    ) {
 
     inner class ViewHolder(private val binding: NotificationItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(s: String) {
+        fun bind(item: MyNotification) {
+            binding.message.text = item.content
+
+            if (item.type == NotificationTypeConstants.FRIEND_REQUEST) {
+                binding.posButton.isVisible = true
+                binding.negButton.isVisible = true
+
+                binding.posButton.setOnClickListener { viewModel.acceptFriendRequest(item.targetId) }
+                binding.negButton.setOnClickListener { viewModel.rejectFriendRequest(item.targetId) }
+            }
 
         }
-
-        init {
-            binding.root.setOnClickListener { }
-            binding.posButton.setOnClickListener { onClick(notiList[adapterPosition]) }
-            binding.negButton.setOnClickListener { onClick(notiList[adapterPosition]) }
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,12 +46,7 @@ class NotificationAdapter(private val onClick: (String) -> Unit) :
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return notiList.size
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(notiList[position])
+        holder.bind(getItem(position))
     }
-
 }
