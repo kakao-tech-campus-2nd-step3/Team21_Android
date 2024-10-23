@@ -41,6 +41,7 @@ class FriendsListAdapter(
             } else {
                 Glide.with(itemView.context)
                     .load(friends.profileImageUrl)
+                    .circleCrop()
                     .into(binding.profile)
             }
 
