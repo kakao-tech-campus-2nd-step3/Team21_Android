@@ -55,6 +55,15 @@ class TodayLogFragment : Fragment() {
             }
         }
 
+    private val backgroundLocationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                checkBackgroundLocation()
+            } else {
+                showPermissionDeniedDialog("위치 권한")
+            }
+        }
+
     private lateinit var binding: FragmentTodayLogBinding
     private lateinit var viewModel: TimelineViewModel
     private val diaryRepository = DiaryRepository()
@@ -150,7 +159,7 @@ class TodayLogFragment : Fragment() {
         ) {
             coarseLocationPermissionRequest.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         } else {
-            checkNotificationPermission()
+            checkBackgroundLocation()
         }
     }
 
@@ -167,6 +176,20 @@ class TodayLogFragment : Fragment() {
             }
         } else {
             startLocationService()
+        }
+    }
+
+    private fun checkBackgroundLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                backgroundLocationPermissionRequest.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            } else {
+                checkNotificationPermission()
+            }
         }
     }
 
