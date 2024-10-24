@@ -233,4 +233,31 @@ class DiaryRepository {
         })
     }
 
+    fun getSearchedDiaries(
+        keyword: String?,
+        emoji: String?,
+        category: String?,
+        from: String?,
+        until: String?,
+        bookmark: Boolean?,
+        callback: (Boolean, DiaryResponse?) -> Unit
+    ) {
+        apiService.getSearchedDiaries(token, keyword, emoji, category, from, until, bookmark).enqueue(object : Callback<DiaryResponse> {
+            override fun onResponse(p0: Call<DiaryResponse>, p1: Response<DiaryResponse>) {
+                if (p1.isSuccessful) {
+                    Log.d("SearchedDiary", "${p1.body()}")
+                    Log.d("SearchedDiary", token)
+                    callback(true, p1.body())
+                } else {
+                    callback(false, null)
+                }
+            }
+
+            override fun onFailure(p0: Call<DiaryResponse>, p1: Throwable) {
+                Log.d("SearchedDiary", "Failed to search diaries: ${p1.message}")
+                callback(false, null)
+            }
+        })
+    }
+
 }

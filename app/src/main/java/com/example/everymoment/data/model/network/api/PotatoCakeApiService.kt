@@ -139,4 +139,15 @@ interface PotatoCakeApiService {
     fun getNotifications(
         @Header("Authorization") token: String,
     ): Call<NotificationResponse>
+
+    @GET("api/diaries/my")
+    fun getSearchedDiaries(
+        @Header("Authorization") token: String,
+        @Query("keyword") keyword: String?,
+        @Query("emoji") emoji: String?,
+        @Query("category") category: String?,
+        @Query("from") from: String?,
+        @Query("until") until: String?,
+        @Query("bookmark") bookmark: Boolean?
+    ): Call<DiaryResponse>
 }

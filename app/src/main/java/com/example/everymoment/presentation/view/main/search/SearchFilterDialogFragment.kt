@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.everymoment.R
@@ -20,7 +21,9 @@ import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentSearchFilterDialogBinding
 import com.example.everymoment.presentation.adapter.CategoryAdapter
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
+import com.example.everymoment.presentation.viewModel.SearchViewModel
 import com.example.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.SearchViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
@@ -32,9 +35,11 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentSearchFilterDialogBinding
     private lateinit var categoryAdapter: CategoryAdapter
     private var checkedBookmark: Boolean = false
-    private val viewModel: DiaryViewModel by activityViewModels { DiaryViewModelFactory(
-        DiaryRepository()
-    ) }
+    private val diaryViewModel: DiaryViewModel by activityViewModels {
+        DiaryViewModelFactory(
+            DiaryRepository()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,10 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     ): View? {
         binding = FragmentSearchFilterDialogBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -124,10 +133,10 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             val gridLayoutManager = GridLayoutManager(requireContext(), 3)
             binding.categoryRcv.layoutManager = gridLayoutManager
-            categoryAdapter = CategoryAdapter(requireContext(), viewModel.categories.value)
+            categoryAdapter = CategoryAdapter(requireContext(), diaryViewModel.categories.value)
             binding.categoryRcv.adapter = categoryAdapter
 
-            viewModel.categories.observe(viewLifecycleOwner) { categories ->
+            diaryViewModel.categories.observe(viewLifecycleOwner) { categories ->
                 categoryAdapter = CategoryAdapter(requireContext(), categories)
                 binding.categoryRcv.adapter = categoryAdapter
 

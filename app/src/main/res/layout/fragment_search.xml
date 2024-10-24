@@ -73,10 +73,11 @@
         android:background="@color/line_color" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchedDiaryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:listitem="@layout/timeline_item">
+        tools:listitem="@layout/search_item">
 
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
