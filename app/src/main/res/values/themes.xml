@@ -5,13 +5,21 @@
         <item name="switchStyle">@style/notificationToggleStyle</item>
     </style>
 
+    <style name="SpinnerMode" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+
     <style name="CustomDatePicker" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/primary_color</item>
-        <item name="background">@color/white</item>
-        <item name="colorControlActivated">@color/primary_color</item>
-        <item name="colorControlHighlight">@color/primary_color</item>
-        <item name="android:colorButtonNormal">@color/primary_color</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/MyDatePickerButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/MyDatePickerButtonStyle</item>
+        <item name="android:colorControlNormal">@color/primary_color2</item>
+        <item name="android:datePickerStyle">@style/SpinnerMode</item>
         <item name="android:textColorPrimary">@color/primary_color</item>
+    </style>
+
+    <style name="MyDatePickerButtonStyle" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:textColor">@color/primary_color</item>
     </style>
 
     <style name="Theme.Everymoment" parent="Base.Theme.Everymoment" />

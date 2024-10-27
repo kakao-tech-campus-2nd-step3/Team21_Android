@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.databinding.FragmentPostBinding
 import com.example.everymoment.presentation.adapter.PostAdapter
+import com.example.everymoment.presentation.view.main.MainActivity
 
 class PostFragment : Fragment() {
 
@@ -28,6 +29,8 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as? MainActivity)?.hideNavigationBar()
+
         setPostAdapter()
         imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -45,6 +48,11 @@ class PostFragment : Fragment() {
                 binding.recyclerView.scrollToPosition(postAdapter.itemCount - 1)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as? MainActivity)?.showNavigationBar()
     }
 
     private fun setPostAdapter() {

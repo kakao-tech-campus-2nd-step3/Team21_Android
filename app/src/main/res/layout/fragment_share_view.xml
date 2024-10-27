@@ -1,106 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".presentation.view.main.TodayLogFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="88dp"
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/friendListIcon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_friend" />
+            android:layout_height="52dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:text="친구목록"
-                android:textSize="10sp"
-                android:textColor="#FF5f6368" />
-        </LinearLayout>
+                android:textColor="@color/primary_color" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"   />
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="top|center_horizontal"
+                android:src="@drawable/ic_friend" />
+        </FrameLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/friendListIcon"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:orientation="vertical"-->
+        <!--            android:gravity="center">-->
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="35dp"-->
+        <!--                android:layout_height="35dp"-->
+        <!--                android:src="@drawable/ic_friend" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="친구목록"-->
+        <!--                android:textColor="@color/primary_color" />-->
+        <!--        </LinearLayout>-->
+
+        <!--        <View-->
+        <!--            android:id="@+id/verticalLine"-->
+        <!--            android:layout_width="2dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:background="@color/line_color"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/friendListIcon" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friendList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:layout_marginStart="10dp" />
-    </LinearLayout>
+            app:layout_constraintStart_toEndOf="@id/friendListIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/friend_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.divider.MaterialDivider
+    <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="2dp"
+        android:background="@color/line_color" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_gravity="center_vertical"
+        android:layout_weight="1"
         android:gravity="center"
-        android:visibility="gone"
-        android:hint="친구를 클릭해보세요!"/>
+        android:hint="친구를 클릭해보세요!"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/white"
-        android:visibility="visible"
         android:gravity="center"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/prevDate"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="30dp"
-            android:src="@drawable/ic_arrow_left" />
+            android:src="@drawable/ic_arrow_left"
+            app:tint="@drawable/backbutton" />
 
         <TextView
             android:id="@+id/currentDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="9월 20일 (금)"
-            android:textSize="16sp"
             android:layout_marginHorizontal="8dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:hint="9월 20일 (금)"
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/nextDate"
-            android:layout_width="17dp"
+            android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="30dp"
-            android:src="@drawable/ic_arrow_right" />
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@drawable/backbutton" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeLineRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:padding="16dp"
-        android:visibility="visible"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:visibility="visible" />
 </LinearLayout>

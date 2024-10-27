@@ -6,7 +6,7 @@
             <solid android:color="@android:color/transparent"/>
             <stroke
                 android:width="3dp"
-                android:color="#7A7A7A"/>
+                android:color="@color/search_gray"/>
         </shape>
     </item>
 </layer-list>

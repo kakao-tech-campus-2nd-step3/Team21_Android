@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.everymoment.data.repository.Diary
 import com.example.everymoment.data.repository.DiaryRepository
+import com.example.everymoment.data.model.network.dto.response.Diary
 import kotlinx.coroutines.launch
 
 class TimelineViewModel(private val diaryRepository: DiaryRepository) : ViewModel() {

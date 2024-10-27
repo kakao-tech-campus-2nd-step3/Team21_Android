@@ -7,16 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
 import com.example.everymoment.databinding.FragmentSettingBinding
 import com.example.everymoment.extensions.CustomDialog
 import com.example.everymoment.extensions.CustomEditDialog
 import com.example.everymoment.extensions.GalleryUtil
+import com.example.everymoment.presentation.viewModel.SettingViewModel
 
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
+    private val viewModel by viewModels<SettingViewModel>()
 
     private val galleryUtil = GalleryUtil(this)
 
@@ -116,7 +119,7 @@ class SettingFragment : Fragment() {
                 resources.getString(R.string.change),
                 onPositiveClick = {
                     galleryUtil.openGallery(onImageSelected = {
-                        addImage(it)
+                        addLocalImage(it)
                     })
                 }).apply {
                 isCancelable = false
@@ -165,7 +168,7 @@ class SettingFragment : Fragment() {
         else return 0
     }
 
-    private fun addImage(imageUri: Uri?) {
+    private fun addLocalImage(imageUri: Uri?) {
         Glide.with(this)
             .load(imageUri)
             .circleCrop()

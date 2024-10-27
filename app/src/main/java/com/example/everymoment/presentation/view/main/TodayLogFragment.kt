@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,34 +13,54 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.everymoment.LocationService
+import com.example.everymoment.services.location.LocationService
 import com.example.everymoment.R
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentTodayLogBinding
 import com.example.everymoment.presentation.adapter.TimelineAdapter
 import com.example.everymoment.presentation.view.sub.NotificationFragment
 import com.example.everymoment.presentation.viewModel.TimelineViewModel
-import com.example.everymoment.presentation.viewModel.TimelineViewModelFactory
+import com.example.everymoment.presentation.viewModel.factory.TimelineViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.provider.Settings
 
 class TodayLogFragment : Fragment() {
 
-    private val permissionRequest =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-            val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
-            val notificationGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                permissions[Manifest.permission.POST_NOTIFICATIONS] ?: false
+    private val fineLocationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                checkCoarseLocationPermission()
             } else {
-                true
+                showPermissionDeniedDialog("위치 권한")
             }
+        }
 
-            if ((fineLocationGranted || coarseLocationGranted) && notificationGranted) {
+    private val coarseLocationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                checkNotificationPermission()
+            } else {
+                showPermissionDeniedDialog("위치 권한")
+            }
+        }
+
+    private val notificationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
                 startLocationService()
             } else {
-                showPermissionDeniedDialog()
+                showPermissionDeniedDialog("알림 권한")
+            }
+        }
+
+    private val backgroundLocationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                checkBackgroundLocation()
+            } else {
+                showPermissionDeniedDialog("위치 권한")
             }
         }
 
@@ -64,13 +83,10 @@ class TodayLogFragment : Fragment() {
             TimelineViewModel::class.java
         )
 
-        val TodayDate = arguments?.getString("selected_date")
-        Log.d("TodayDate", "Selected date: $TodayDate")
-
-        checkPermissions()
+        checkFineLocationPermission()
         updateDateText()
 
-        val adapter = TimelineAdapter(viewModel)
+        val adapter = TimelineAdapter(requireActivity(), viewModel)
         setupRecyclerView(adapter)
         observeViewModel(adapter)
 
@@ -85,14 +101,16 @@ class TodayLogFragment : Fragment() {
         binding.nextDate.setOnClickListener {
             calendar.add(Calendar.DATE, 1)
             updateDateText()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             viewModel.fetchDiaries(currentDate)
         }
 
         binding.prevDate.setOnClickListener {
             calendar.add(Calendar.DATE, -1)
             updateDateText()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             viewModel.fetchDiaries(currentDate)
         }
     }
@@ -121,56 +139,69 @@ class TodayLogFragment : Fragment() {
         binding.timeLineRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun getNeededPermissions(): List<String> {
-        val permissionsNeeded = mutableListOf<String>()
-
+    private fun checkFineLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+            fineLocationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            checkCoarseLocationPermission()
         }
+    }
+
+    private fun checkCoarseLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+            coarseLocationPermissionRequest.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        } else {
+            checkBackgroundLocation()
         }
+    }
 
+    private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                permissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
+                notificationPermissionRequest.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                startLocationService()
             }
-        }
-
-        return permissionsNeeded
-    }
-
-    private fun requestPermissions(permissionsNeeded: List<String>) {
-        if (permissionsNeeded.isNotEmpty()) {
-            permissionRequest.launch(permissionsNeeded.toTypedArray())
         } else {
             startLocationService()
         }
     }
 
-    private fun checkPermissions() {
-        val permissionsNeeded = getNeededPermissions()
-        requestPermissions(permissionsNeeded)
+    private fun checkBackgroundLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                backgroundLocationPermissionRequest.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            } else {
+                checkNotificationPermission()
+            }
+        }
     }
 
-    private fun showPermissionDeniedDialog() {
+    private fun showPermissionDeniedDialog(permissionName: String) {
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle("Request Permission")
-            .setMessage("위치 권한과 알림 권한이 허용되어야 앱이 실행됩니다.")
-            .setPositiveButton("재시도") { _, _ ->
-                checkPermissions()
+            .setTitle("알림")
+            .setMessage("${permissionName}이 허용되어야 앱이 실행됩니다.")
+            .setPositiveButton("설정으로 이동") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = android.net.Uri.fromParts("package", requireContext().packageName, null)
+                }
+                startActivity(intent)
             }
             .setNegativeButton("종료") { _, _ ->
                 requireActivity().finish()

@@ -1,28 +1,36 @@
 package com.example.everymoment.presentation.view.sub.friends
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.everymoment.R
-import com.example.everymoment.data.model.NetworkUtil
-import com.example.everymoment.data.repository.Member
-import com.example.everymoment.data.repository.MemberResponse
+import com.example.everymoment.data.model.network.api.NetworkUtil
+import com.example.everymoment.data.model.network.dto.response.Member
+import com.example.everymoment.data.model.network.dto.response.MemberResponse
+import com.example.everymoment.data.repository.FriendRepository
 import com.example.everymoment.databinding.FragmentFriendRequestBinding
 import com.example.everymoment.presentation.adapter.FriendRequestAdapter
+import com.example.everymoment.presentation.viewModel.FriendRequestViewModel
+import com.example.everymoment.presentation.viewModel.factory.FriendRequestViewModelFactory
+import com.example.everymoment.services.location.GlobalApplication
 
 class FriendRequestFragment : Fragment() {
 
     private lateinit var binding: FragmentFriendRequestBinding
     private lateinit var adapter: FriendRequestAdapter
+    private val viewModel: FriendRequestViewModel by viewModels {
+        FriendRequestViewModelFactory(FriendRepository())
+    }
 
-    // 테스트용 더미 데이터
     private var allMembers = mutableListOf<Member>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +45,9 @@ class FriendRequestFragment : Fragment() {
 
         setupRecyclerView()
         setupSearch()
-        fetchMembersFromServer()
+        observeViewModel()
+        viewModel.fetchMembers()
+
 
         binding.friendsBackButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -49,33 +59,11 @@ class FriendRequestFragment : Fragment() {
 
     }
 
-    private fun fetchMembersFromServer() {
-        val url = "http://13.125.156.74:8080/api/members?size=30"
-        val jwtToken =
-            "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiaWF0IjoxNzI4NjA5ODk3LCJleHAiOjE3Mjg3ODI2OTd9.JaJ2Ut7M_YePTXZZNODRu6eGBXwbO2kLtDXl2jz9Ock"
-
-        NetworkUtil.getData(
-            url,
-            jwtToken,
-            responseClass = MemberResponse::class.java
-        ) { success, memberResponse ->
-            if (success && memberResponse != null) {
-                Log.d("memberNetwork", "fetchedMemberList : ${memberResponse.info.members}")
-
-                allMembers.clear()
-                allMembers.addAll(memberResponse.info.members)
-                Log.d("memberNetwork", "allMembers list: $allMembers")
-
-                activity?.runOnUiThread {
-                    adapter.submitList(allMembers)
-                    setupRecyclerView()
-                }
-            } else {
-                Log.d("memberNetwork", "Network failed")
-                activity?.runOnUiThread {
-
-                }
-            }
+    private fun observeViewModel() {
+        viewModel.members.observe(viewLifecycleOwner) { members ->
+            allMembers.clear()
+            allMembers.addAll(members)
+            updateAdapterList()
         }
     }
 
@@ -84,22 +72,43 @@ class FriendRequestFragment : Fragment() {
         }
         binding.friendRequestRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.friendRequestRecyclerView.adapter = adapter
-        adapter.submitList(allMembers)
+        updateAdapterList()
     }
 
     private fun setupSearch() {
-        binding.searchUserEditText.addTextChangedListener { editable ->
-            val searchText = editable.toString()
-            val filteredList =
-                allMembers.filter { it.nickname.contains(searchText, ignoreCase = true) }
-            adapter.submitList(filteredList)
+        binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            if (filteredList.isEmpty()) {
-                binding.searchFriend.visibility = View.VISIBLE
-                binding.searchFriend.setHint(R.string.search_nothing)
-            } else {
-                binding.searchFriend.visibility = View.GONE
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchText = s.toString()
+
+                if (searchText.isEmpty()) {
+                    binding.searchFriend.visibility = View.VISIBLE
+                    binding.searchFriend.setHint(R.string.search_nothing)
+                    return
+                }
+
+                val filteredList = allMembers.filter {
+                    it.nickname.contains(searchText, ignoreCase = true)
+                }
+
+                adapter.submitList(filteredList) {
+                    if (filteredList.isEmpty()) {
+                        binding.friendRequestRecyclerView.visibility = View.GONE
+                        binding.searchFriend.visibility = View.VISIBLE
+                        binding.searchFriend.setHint(R.string.search_nothing)
+                    } else {
+                        binding.friendRequestRecyclerView.visibility = View.VISIBLE
+                        binding.searchFriend.visibility = View.GONE
+                    }
+                }
             }
-        }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun updateAdapterList() {
+        adapter.submitList(allMembers.toList())
     }
 }
