@@ -20,7 +20,9 @@ class NotificationViewModel(
         viewModelScope.launch {
             notificationRepository.getNotificationList { success, response ->
                 if (success && response != null) {
-                    _notifications.postValue(response.info)
+                    val filteredNotifications = response.info.filter { notification ->
+                        notification.type != "MOOD_CHECK" && !notification.read }
+                    _notifications.postValue(filteredNotifications)
                 }
             }
         }
@@ -47,6 +49,12 @@ class NotificationViewModel(
 
                 }
             }
+        }
+    }
+
+    fun readNotification(notificationId: Int) {
+        viewModelScope.launch {
+            notificationRepository.readNotification(notificationId)
         }
     }
 }

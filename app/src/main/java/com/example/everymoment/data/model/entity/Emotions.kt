@@ -19,6 +19,10 @@ enum class Emotions(private val unicode: String) {
         fun fromUnicode(unicode: String): Emotions? {
             return entries.find { it.unicode == unicode }
         }
+
+        fun getEmotionNameInLowerCase(unicode: String): String? {
+            return fromUnicode(unicode)?.name?.lowercase()
+        }
     }
 
 }

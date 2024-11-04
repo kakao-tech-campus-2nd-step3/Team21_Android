@@ -10,10 +10,10 @@
         android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:adjustViewBounds="true"
+        android:src="@drawable/account_circle_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/account_circle_24px" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/userNickname"

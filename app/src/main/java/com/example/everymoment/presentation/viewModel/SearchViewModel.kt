@@ -18,20 +18,12 @@ class SearchViewModel(private val diaryRepository: DiaryRepository) : ViewModel(
 
     fun updateFilter(filterState: FilterState) {
         _filterState.value = filterState
-        fetchSearchedDiaries(
-            keyword = null,
-            emoji = filterState.selectedEmotions.map { it.getEmotionUnicode() },
-            category = filterState.selectedCategories,
-            from = filterState.startDate,
-            until = filterState.endDate,
-            bookmark = filterState.isBookmarked
-        )
     }
 
     fun fetchSearchedDiaries(
         keyword: String?,
-        emoji: List<String>?,
-        category: List<String>?,
+        emoji: String?,
+        category: String?,
         from: String?,
         until: String?,
         bookmark: Boolean?
@@ -44,4 +36,15 @@ class SearchViewModel(private val diaryRepository: DiaryRepository) : ViewModel(
             }
         }
     }
+
+    fun resetFilter() {
+        _filterState.value = FilterState(
+            selectedEmotions = "",
+            isBookmarked = false,
+            startDate = null,
+            endDate = null,
+            selectedCategories = ""
+        )
+    }
+
 }

@@ -14,11 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:paddingBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:paddingStart="5dp">
+        android:paddingBottom="5dp">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/searchWindow"
@@ -35,23 +35,23 @@
             android:padding="10dp"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@id/filter"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/filter"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/filterDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:text="@string/search_filter"
-                android:textColor="@color/primary_color"
-                android:layout_gravity="bottom"/>
+                android:textColor="@color/primary_color" />
 
             <ImageView
                 android:id="@+id/filterIcon"
@@ -72,12 +72,33 @@
         android:layout_height="2dp"
         android:background="@color/line_color" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchedDiaryRecyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        tools:listitem="@layout/search_item">
+        android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchedDiaryRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/search_item" />
+
+        <TextView
+            android:id="@+id/nothingSearched"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_nothing"
+            android:textColor="@color/search_icon_background"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

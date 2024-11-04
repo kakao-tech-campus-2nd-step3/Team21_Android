@@ -10,12 +10,12 @@
 
 
     <TextView
-        android:id="@+id/findFriendByNickname"
+        android:id="@+id/calendarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="캘린더"
+        android:text="@string/calendar"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:layout_marginTop="15dp"
         android:background="@color/line_color"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/findFriendByNickname" />
+        app:layout_constraintTop_toBottomOf="@id/calendarTitle" />
 
     <LinearLayout
         android:id="@+id/calendarAlarm"
@@ -53,9 +53,10 @@
             android:id="@+id/notificationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="알림"
+            android:text="@string/notification"
             android:textColor="#FF5f6368"
             android:textSize="10sp" />
+
     </LinearLayout>
 
 
@@ -67,7 +68,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line"
         app:mcv_headerTextAppearance="@style/CalendarHeaderTextAppearance"
+        app:mcv_rightArrow="@drawable/arrow_forward_ios_calendar_24px"
+        app:mcv_leftArrow="@drawable/arrow_back_ios_calendar_24px"
+        app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         app:mcv_selectionColor="@color/black"
+        android:theme="@style/CalenderViewCustom"
         app:mcv_showOtherDates="all"
         app:mcv_tileHeight="80dp"
         app:mcv_tileSize="53dp" />

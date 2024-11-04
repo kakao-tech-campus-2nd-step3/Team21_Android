@@ -89,4 +89,7 @@
     <string name="check">확인</string>
     <string name="formatted_date">%1$s일</string>
     <string name="del_emotion_dialog">감정 표현을 삭제하시겠습니까?</string>
+    <string name="calendar">캘린더</string>
+    <string name="back_button_dialog">뒤로 갈 경우\n변경된 내용은 삭제됩니다.\n일기 편집을 그만두시겠습니까?</string>
+    <string name="do_stop">그만 두기</string>
 </resources>

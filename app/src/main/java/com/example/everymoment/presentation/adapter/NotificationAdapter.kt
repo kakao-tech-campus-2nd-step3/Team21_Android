@@ -33,11 +33,25 @@ class NotificationAdapter(private val viewModel: NotificationViewModel) :
                 binding.posButton.isVisible = true
                 binding.negButton.isVisible = true
 
-                binding.posButton.setOnClickListener { viewModel.acceptFriendRequest(item.targetId) }
-                binding.negButton.setOnClickListener { viewModel.rejectFriendRequest(item.targetId) }
+                binding.posButton.setOnClickListener {
+                    viewModel.acceptFriendRequest(item.targetId)
+                    viewModel.readNotification(item.id)
+                    removeItem(adapterPosition)
+                }
+                binding.negButton.setOnClickListener {
+                    viewModel.rejectFriendRequest(item.targetId)
+                    viewModel.readNotification(item.id)
+                    removeItem(adapterPosition)
+                }
             }
 
         }
+    }
+
+    private fun removeItem(position: Int) {
+        val currentList = currentList.toMutableList()
+        currentList.removeAt(position)
+        submitList(currentList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

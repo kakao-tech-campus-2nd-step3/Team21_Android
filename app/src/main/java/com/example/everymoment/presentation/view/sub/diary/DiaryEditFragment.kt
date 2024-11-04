@@ -1,17 +1,21 @@
 package com.example.everymoment.presentation.view.sub.diary
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
 import com.example.everymoment.data.model.entity.Emotions
 import com.example.everymoment.data.model.network.dto.request.postEditDiary.Category
-import com.example.everymoment.data.model.network.dto.request.postEditDiary.PostEditDiaryRequest
+import com.example.everymoment.data.model.network.dto.request.postEditDiary.PatchEditedDiaryRequest
+import com.example.everymoment.data.model.network.dto.vo.DetailDiary
+import com.example.everymoment.data.model.network.dto.vo.File
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentDiaryEditBinding
 import com.example.everymoment.extensions.Bookmark
@@ -19,6 +23,7 @@ import com.example.everymoment.extensions.CategoryPopup
 import com.example.everymoment.extensions.CustomDialog
 import com.example.everymoment.extensions.EmotionPopup
 import com.example.everymoment.extensions.GalleryUtil
+import com.example.everymoment.extensions.SendFilesUtil
 import com.example.everymoment.extensions.ToPxConverter
 import com.example.everymoment.presentation.view.main.MainActivity
 import com.example.everymoment.presentation.viewModel.DiaryViewModel
@@ -27,30 +32,32 @@ import com.example.everymoment.presentation.viewModel.factory.DiaryViewModelFact
 class DiaryEditFragment : Fragment() {
 
     private lateinit var binding: FragmentDiaryEditBinding
-    private var imagesArray: BooleanArray = BooleanArray(2)
-    private var categoriesArray: BooleanArray = BooleanArray(2)
-    private var categoriesIdArray: Array<Int?> = arrayOf(null, null)
+
+    private var imagesList: MutableList<String> = mutableListOf()
+    private var categoryList: MutableList<Category> = mutableListOf()
+
     private var galleryUtil = GalleryUtil(this)
     private var toPxConverter = ToPxConverter()
+    private var emotionXOffset = toPxConverter.dpToPx(10)
+    private var categoryYOffset = toPxConverter.dpToPx(75)
+
     private lateinit var emotionPopupManager: EmotionPopup
     private lateinit var categoryManager: CategoryPopup
+
     private var delSelectedImgNum: Int = 0
     private var delSelectedCategoryNum: Int = 0
     private lateinit var bookmark: Bookmark
-    private var diaryId: Int? = null
 
     private lateinit var delEmotionDialog: CustomDialog
     private lateinit var delCategoryDialog: CustomDialog
     private lateinit var delImageDialog: CustomDialog
+    private lateinit var backButtonDialog: CustomDialog
 
     private val viewModel: DiaryViewModel by activityViewModels {
         DiaryViewModelFactory(
             DiaryRepository()
         )
     }
-
-    private var emotionXOffset = toPxConverter.dpToPx(10)
-    private var categoryYOffset = toPxConverter.dpToPx(75)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +74,6 @@ class DiaryEditFragment : Fragment() {
 
         categoryManager = CategoryPopup(requireActivity(), requireContext(), viewModel)
 
-        diaryId = viewModel.getDiaryId()
         bookmark = Bookmark(requireContext(), binding.bookmark)
         setButtonClickListeners()
         setEmotionPopup()
@@ -82,9 +88,9 @@ class DiaryEditFragment : Fragment() {
     }
 
     private fun setDiaryContent() {
-        val diary = viewModel.getDiary()
+        val diary = viewModel.diary.value
         diary?.let { it ->
-            if (it.emoji != "null") {
+            if (it.emoji != null) {
                 Emotions.fromString(it.emoji)?.getEmotionUnicode()?.let { emotion ->
                     binding.emotion.text = emotion
                     binding.emotion.visibility = View.VISIBLE
@@ -95,7 +101,7 @@ class DiaryEditFragment : Fragment() {
             }
             binding.location.setText(it.locationName)
             binding.address.setText(it.address)
-            bookmark.setBookmark(viewModel.getIsBookmarked())
+            bookmark.setBookmark(it.bookmark)
             binding.time.text = it.createAt.substring(11, 16)
             val date = it.createAt.substring(5, 10).replace("-", "월 ")
             binding.date.text = resources.getString(R.string.formatted_date, date)
@@ -112,14 +118,12 @@ class DiaryEditFragment : Fragment() {
                     binding.category2.text =
                         resources.getString(R.string.category_text, it.categories[1].categoryName)
                     binding.addCategory.visibility = View.INVISIBLE
-                    categoriesArray[1] = true
-                    categoriesIdArray[1] = it.categories[1].id
+                    categoryList.add(Category(it.categories[1].id))
                 }
                 binding.category1.visibility = View.VISIBLE
                 binding.category1.text =
                     resources.getString(R.string.category_text, it.categories[0].categoryName)
-                categoriesArray[0] = true
-                categoriesIdArray[0] = it.categories[0].id
+                categoryList.add(Category(it.categories[0].id))
             }
         }
 
@@ -129,21 +133,19 @@ class DiaryEditFragment : Fragment() {
     }
 
     private fun setImages() {
-        diaryId?.let {
-            val imagesArray2 = viewModel.getFilesArray()
-            if (!imagesArray2.isNullOrEmpty()) {
-                if (imagesArray.size == 2) {
-                    binding.image2.visibility = View.VISIBLE
-                    binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(requireContext()).load(imagesArray2[1].imageUrl).into(binding.image2)
-                    imagesArray[1] = true
-                }
-                binding.image1.visibility = View.VISIBLE
-                binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
-                Glide.with(requireContext()).load(imagesArray2[0].imageUrl).into(binding.image1)
-                binding.images.visibility = View.VISIBLE
+        val filesList = viewModel.getImages()
+        if (!filesList.isNullOrEmpty()) {
+            binding.image1.visibility = View.VISIBLE
+            binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(requireContext()).load(filesList[0]).into(binding.image1)
+            imagesList.add(filesList[0])
+            binding.images.visibility = View.VISIBLE
+            binding.image2.visibility = View.VISIBLE
+            if (filesList!!.size == 2) {
                 binding.image2.visibility = View.VISIBLE
-                imagesArray[0] = true
+                binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
+                Glide.with(requireContext()).load(filesList[1]).into(binding.image2)
+                imagesList.add(filesList[1])
             }
         }
     }
@@ -183,6 +185,15 @@ class DiaryEditFragment : Fragment() {
                 delEmotion()
             }
         )
+
+        backButtonDialog = CustomDialog(
+            resources.getString(R.string.back_button_dialog),
+            resources.getString(R.string.cancel),
+            resources.getString(R.string.do_stop),
+            onPositiveClick = {
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        )
     }
 
     private fun delEmotion() {
@@ -193,43 +204,40 @@ class DiaryEditFragment : Fragment() {
 
     private fun delSelectedCategory() {
         if (delSelectedCategoryNum == 1) {
-            if (categoriesArray[1]) {
+            if (categoryList.size == 2) {
                 binding.category1.text = binding.category2.text
-                categoriesIdArray[0] = categoriesIdArray[1]
-                categoriesIdArray[1] = null
+                categoryList.removeAt(1)
                 binding.addCategory.visibility = View.VISIBLE
                 binding.category2.visibility = View.GONE
-                categoriesArray[1] = false
             } else {
                 binding.category1.visibility = View.GONE
-                categoriesArray[0] = false
-                categoriesIdArray[0] = null
+                categoryList.removeAt(0)
             }
         } else if (delSelectedCategoryNum == 2) {
             binding.category2.visibility = View.GONE
             binding.addCategory.visibility = View.VISIBLE
-            categoriesArray[1] = false
-            categoriesIdArray[1] = null
+            categoryList.removeAt(1)
         }
+        Log.d("settle54", "del category: ${categoryList.joinToString(",")}")
     }
 
     private fun delSelectedImage() {
         if (delSelectedImgNum == 1) {
-            if (imagesArray[1]) {
+            if (imagesList.size >= 2) {
                 binding.image1.setImageDrawable(binding.image2.drawable)
                 binding.image2.setImageResource(R.drawable.baseline_add_circle_outline_24)
                 binding.image2.scaleType = ImageView.ScaleType.CENTER
-                imagesArray[1] = false
+                imagesList.removeAt(1)
             } else {
                 binding.image1.setImageResource(R.drawable.baseline_add_circle_outline_24)
                 binding.image1.scaleType = ImageView.ScaleType.CENTER
                 binding.image2.visibility = View.INVISIBLE
-                imagesArray[0] = false
+                imagesList.removeAt(0)
             }
         } else if (delSelectedImgNum == 2) {
             binding.image2.setImageResource(R.drawable.baseline_add_circle_outline_24)
             binding.image2.scaleType = ImageView.ScaleType.CENTER
-            imagesArray[1] = false
+            imagesList.removeAt(1)
         }
     }
 
@@ -243,8 +251,12 @@ class DiaryEditFragment : Fragment() {
             galleryUtil.openGallery(onImageSelected = {
                 binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
                 Glide.with(this).load(it).into(binding.image1)
-                imagesArray[0] = true
                 binding.image2.visibility = View.VISIBLE
+                if (imagesList.isEmpty()) {
+                    imagesList.add(it.toString())
+                } else {
+                    imagesList[0] = it.toString()
+                }
             })
         }
 
@@ -252,7 +264,11 @@ class DiaryEditFragment : Fragment() {
             galleryUtil.openGallery(onImageSelected = {
                 binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
                 Glide.with(this).load(it).into(binding.image2)
-                imagesArray[1] = true
+                if (imagesList.size < 2) {
+                    imagesList.add(it.toString())
+                } else {
+                    imagesList[1] = it.toString()
+                }
             })
         }
 
@@ -275,11 +291,6 @@ class DiaryEditFragment : Fragment() {
                 categoryYOffset,
                 onCategorySelected = { categoryName, categoryId ->
                     addCategory(categoryName, categoryId)
-                    if (categoriesIdArray[0] == null) {
-                        categoriesIdArray[0] = categoryId
-                    } else {
-                        categoriesIdArray[1] = categoryId
-                    }
                 })
         }
 
@@ -290,7 +301,8 @@ class DiaryEditFragment : Fragment() {
                 categoryYOffset,
                 onCategorySelected = { categoryName, categoryId ->
                     binding.category1.text = categoryName
-                    categoriesIdArray[0] = categoryId
+                    categoryList[0] = Category(categoryId!!)
+                    Log.d("settle54", "change category: ${categoryList.joinToString(",")}")
                 })
         }
 
@@ -301,7 +313,8 @@ class DiaryEditFragment : Fragment() {
                 categoryYOffset,
                 onCategorySelected = { categoryName, categoryId ->
                     binding.category2.text = categoryName
-                    categoriesIdArray[1] = categoryId
+                    categoryList[1] = Category(categoryId!!)
+                    Log.d("settle54", "change category: ${categoryList.joinToString(",")}")
                 })
         }
 
@@ -340,42 +353,108 @@ class DiaryEditFragment : Fragment() {
         }
 
         binding.diaryDoneButton.setOnClickListener {
-            postEditedDiary()
-            requireActivity().supportFragmentManager.popBackStack()
+            patchViewModelDiary()
+            patchViewModelFiles()
+            patchEditedDiary { successDiary ->
+                Log.d("successDiary", "$successDiary")
+                if (successDiary) {
+                    patchFiles {
+                        Log.d("patchFiles", "$it")
+                        if (it)
+                            requireActivity().supportFragmentManager.popBackStack()
+                    }
+                }
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            backButtonDialog.show(
+                requireActivity().supportFragmentManager,
+                "delEmotionDialog"
+            )
         }
     }
 
-    private fun postEditedDiary() {
-        val emoji = binding.emotion.text.toString()
-//        val categoryList = categoriesIdArray.map {
-//            it?.let { id -> Category(id) } ?: Category(0)
-//        }
-        val categoryList = categoriesIdArray.mapNotNull {
-            it?.let { id -> Category(id) }
+    private fun patchViewModelFiles() {
+        viewModel.patchViewModelFiles(imagesList)
+    }
+
+    private fun patchFiles(callback: (Boolean) -> Unit) {
+        SendFilesUtil.uriToFile(requireContext(), imagesList) { images ->
+            viewModel.patchFiles(images) { success ->
+                callback(success)
+            }
         }
-        val request = PostEditDiaryRequest(
-            address = binding.address.text.toString().lowercase(),
-            categories = categoryList,
-            emoji = Emotions.fromUnicode(emoji).toString(),
+    }
+
+    private fun patchViewModelDiary() {
+        Log.d("settle54", "${categoryList.joinToString(",")}")
+        val diary = DetailDiary(
+            address = binding.address.text.toString(),
+            bookmark = bookmark.checkBookmarked(),
+            categories = categoryList.map { category ->
+                com.example.everymoment.data.model.network.dto.vo.Category(
+                    viewModel.getCategoryName(category.categoryId)!!,
+                    category.categoryId
+                )
+            },
             content = binding.content.text.toString(),
+            createAt = viewModel.diary.value!!.createAt,
+            emoji = Emotions.getEmotionNameInLowerCase(binding.emotion.text.toString()),
+            id = viewModel.getDiaryId(),
             locationName = binding.location.text.toString()
         )
-        viewModel.patchEditedDiary(request)
+        Log.d("settle54", "view: $diary")
+        viewModel.patchViewModelDiary(diary)
     }
 
+    private fun patchEditedDiary(callback: (Boolean) -> Unit) {
+        val notEmotion = notExistTextViewText(binding.emotion.text.toString())
+        val notAddress = notExistTextViewText(binding.address.text.toString())
+        val notLocation = notExistTextViewText(binding.location.text.toString())
+        val notContent = notExistTextViewText(binding.content.text.toString())
+        val notCategory = categoryList.isEmpty()
+
+        val request = PatchEditedDiaryRequest(
+            address = binding.address.text.toString(),
+            addressDelete = notAddress,
+            categories = categoryList,
+            content = binding.content.text.toString(),
+            contentDelete = notContent,
+            deleteAllCategories = notCategory,
+            emoji = Emotions.getEmotionNameInLowerCase(binding.emotion.text.toString()),
+            emojiDelete = notEmotion,
+            locationName = binding.location.text.toString(),
+            locationNameDelete = notLocation
+        )
+        Log.d("settle54", "patch server: $request")
+        viewModel.patchEditedDiary(request) { success ->
+            callback(success)
+        }
+    }
+
+    private fun notExistTextViewText(text: String): Boolean {
+        if (text.isNullOrEmpty()) {
+            return true
+        } else {
+            return false
+        }
+    }
 
     private fun addCategory(category: String?, categoryId: Int?) {
-        if (categoriesArray[0] == false) {
+        if (categoryList.isEmpty()) {
             binding.category1.visibility = View.VISIBLE
             binding.category1.text = category
-            categoriesArray[0] = true
-            categoriesIdArray[0] = categoryId
-        } else if (categoriesArray[1] == false) {
+            categoryList.add(Category(categoryId!!))
+        } else if (categoryList.size < 2) {
             binding.category2.visibility = View.VISIBLE
             binding.category2.text = category
-            categoriesArray[1] = true
+            categoryList.add(Category(categoryId!!))
             binding.addCategory.visibility = View.GONE
-            categoriesIdArray[1] = categoryId
+        } else {
+            binding.category2.text = category
+            categoryList[1] = (Category(categoryId!!))
         }
+        Log.d("settle54", "add category: ${categoryList.joinToString(",")}")
     }
 }

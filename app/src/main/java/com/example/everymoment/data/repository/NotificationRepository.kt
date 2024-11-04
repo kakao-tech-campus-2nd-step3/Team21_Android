@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.everymoment.services.location.GlobalApplication
 import com.example.everymoment.data.model.network.api.NetworkModule
 import com.example.everymoment.data.model.network.api.PotatoCakeApiService
+import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import com.example.everymoment.data.model.network.dto.response.NotificationResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +30,23 @@ class NotificationRepository {
             override fun onFailure(p0: Call<NotificationResponse>, p1: Throwable) {
                 Log.d("arieum", "Failed to fetch notification list: ${p1.message}")
                 callback(false, null)
+            }
+        })
+    }
+
+    fun readNotification(
+        notificationId: Int,
+    ) {
+        apiService.readNotification(token, notificationId).enqueue(object : Callback<ServerResponse> {
+            override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
+                if (p1.isSuccessful){
+                    Log.d("arieum", "${p1.body()}")
+                } else {
+                    Log.d("arieum", "Failed to Patch Notificationid")
+                }
+            }
+
+            override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
             }
         })
     }

@@ -2,6 +2,7 @@ package com.example.everymoment.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.setPadding
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -40,6 +41,7 @@ class FriendsListAdapter(
             if (friends.profileImageUrl == null) {
                 binding.profile.setImageResource(R.drawable.account_circle_24px)
             } else {
+                binding.profile.setPadding(15,15,15,15)
                 Glide.with(itemView.context)
                     .load(friends.profileImageUrl)
                     .circleCrop()

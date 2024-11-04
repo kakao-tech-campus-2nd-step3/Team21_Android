@@ -22,6 +22,10 @@ class CategoryAdapter(private val context: Context, categoryList: List<Category>
             this.categoryList = categoryList
     }
 
+    fun restoreSelected(categories: List<String>) {
+        selectedCategories = categories.toMutableSet()
+        notifyDataSetChanged()
+    }
 
     fun resetSelected() {
         selectedCategories = mutableSetOf()

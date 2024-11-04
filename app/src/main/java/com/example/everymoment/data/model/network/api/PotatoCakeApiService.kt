@@ -1,24 +1,29 @@
 package com.example.everymoment.data.model.network.api
 
+import com.example.everymoment.data.model.network.dto.request.EmojiRequest
 import com.example.everymoment.data.model.network.dto.response.GetDetailDiaryResponse
 import com.example.everymoment.data.model.network.dto.response.GetCategoriesResponse
 import com.example.everymoment.data.model.network.dto.response.GetFilesResponse
 import com.example.everymoment.data.model.network.dto.request.PostCategoryRequest
-import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
-import com.example.everymoment.data.model.network.dto.request.postEditDiary.PostEditDiaryRequest
+import com.example.everymoment.data.model.network.dto.request.PatchFilesRequest
+import com.example.everymoment.data.model.network.dto.request.postEditDiary.PatchEditedDiaryRequest
 import com.example.everymoment.data.model.network.dto.response.DiaryResponse
 import com.example.everymoment.data.model.network.dto.response.FriendRequestListResponse
 import com.example.everymoment.data.model.network.dto.response.FriendsListResponse
 import com.example.everymoment.data.model.network.dto.response.MemberResponse
 import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import com.example.everymoment.data.model.network.dto.response.NotificationResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -76,11 +81,12 @@ interface PotatoCakeApiService {
         @Path("diaryId") diaryId: Int
     ): Call<GetFilesResponse>
 
-    @POST("/api/diaries/{diaryId}/files")
-    fun postFiles(
+    @Multipart
+    @PUT("/api/diaries/{diaryId}/files")
+    fun patchFiles(
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId: Int,
-        @Body files: PostFilesRequest
+        @Part files: List<MultipartBody.Part>
     ): Call<ServerResponse>
 
     @POST("api/members/{memberId}/friend-requests")
@@ -140,12 +146,18 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
     ): Call<NotificationResponse>
 
+    @PATCH("/api/notifications/{notificationId}")
+    fun readNotification(
+        @Header("Authorization") token: String,
+        @Path("notificationId") notificationId: Int
+    ): Call<ServerResponse>
+
     @GET("api/diaries/my")
     fun getSearchedDiaries(
         @Header("Authorization") token: String,
         @Query("keyword") keyword: String?,
-        @Query("emoji") emoji: List<String>?,
-        @Query("category") category: List<String>?,
+        @Query("emoji") emoji: String?,
+        @Query("category") category: String?,
         @Query("from") from: String?,
         @Query("until") until: String?,
         @Query("bookmark") bookmark: Boolean?
@@ -154,14 +166,15 @@ interface PotatoCakeApiService {
     @PATCH("api/diaries/{diaryId}")
     fun updateEmojiStatus(
         @Header("Authorization") token: String,
-        @Path("diaryId") diaryId: Int
+        @Path("diaryId") diaryId: Int,
+        @Body emojiRequest: EmojiRequest
     ): Call<ServerResponse>
 
     @PATCH("/api/diaries/{diaryId}")
     fun patchEditedDiary(
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId: Int,
-        @Body request: PostEditDiaryRequest
+        @Body request: PatchEditedDiaryRequest
     ): Call<ServerResponse>
 
 }

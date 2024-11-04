@@ -6,15 +6,18 @@ import com.example.everymoment.data.model.network.dto.response.GetDetailDiaryRes
 import com.example.everymoment.data.model.network.dto.response.GetCategoriesResponse
 import com.example.everymoment.data.model.network.dto.response.GetFilesResponse
 import com.example.everymoment.data.model.network.dto.request.PostCategoryRequest
-import com.example.everymoment.data.model.network.dto.request.PostFilesRequest
 import com.example.everymoment.data.model.network.api.NetworkModule
 import com.example.everymoment.data.model.network.api.PotatoCakeApiService
-import com.example.everymoment.data.model.network.dto.request.postEditDiary.PostEditDiaryRequest
+import com.example.everymoment.data.model.network.dto.request.postEditDiary.PatchEditedDiaryRequest
 import com.example.everymoment.data.model.network.dto.response.DiaryResponse
 import com.example.everymoment.data.model.network.dto.response.ServerResponse
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class DiaryRepository {
     private val apiService: PotatoCakeApiService =
@@ -215,31 +218,21 @@ class DiaryRepository {
         })
     }
 
-//    apiService.sendImage(body).enqueue(object: Callback<String> {
-//        override fun onResponse(call: Call<String>, response: Response<String>) {
-//            if(response.isSuccessful){
-//                Log.d("sendImage", "이미지 전송 성공")
-//            }else{
-//                Log.d("sendImage", "이미지 전송 실패")
-//            }
-//        }
-//
-//        override fun onFailure(call: Call<String>, t: Throwable) {
-//            Log.d("testt", t.message.toString())
-//        }
-//
-//    })
+    fun patchFiles(diaryId: Int, files: List<MultipartBody.Part>, callback: (Boolean, String?) -> Unit) {
+        val parts = files.ifEmpty {
+            listOf(MultipartBody.Part.createFormData("emptyPart", ""))
+        }
 
-    fun postFiles(diaryId: Int, files: PostFilesRequest, callback: (Boolean, String?) -> Unit) {
-        apiService.postFiles(token, diaryId, files).enqueue(object : Callback<ServerResponse> {
+        apiService.patchFiles(token, diaryId, parts).enqueue(object : Callback<ServerResponse> {
             override fun onResponse(
                 p0: Call<ServerResponse>,
                 p1: Response<ServerResponse>
             ) {
                 if (p1.isSuccessful) {
-                    Log.d("settle54", "${p1.body()}")
+                    Log.d("settle54", "postFiles: ${p1.body()}")
                     callback(true, p1.message())
                 } else {
+                    Log.d("settle54", "failPostFiles: ${p1.code()} - ${p1.errorBody()?.string()}")
                     callback(false, null)
                 }
             }
@@ -253,8 +246,8 @@ class DiaryRepository {
 
     fun getSearchedDiaries(
         keyword: String?,
-        emoji: List<String>?,
-        category: List<String>?,
+        emoji: String?,
+        category: String?,
         from: String?,
         until: String?,
         bookmark: Boolean?,
@@ -280,7 +273,7 @@ class DiaryRepository {
 
     fun patchEditedDiary(
         diaryId: Int,
-        request: PostEditDiaryRequest,
+        request: PatchEditedDiaryRequest,
         callback: (Boolean, String?) -> Unit
     ) {
         apiService.patchEditedDiary(token, diaryId, request)

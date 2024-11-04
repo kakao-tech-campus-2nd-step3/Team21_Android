@@ -94,13 +94,6 @@ class FriendsListFragment : Fragment() {
 
         viewModel.fetchFriendsList()
 
-        binding.friendsListBackButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment_container, ShareViewFragment())
-                addToBackStack(null)
-                commit()
-            }
-        }
     }
 
     override fun onResume() {

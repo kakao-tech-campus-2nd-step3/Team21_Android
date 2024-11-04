@@ -47,13 +47,9 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchFilterDialogBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -65,6 +61,10 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
 
         setEmoji()
         setCategories()
+
+        searchViewModel.filterState.observe(viewLifecycleOwner) { state ->
+            restoreFilterState(state)
+        }
 
         binding.bookmark.setOnClickListener {
             if (!checkedBookmark) {
@@ -130,27 +130,28 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         val filterState = FilterState(
             selectedEmotions = getSelectedEmotions(),
             isBookmarked = checkedBookmark,
-            startDate = binding.startDate.text.toString().takeIf { it.isNotEmpty() },
-            endDate = binding.endDate.text.toString().takeIf { it.isNotEmpty() },
-            selectedCategories = categoryAdapter.getSelectedCategories()
+            startDate = binding.startDate.text.toString().takeIf { it.isNotEmpty() }
+                ?.replace(".", "-"),
+            endDate = binding.endDate.text.toString().takeIf { it.isNotEmpty() }?.replace(".", "-"),
+            selectedCategories = categoryAdapter.getSelectedCategories().joinToString(",")
         )
-
         searchViewModel.updateFilter(filterState)
     }
 
-    private fun getSelectedEmotions(): List<Emotions> {
-        val selectedEmotions = mutableListOf<Emotions>()
+    private fun getSelectedEmotions(): String {
+        val selectedEmotions = mutableListOf<String>()
 
         with(binding) {
-            if (happy.isChecked) selectedEmotions.add(Emotions.HAPPY)
-            if (sad.isChecked) selectedEmotions.add(Emotions.SAD)
-            if (insensitive.isChecked) selectedEmotions.add(Emotions.INSENSITIVE)
-            if (angry.isChecked) selectedEmotions.add(Emotions.ANGRY)
-            if (confounded.isChecked) selectedEmotions.add(Emotions.CONFOUNDED)
+            if (happy.isChecked) selectedEmotions.add("happy")
+            if (sad.isChecked) selectedEmotions.add("sad")
+            if (insensitive.isChecked) selectedEmotions.add("insensitive")
+            if (angry.isChecked) selectedEmotions.add("angry")
+            if (confounded.isChecked) selectedEmotions.add("confounded")
         }
 
-        return selectedEmotions
+        return selectedEmotions.joinToString(",")
     }
+
     private fun makeToast(string: String) {
         Toast.makeText(
             context,
@@ -255,6 +256,41 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
         binding.confounded.text = Emotions.CONFOUNDED.getEmotionUnicode()
         binding.confounded.textOn = Emotions.CONFOUNDED.getEmotionUnicode()
         binding.confounded.textOff = Emotions.CONFOUNDED.getEmotionUnicode()
+    }
+
+    private fun restoreFilterState(state: FilterState) {
+        checkedBookmark = state.isBookmarked
+        if (checkedBookmark) {
+            binding.bookmarkIcon.setImageResource(R.drawable.search_selected_bookmark)
+            binding.bookmarkDesc.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary_color2
+                )
+            )
+        }
+
+        state.selectedEmotions?.split(",")?.forEach { emotion ->
+            when (emotion) {
+                "happy" -> binding.happy.isChecked = true
+                "sad" -> binding.sad.isChecked = true
+                "insensitive" -> binding.insensitive.isChecked = true
+                "angry" -> binding.angry.isChecked = true
+                "confounded" -> binding.confounded.isChecked = true
+            }
+        }
+
+        state.startDate?.let {
+            binding.startDate.text = it.replace("-", ".")
+            binding.startDate.setBackgroundResource(R.drawable.search_filter_date_background)
+        }
+        state.endDate?.let {
+            binding.endDate.text = it.replace("-", ".")
+            binding.endDate.setBackgroundResource(R.drawable.search_filter_date_background)
+        }
+        state.selectedCategories?.split(",")?.let { categories ->
+            categoryAdapter.restoreSelected(categories.filter { it.isNotEmpty() })
+        }
     }
 
     companion object {

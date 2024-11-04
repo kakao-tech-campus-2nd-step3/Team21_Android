@@ -1,6 +1,5 @@
 package com.example.everymoment.presentation.view.sub.diary
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,8 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.everymoment.R
-import com.example.everymoment.data.model.network.dto.vo.DetailDiary
 import com.example.everymoment.data.model.entity.Emotions
+import com.example.everymoment.data.model.network.dto.vo.DetailDiary
 import com.example.everymoment.data.repository.DiaryRepository
 import com.example.everymoment.databinding.FragmentDiaryReadBinding
 import com.example.everymoment.extensions.Bookmark
@@ -48,77 +47,90 @@ class DiaryReadFragment : Fragment() {
         diaryId = arguments?.getInt("diary_id")
         Log.d("diaryId", diaryId.toString())
         getDiaryinDetail()
+        getImages()
         setClickListeners()
     }
 
     override fun onResume() {
         super.onResume()
-        getDiaryinDetail()
         Log.d("settle54", "onResume")
+        setViewModelObserver()
     }
 
     private fun getDiaryinDetail() {
+        Log.d("settle54", "getDetailDiary")
         lifecycleScope.launch {
-            viewModel.getDiaryinDetail(diaryId) { setDiaryContent(it) }
-        }
-    }
-
-    private fun setDiaryContent(diary: DetailDiary?) {
-        diary?.let { it ->
-            Emotions.fromString(it.emoji)?.getEmotionUnicode()?.let { emotion ->
-                binding.emotion.text = emotion
-                binding.emotion.visibility = View.VISIBLE
-            }
-            binding.location.text = it.locationName
-            binding.address.text = it.address
-            bookmark.setBookmark(it.bookmark)
-            binding.time.text = it.createAt.substring(11, 16)
-            val date = it.createAt.substring(5, 10).replace("-", "월 ")
-            binding.date.text = resources.getString(R.string.formatted_date, date)
-
-            if (it.content.isNullOrEmpty()) {
-                binding.content.text = ""
-            } else {
-                binding.content.text = it.content
-            }
-
-            if (it.categories.isNotEmpty()) {
-                if (it.categories.size == 2) {
-                    binding.category2.visibility = View.VISIBLE
-                    binding.category2.text =
-                        resources.getString(R.string.category_text, it.categories[1].categoryName)
-                }
-                binding.category1.visibility = View.VISIBLE
-                binding.category1.text =
-                    resources.getString(R.string.category_text, it.categories[0].categoryName)
-                binding.categories.visibility = View.VISIBLE
-            }
-
-            setImages()
-            binding.toolBar.visibility = View.VISIBLE
-            binding.scrollView.visibility = View.VISIBLE
-        }
-    }
-
-    private fun setImages() {
-        diaryId?.let {
-            viewModel.getFiles(it)
-            val imagesArray = viewModel.getFilesArray()
-            if (!imagesArray.isNullOrEmpty()) {
-                if (imagesArray.size == 2) {
-                    binding.image2.visibility = View.VISIBLE
-                    binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
-                    Glide.with(requireContext()).load(imagesArray[1].imageUrl).into(binding.image2)
-                }
-                binding.image1.visibility = View.VISIBLE
-                binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
-                Glide.with(requireContext()).load(imagesArray[0].imageUrl).into(binding.image1)
-                binding.images.visibility = View.VISIBLE
+            viewModel.getDiaryinDetail(diaryId) {
+                updateDiary(it)
             }
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    private fun getImages() {
+        lifecycleScope.launch {
+            viewModel.getFiles(diaryId) {
+                updateImages(it)
+            }
+        }
+    }
+
+    private fun setViewModelObserver() {
+        viewModel.diary.observe(viewLifecycleOwner) { diary ->
+            updateDiary(diary)
+        }
+        viewModel.images.observe(viewLifecycleOwner) { images ->
+            updateImages(images)
+        }
+    }
+
+    private fun updateDiary(diary: DetailDiary) {
+        Emotions.fromString(diary.emoji)?.getEmotionUnicode()?.let { emotion ->
+            binding.emotion.text = emotion
+            binding.emotion.visibility = View.VISIBLE
+        }
+        binding.location.text = diary.locationName
+        binding.address.text = diary.address
+        bookmark.setBookmark(diary.bookmark)
+        binding.time.text = diary.createAt.substring(11, 16)
+        val date = diary.createAt.substring(5, 10).replace("-", "월 ")
+        binding.date.text = resources.getString(R.string.formatted_date, date)
+
+        if (diary.content.isNullOrEmpty()) {
+            binding.content.text = ""
+        } else {
+            binding.content.text = diary.content
+        }
+
+        if (diary.categories.isNotEmpty()) {
+            if (diary.categories.size == 2) {
+                binding.category2.visibility = View.VISIBLE
+                binding.category2.text =
+                    resources.getString(R.string.category_text, diary.categories[1].categoryName)
+            }
+            binding.category1.visibility = View.VISIBLE
+            binding.category1.text =
+                resources.getString(R.string.category_text, diary.categories[0].categoryName)
+            binding.categories.visibility = View.VISIBLE
+        }
+
+        binding.toolBar.visibility = View.VISIBLE
+        binding.scrollView.visibility = View.VISIBLE
+    }
+
+    private fun updateImages(images: List<String>) {
+        if (images.isNotEmpty()) {
+            if (images.size == 2) {
+                binding.image2.visibility = View.VISIBLE
+                binding.image2.scaleType = ImageView.ScaleType.CENTER_CROP
+                Glide.with(requireContext()).load(images[1]).into(binding.image2)
+            }
+            binding.image1.visibility = View.VISIBLE
+            binding.image1.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(requireContext()).load(images[0]).into(binding.image1)
+            binding.images.visibility = View.VISIBLE
+        }
+    }
+
     private fun setClickListeners() {
         binding.bookmark.setOnClickListener {
             bookmark.toggleBookmark()

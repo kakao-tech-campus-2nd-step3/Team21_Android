@@ -1,5 +1,6 @@
 package com.example.everymoment.services.notification
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.widget.Toast
 import com.example.everymoment.data.model.entity.Emotions
 import com.example.everymoment.data.model.network.api.NetworkModule
 import com.example.everymoment.data.model.network.api.PotatoCakeApiService
+import com.example.everymoment.data.model.network.dto.request.EmojiRequest
 import com.example.everymoment.data.model.network.dto.response.ServerResponse
 import com.example.everymoment.services.location.GlobalApplication
 import retrofit2.Call
@@ -31,10 +33,19 @@ class NotificationActionReceiver : BroadcastReceiver() {
         }
 
         emotion?.let { handleEmotion(context, it) }
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(EMOJI_NOTIFICATION_ID)
     }
 
     private fun handleEmotion(context: Context, emotion: Emotions) {
-        val emoji = emotion.getEmotionUnicode()
+        val emoji = when (emotion) {
+            Emotions.HAPPY -> "happy"
+            Emotions.SAD -> "sad"
+            Emotions.INSENSITIVE -> "insensitive"
+            Emotions.ANGRY -> "angry"
+            Emotions.CONFOUNDED -> "confounded"
+        }
         val label = when (emotion) {
             Emotions.HAPPY -> "행복"
             Emotions.SAD -> "슬픔"
@@ -43,7 +54,7 @@ class NotificationActionReceiver : BroadcastReceiver() {
             Emotions.CONFOUNDED -> "싫음"
         }
 
-        updateEmojiStatus(49) { success, message ->
+        updateEmojiStatus(30, emoji) { success, message ->
             val toastMessage = if (success) {
                 "감정이 업데이트되었습니다: $emoji $label"
             } else {
@@ -54,24 +65,32 @@ class NotificationActionReceiver : BroadcastReceiver() {
         Toast.makeText(context, "선택된 감정: $emoji $label", Toast.LENGTH_SHORT).show()
     }
 
-    fun updateEmojiStatus(
+    private fun updateEmojiStatus(
         diaryId: Int,
+        emoji: String,
         callback: (Boolean, String?) -> Unit
     ) {
-        apiService.updateEmojiStatus(token, diaryId).enqueue(object : Callback<ServerResponse> {
-            override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
-                if (p1.isSuccessful) {
-                    Log.d("SendEmoji", "${p1.body()}")
-                    callback(true, p1.message())
-                } else {
+        val emojiRequest = EmojiRequest(emoji = emoji)
+
+        apiService.updateEmojiStatus(token, diaryId, emojiRequest)
+            .enqueue(object : Callback<ServerResponse> {
+                override fun onResponse(p0: Call<ServerResponse>, p1: Response<ServerResponse>) {
+                    if (p1.isSuccessful) {
+                        Log.d("SendEmoji", "${p1.body()}")
+                        callback(true, p1.message())
+                    } else {
+                        callback(false, null)
+                    }
+                }
+
+                override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
+                    Log.d("SendEmoji", "Failed to send emoji: ${p1.message}")
                     callback(false, null)
                 }
-            }
+            })
+    }
 
-            override fun onFailure(p0: Call<ServerResponse>, p1: Throwable) {
-                Log.d("SendEmoji", "Failed to send emoji: ${p1.message}")
-                callback(false, null)
-            }
-        })
+    companion object {
+        private const val EMOJI_NOTIFICATION_ID = 222222
     }
 }

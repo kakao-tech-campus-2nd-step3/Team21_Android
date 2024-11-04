@@ -33,10 +33,12 @@ android {
     }
     buildTypes {
         debug {
+            isDebuggable = true
             isMinifyEnabled = false
             manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["KAKAO_NATIVE_KEY"] as String
         }
         release {
+            isDebuggable = false
             isMinifyEnabled = false
             manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["KAKAO_NATIVE_KEY"] as String
             proguardFiles(

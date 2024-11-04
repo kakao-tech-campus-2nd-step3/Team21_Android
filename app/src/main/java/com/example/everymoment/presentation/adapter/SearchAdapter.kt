@@ -40,6 +40,7 @@ class SearchAdapter(private val activity: FragmentActivity, private val viewMode
     inner class SearchViewHolder(private val binding: SearchItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Diary) {
 
+            binding.dayText.text = item.createAt.substring(0, 10)
             binding.timeText.text = item.createAt.substring(11, 16)
             binding.locationNameText.text = item.locationName
             binding.addressText.text = item.address

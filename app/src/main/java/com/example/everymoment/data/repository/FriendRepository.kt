@@ -151,4 +151,25 @@ class FriendRepository {
                 }
             })
     }
+
+    fun sendFriendRequest(
+        memberId: Int,
+        callback: (Boolean, MemberResponse?) -> Unit
+    ) {
+        apiService.sendFriendRequest(token, memberId).enqueue(object : Callback<MemberResponse> {
+            override fun onResponse(p0: Call<MemberResponse>, p1: Response<MemberResponse>) {
+                if (p1.isSuccessful) {
+                    Log.d("FriendRequestPost", "${p1.body()}")
+                    callback(true, p1.body())
+                } else {
+                    callback(false, null)
+                }
+            }
+
+            override fun onFailure(p0: Call<MemberResponse>, p1: Throwable) {
+                Log.d("FriendRequestPost", "Failed to fetch diaries: ${p1.message}")
+                callback(false, null)
+            }
+        })
+    }
 }

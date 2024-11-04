@@ -47,7 +47,7 @@ class LocationService : Service() {
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        createEmojiNotificationChannel()
+        //createEmojiNotificationChannel()
         initializeLocationComponents()
         startLocationUpdates()
         startForeground(NOTIFICATION_ID, createNotification("위치 서비스 시작"))
@@ -66,7 +66,10 @@ class LocationService : Service() {
         handler = Handler(handlerThread.looper)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, LOCATION_UPDATE_INTERVAL)
+        locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+            LOCATION_UPDATE_INTERVAL
+        )
             .setMinUpdateIntervalMillis(LOCATION_UPDATE_INTERVAL)
             .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL)
             .setWaitForAccurateLocation(false)
@@ -92,7 +95,11 @@ class LocationService : Service() {
         ) {
             return
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, handler.looper)
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            handler.looper
+        )
     }
 
     private fun handleNewLocation(location: Location) {
@@ -107,7 +114,10 @@ class LocationService : Service() {
                 val currentPlace = currentPlaceNames.firstOrNull()
                 val currentAddress = currentAddresses.firstOrNull()
 
-                if (initialPlaceName == null || (currentPlace != null && !previousPlaceNames.contains(currentPlace))) {
+                if (initialPlaceName == null || (currentPlace != null && !previousPlaceNames.contains(
+                        currentPlace
+                    ))
+                ) {
                     isFirstLocationUpdateAfterChange = true
                     previousPlaceNames = currentPlaceNames
                     initialPlaceName = currentPlace
@@ -126,10 +136,10 @@ class LocationService : Service() {
                             "http://13.125.156.74:8080/api/diaries/auto",
                             jwtToken,
                             locationData
-                        ) {  success, code, message, infoObject ->
+                        ) { success, code, message, infoObject ->
                             if (success) {
                                 Log.d("arieum", "성공! 코드: $code, 메시지: $message, 정보: $infoObject")
-                                setEmojiNotification()
+                                //setEmojiNotification()
                             } else {
                                 Log.d("arieum", "실패!")
                             }
@@ -155,7 +165,8 @@ class LocationService : Service() {
         val channelName = "Location Service"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
+            val channel =
+                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
             //val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
@@ -221,11 +232,18 @@ class LocationService : Service() {
         )
 
         val remoteViews = RemoteViews(packageName, R.layout.custom_notification)
+        //remoteViews.setTextViewText(R.id.locationText, "${initialPlaceName}에서의 기분은 어떤가요?")
         remoteViews.setTextViewText(R.id.happyEmojiTextView, Emotions.HAPPY.getEmotionUnicode())
         remoteViews.setTextViewText(R.id.sadEmojiTextView, Emotions.SAD.getEmotionUnicode())
-        remoteViews.setTextViewText(R.id.insensitiveEmojiTextView, Emotions.INSENSITIVE.getEmotionUnicode())
+        remoteViews.setTextViewText(
+            R.id.insensitiveEmojiTextView,
+            Emotions.INSENSITIVE.getEmotionUnicode()
+        )
         remoteViews.setTextViewText(R.id.angryEmojiTextView, Emotions.ANGRY.getEmotionUnicode())
-        remoteViews.setTextViewText(R.id.confoundedEmojiTextView, Emotions.CONFOUNDED.getEmotionUnicode())
+        remoteViews.setTextViewText(
+            R.id.confoundedEmojiTextView,
+            Emotions.CONFOUNDED.getEmotionUnicode()
+        )
 
         val emotions = listOf(
             R.id.happyEmojiTextView to Emotions.HAPPY,
@@ -261,7 +279,7 @@ class LocationService : Service() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
-        notificationManager.notify(Emoji_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(EMOJI_NOTIFICATION_ID, builder.build())
     }
 
     private fun createEmojiNotificationChannel() {
@@ -278,9 +296,9 @@ class LocationService : Service() {
 
     companion object {
         private const val NOTIFICATION_ID = 1
-        private const val LOCATION_UPDATE_INTERVAL = 3 * 60 * 1000L
+        private const val LOCATION_UPDATE_INTERVAL = 5 * 60 * 1000L
 
-        private const val Emoji_NOTIFICATION_ID = 222222
+        private const val EMOJI_NOTIFICATION_ID = 222222
         private const val CHANNEL_ID = "main_default_channel"
         private const val CHANNEL_NAME = "main channelName"
     }
