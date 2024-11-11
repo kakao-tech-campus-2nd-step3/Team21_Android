@@ -16,15 +16,15 @@ val properties = Properties().apply {
 }
 
 android {
-    namespace = "com.example.everymoment"
+    namespace = "potatocake.katecam.everymoment"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.everymoment"
-        minSdk = 24
+        applicationId = "potatocake.katecam.everymoment"
+        minSdk = 28
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -41,10 +41,10 @@ android {
             isDebuggable = false
             isMinifyEnabled = false
             manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["KAKAO_NATIVE_KEY"] as String
-            proguardFiles(
+            /*proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )
+            )*/
         }
     }
     buildFeatures {
@@ -93,6 +93,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.fragment:fragment-ktx:1.7.1")
-
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation ("com.tbuonomo:dotsindicator:5.0")
 
 }

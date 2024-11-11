@@ -4,5 +4,5 @@
     <!-- 둥근 모서리 설정 -->
     <corners android:radius="10dp" />
 
-    <solid android:color="@color/white"/>
+    <solid android:color="#FFFFFF"/>
 </shape>

@@ -48,11 +48,22 @@
         android:id="@+id/kakaoLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
         android:background="@android:color/transparent"
         android:src="@drawable/kakao_login_medium_wide"
+        android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginDescriptionTwo" />
+        app:layout_constraintBottom_toTopOf="@id/nonLoginButton" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/nonLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/non_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,16 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="100dp">
 
-    <ImageView
-        android:id="@+id/profile"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/profileLayout"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="10dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/account_circle_24px"
+        app:cardCornerRadius="100dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="2dp">
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:src="@drawable/account_circle_24px" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/userNickname"
@@ -24,7 +35,7 @@
         android:textSize="19sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/profile"
+        app:layout_constraintStart_toEndOf="@id/profileLayout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View

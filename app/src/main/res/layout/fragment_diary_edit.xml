@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="21dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     tools:visibility="visible">
@@ -124,7 +124,7 @@
                 <EditText
                     android:id="@+id/location"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="5dp"
                     android:background="@android:color/transparent"
                     android:hint="장소명"
@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="3dp"
                     android:background="@android:color/transparent"
                     android:hint="@string/address_hint"
                     android:lines="1"
@@ -214,8 +214,8 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:padding="2dp"
-                        android:visibility="visible"
-                        android:src="@drawable/outline_add_reaction_24" />
+                        android:src="@drawable/outline_add_reaction_24"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/emotion"
@@ -232,10 +232,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:background="@android:color/transparent"
                     android:hint="@string/diary_hint_sentence"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:textSize="17sp" />
 
             </LinearLayout>
         </ScrollView>
