@@ -17,8 +17,6 @@ class ShareViewModel(
 ) : ViewModel() {
     private val _selectedFriendName = MutableLiveData<String>()
     val selectedFriendName: LiveData<String> get() = _selectedFriendName
-    private val _selectedFriendPosition = MutableLiveData<Int>()
-    val selectedFriendPosition: LiveData<Int> get() = _selectedFriendPosition
     private val _friends = MutableLiveData<List<Friends>>()
     val friends: LiveData<List<Friends>> get() = _friends
 
@@ -34,12 +32,6 @@ class ShareViewModel(
     fun setSelectedFriendName(nickName: String) {
         viewModelScope.launch {
             _selectedFriendName.postValue(nickName)
-        }
-    }
-
-    fun setSelectedFriendPosition(position: Int) {
-        viewModelScope.launch {
-            _selectedFriendPosition.postValue(position)
         }
     }
 

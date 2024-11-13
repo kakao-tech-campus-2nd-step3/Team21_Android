@@ -28,11 +28,10 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
 
     private lateinit var binding: FragmentPostBinding
     private lateinit var postAdapter: PostAdapter
-    private val imm: InputMethodManager by lazy { requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager }
+    private lateinit var imm: InputMethodManager
     private val postRepository: PostRepository = PostRepository()
     private val myInfoRepository: MyInfoRepository = MyInfoRepository()
     private lateinit var delCommentDialog: CustomDialog
-    private var selectedFriendPosition: Int = -1
 
     private val viewModel: PostViewModel by viewModels {
         PostViewModelFactory(postRepository, myInfoRepository)
@@ -51,11 +50,11 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
         Log.d("postFragment", "${arguments?.getInt("diary_id")}")
         val diaryId = arguments?.getInt("diary_id")
         val selectedFriendName = arguments?.getString("selected_friend_name", "")
-        selectedFriendPosition = arguments?.getInt("selected_friend_position", -1)!!
 
         (activity as? MainActivity)?.hideNavigationBar()
 
         setPostAdapter()
+        imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         binding.instruction.text =
             resources.getString(R.string.post_instruction, selectedFriendName)
 
@@ -65,6 +64,7 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
         getComments()
         setViewModelObserver()
         setScrollListener()
+
     }
 
     override fun onDestroyView() {
@@ -146,10 +146,6 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
 
     private fun setClickListeners() {
         binding.backButton.setOnClickListener {
-            val bundle = Bundle().apply {
-                putInt("selected_friend_position", selectedFriendPosition)
-            }
-            requireActivity().supportFragmentManager.setFragmentResult("selected_position", bundle)
             requireActivity().supportFragmentManager.popBackStack()
         }
 

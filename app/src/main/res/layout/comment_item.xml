@@ -114,19 +114,12 @@
 
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_marginStart="10dp"
-        android:layout_gravity="center_vertical"
-        app:cardCornerRadius="100dp"
+    <ImageView
+        android:id="@+id/profileImg"
         android:layout_width="50dp"
-        android:layout_height="50dp">
-
-        <ImageView
-            android:id="@+id/profileImg"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/account_circle_24px" />
-    </androidx.cardview.widget.CardView>
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@drawable/account_circle_24px" />
 
 </FrameLayout>

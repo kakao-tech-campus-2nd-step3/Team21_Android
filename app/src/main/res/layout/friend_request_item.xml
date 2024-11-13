@@ -18,9 +18,8 @@
 
         <ImageView
             android:id="@+id/profile"
-            android:layout_gravity="center"
-            android:layout_width="74dp"
-            android:layout_height="74dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@color/white"
             android:src="@drawable/account_circle_24px" />
 

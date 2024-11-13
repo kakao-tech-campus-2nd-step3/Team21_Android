@@ -23,17 +23,7 @@ class SharedFriendListAdapter(private val viewModel: ShareViewModel) : ListAdapt
     }
 ) {
     private var selectedPosition = RecyclerView.NO_POSITION
-
-    fun setSelectedPosition(position: Int) {
-        selectedPosition = position
-        viewModel.fetchFriendDiaryList(getItem((position)).id)
-        viewModel.setSelectedFriendName(getItem(position).nickname)
-        viewModel.setSelectedFriendPosition(position)
-        notifyItemChanged(position)
-    }
-
     inner class SharedFriendListViewHolder(private val binding: FriendItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(item: Friends) {
             binding.friendName.text = item.nickname
 
@@ -65,7 +55,6 @@ class SharedFriendListAdapter(private val viewModel: ShareViewModel) : ListAdapt
                     notifyItemChanged(position)
                     viewModel.fetchFriendDiaryList(item.id)
                     viewModel.setSelectedFriendName(item.nickname)
-                    viewModel.setSelectedFriendPosition(position)
                 }
             }
         }

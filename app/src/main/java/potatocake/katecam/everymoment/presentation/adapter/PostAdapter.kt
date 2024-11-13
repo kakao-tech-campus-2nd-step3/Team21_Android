@@ -141,7 +141,9 @@ class PostAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-            like = Like(binding.like)
+            if (!::like.isInitialized) {
+                like = Like(binding.like)
+            }
             setDiaryContent()
             setImages()
             setCommentCnt()
@@ -223,8 +225,10 @@ class PostAdapter(
         private fun setClickListeners() {
             binding.like.setOnClickListener {
                 viewModel.postLike()
+                like.toggleLike()
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

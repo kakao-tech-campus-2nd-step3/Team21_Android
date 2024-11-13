@@ -71,20 +71,12 @@ class PostViewModel(private val postRepository: PostRepository, private val myIn
             diaryId?.let {
                 postRepository.postLike(diaryId!!) { success, response ->
                     if (success && response != null) {
-                        toggleLikedState()
                         getLikeCnt()
                     }
                 }
             }
         }
     }
-
-    private fun toggleLikedState() {
-        _post.value?.let {
-            _post.postValue(it.copy(liked = !it.liked))
-        }
-    }
-
 
     fun getLikeCnt() {
         viewModelScope.launch {

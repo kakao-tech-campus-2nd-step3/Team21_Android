@@ -24,7 +24,6 @@ import potatocake.katecam.everymoment.extensions.EmotionPopup
 import potatocake.katecam.everymoment.extensions.GalleryUtil
 import potatocake.katecam.everymoment.extensions.SendFilesUtil
 import potatocake.katecam.everymoment.extensions.ToPxConverter
-import potatocake.katecam.everymoment.presentation.listener.OnSingleClickListener
 import potatocake.katecam.everymoment.presentation.view.main.MainActivity
 import potatocake.katecam.everymoment.presentation.viewModel.DiaryViewModel
 import potatocake.katecam.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
@@ -353,27 +352,23 @@ class DiaryEditFragment : Fragment() {
             true
         }
 
-        binding.diaryDoneButton.setOnClickListener(object: OnSingleClickListener() {
-            override fun onSingleClick(v: View?) {
-                if (!checkLocationAndAddress()) {
-                    return
-                }
+        binding.diaryDoneButton.setOnClickListener {
+            if (!checkLocationAndAddress()) return@setOnClickListener
 
-                patchViewModelDiary()
-                patchViewModelFiles()
+            patchViewModelDiary()
+            patchViewModelFiles()
 
-                patchEditedDiary { successDiary ->
-                    Log.d("successDiary", "$successDiary")
-                    if (successDiary) {
-                        patchFiles {
-                            Log.d("patchFiles", "$it")
-                            if (it && activity != null && requireActivity().supportFragmentManager.backStackEntryCount != 0)
-                                requireActivity().supportFragmentManager.popBackStack()
-                        }
+            patchEditedDiary { successDiary ->
+                Log.d("successDiary", "$successDiary")
+                if (successDiary) {
+                    patchFiles {
+                        Log.d("patchFiles", "$it")
+                        if (it && requireActivity().supportFragmentManager.backStackEntryCount != 0)
+                            requireActivity().supportFragmentManager.popBackStack()
                     }
                 }
             }
-        })
+        }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             backButtonDialog.show(

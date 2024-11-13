@@ -39,10 +39,7 @@ class ShareViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            ShareViewModelFactory(friendDiaryRepository, friendRepository)
-        ).get(ShareViewModel::class.java)
+        viewModel = ViewModelProvider(this, ShareViewModelFactory(friendDiaryRepository, friendRepository)).get(ShareViewModel::class.java)
 
         val friendListAdapter = SharedFriendListAdapter(viewModel)
         val friendDiaryAdapter = SharedFriendDiaryListAdapter()
@@ -59,16 +56,6 @@ class ShareViewFragment : Fragment() {
                 replace(R.id.fragment_container, FriendsListFragment())
                 addToBackStack(null)
                 commit()
-            }
-        }
-
-        requireActivity().supportFragmentManager.setFragmentResultListener(
-            "selected_position",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val result = bundle.getInt("selected_friend_position")
-            if (result >= 0) {
-                viewModel.setSelectedFriendPosition(result)
             }
         }
     }
@@ -100,15 +87,9 @@ class ShareViewFragment : Fragment() {
         viewModel.friends.observe(viewLifecycleOwner) { friendList ->
             adapter.submitList(friendList)
         }
-        viewModel.selectedFriendPosition.observe(viewLifecycleOwner) {
-            adapter.setSelectedPosition(it)
-        }
     }
 
-    private fun setupRecyclerView(
-        adapter1: SharedFriendListAdapter,
-        adapter2: SharedFriendDiaryListAdapter
-    ) {
+    private fun setupRecyclerView(adapter1: SharedFriendListAdapter, adapter2: SharedFriendDiaryListAdapter) {
         binding.friendList.adapter = adapter1
         binding.timeLineRecyclerView.adapter = adapter2
 

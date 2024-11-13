@@ -19,5 +19,5 @@ data class Post(
     @SerializedName("locationName")
     val locationName: String,
     @SerializedName("liked")
-    var liked: Boolean
+    val liked: Boolean
 )
