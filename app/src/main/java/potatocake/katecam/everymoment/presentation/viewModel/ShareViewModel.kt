@@ -62,7 +62,6 @@ class ShareViewModel(
 
     fun fetchFriendDiaryList(friendId: Int) {
         currentFriendId = friendId
-        Log.d("shareviewmodel", "$friendId")
         _isFriendDiaryListLoading.value = true
         viewModelScope.launch {
             friendDiaryRepository.getFriendDiaries(friendId) { success, response ->

@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getFCMToken()
-        val token = "eyJhbGciOiJIUzM4NCJ9.eyJpZCI6OCwiaWF0IjoxNzMxNTQ1NTQ0LCJleHAiOjE3MzE3MTgzNDR9.LOEPCf3bAo5HIM4oMoVbhMUxozppqR8aCyV_MGd4Ix7ZqUjMt1_4bJIfM4qd9JaV"
-        GlobalApplication.prefs.setString("token", token)
 
         val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
         val configSettings = remoteConfigSettings {
