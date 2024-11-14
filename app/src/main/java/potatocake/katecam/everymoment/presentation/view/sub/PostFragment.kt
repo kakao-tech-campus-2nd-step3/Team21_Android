@@ -60,7 +60,11 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
             resources.getString(R.string.post_instruction, selectedFriendName)
 
         setClickListeners()
-        getFriendDiaryInDetail(diaryId)
+        if (selectedFriendName.isNullOrEmpty()) {
+            getMyDiaryInDetail(diaryId)
+        } else {
+            getFriendDiaryInDetail(diaryId)
+        }
         getFiles(diaryId)
         getComments()
         setViewModelObserver()
@@ -84,6 +88,9 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
     private fun setViewModelObserver() {
         viewModel.post.observe(viewLifecycleOwner) {
             postAdapter.updatePost(it)
+        }
+        viewModel.post2.observe(viewLifecycleOwner) {
+            postAdapter.updatePost2(it)
         }
         viewModel.images.observe(viewLifecycleOwner) {
             postAdapter.updateImages(it)
@@ -114,6 +121,12 @@ class PostFragment : Fragment(), OnDeleteCommentListener {
     private fun getFriendDiaryInDetail(diaryId: Int?) {
         lifecycleScope.launch {
             viewModel.getFriendDiaryinDetail(diaryId)
+        }
+    }
+
+    private fun getMyDiaryInDetail(diaryId: Int?){
+        lifecycleScope.launch {
+            viewModel.getMyDiaryInDetail(diaryId)
         }
     }
 

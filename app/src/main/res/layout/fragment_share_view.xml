@@ -69,8 +69,8 @@
             android:id="@+id/friendList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:layout_marginStart="70dp"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toEndOf="@id/friendListIcon"
             app:layout_constraintTop_toTopOf="parent"
@@ -83,15 +83,16 @@
         android:layout_height="2dp"
         android:background="@color/line_color" />
 
-    <TextView
-        android:id="@+id/noTodayFriendDiaryList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/mySharedDiaryListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:hint="오늘 친구가 공유한 일기가 없어요!\n친구를 클릭해보세요!"
-        android:visibility="gone" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center_vertical"
+        android:text="📝 내 게시물 모음"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/noFriendIdDiaryList"

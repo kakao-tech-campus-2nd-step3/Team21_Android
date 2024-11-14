@@ -5,8 +5,10 @@ import potatocake.katecam.everymoment.data.model.network.api.NetworkModule
 import potatocake.katecam.everymoment.data.model.network.api.PotatoCakeApiService
 import potatocake.katecam.everymoment.data.model.network.dto.request.PatchCommentRequest
 import potatocake.katecam.everymoment.data.model.network.dto.request.PostCommentRequest
+import potatocake.katecam.everymoment.data.model.network.dto.response.DiaryResponse
 import potatocake.katecam.everymoment.data.model.network.dto.response.GetCommentCntResponse
 import potatocake.katecam.everymoment.data.model.network.dto.response.GetFilesResponse
+import potatocake.katecam.everymoment.data.model.network.dto.response.PostMyDiaryResponse
 import potatocake.katecam.everymoment.data.model.network.dto.response.getFriendDiaryInDetail.GetFriendDiaryResponse
 import potatocake.katecam.everymoment.data.model.network.dto.response.ServerResponse
 import potatocake.katecam.everymoment.data.model.network.dto.response.getComments.GetCommentsResponse
@@ -48,6 +50,10 @@ class PostRepository {
                     callback(false, null)
                 }
             })
+    }
+
+    suspend fun getMyDiaryInDetail(diaryId: Int): PostMyDiaryResponse {
+        return apiService.getMyDiaryInDetail(token, diaryId)
     }
 
     fun getFiles(diaryId: Int, callback: (Boolean, GetFilesResponse?) -> Unit) {

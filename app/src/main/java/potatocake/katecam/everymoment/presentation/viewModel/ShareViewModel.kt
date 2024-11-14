@@ -31,8 +31,15 @@ class ShareViewModel(
     private val _isFriendListLoading = MutableLiveData<Boolean>()
     val isFriendListLoading: LiveData<Boolean> get() = _isFriendListLoading
 
-    private var nextDiaryPage = 1
+    private val _isMyDiaryListLoading = MutableLiveData<Boolean>()
+    val isMyDiaryListLoading: LiveData<Boolean> get() = _isMyDiaryListLoading
+
+    private val _currentListType = MutableLiveData<ListType>(ListType.MY_SHARED_DIARY)
+    val currentListType: LiveData<ListType> get() = _currentListType
+
+    private var nextFriendDiaryPage = 1
     private var nextFriendPage = 1
+    private var nextMyDiaryPage = 1
     var currentFriendId: Int? = null
 
     fun setSelectedFriendName(nickName: String) {
@@ -63,41 +70,31 @@ class ShareViewModel(
     fun fetchFriendDiaryList(friendId: Int) {
         currentFriendId = friendId
         _isFriendDiaryListLoading.value = true
+        _currentListType.value = ListType.FRIEND_DIARY
         viewModelScope.launch {
             friendDiaryRepository.getFriendDiaries(friendId) { success, response ->
                 _isFriendDiaryListLoading.value = false
                 if (success && response != null) {
                     _diaries.postValue(response.info.diaries)
-                    nextDiaryPage = response.info.next
-                }
-            }
-        }
-    }
-
-    fun fetchTodayFriendDiaryList(date: String){
-        _isFriendDiaryListLoading.value = true
-        viewModelScope.launch {
-            friendDiaryRepository.getTotalFriendDiaries(date) { success, response ->
-                _isFriendDiaryListLoading.value = false
-                if (success && response != null) {
-                    _diaries.postValue(response.info.diaries)
-                    Log.d("arieum", response.info.diaries.toString())
-                    nextDiaryPage = response.info.next
+                    nextFriendDiaryPage = response.info.next
                 }
             }
         }
     }
 
     fun fetchFriendDiaryNextPage() {
-        if (nextDiaryPage != 0 && _isFriendDiaryListLoading.value != true) {
+        if (nextFriendDiaryPage != 0 && _isFriendDiaryListLoading.value != true) {
             _isFriendDiaryListLoading.value = true
             viewModelScope.launch {
-                friendDiaryRepository.getFriendDiariesWithPage(currentFriendId!!, nextDiaryPage) { success, response ->
+                friendDiaryRepository.getFriendDiariesWithPage(
+                    currentFriendId!!,
+                    nextFriendDiaryPage
+                ) { success, response ->
                     _isFriendDiaryListLoading.value = false
                     if (success && response != null) {
                         val currentList = _diaries.value.orEmpty()
                         _diaries.postValue(currentList + response.info.diaries)
-                        nextDiaryPage = response.info.next
+                        nextFriendDiaryPage = response.info.next
                     } else {
                         _diaries.postValue(emptyList())
                     }
@@ -120,5 +117,62 @@ class ShareViewModel(
                 }
             }
         }
+    }
+
+    fun fetchMySharedDiaries() {
+        _isMyDiaryListLoading.value = true
+        _currentListType.value = ListType.MY_SHARED_DIARY
+        viewModelScope.launch {
+            runCatching {
+                friendDiaryRepository.getAllMySharedDiaries()
+            }.onSuccess {
+                val publicDiaries = it.info.diaries
+                _diaries.postValue(publicDiaries)
+                _isMyDiaryListLoading.value = false
+                nextMyDiaryPage = it.info.next
+            }.onFailure {
+                Log.e("arieum", "Error fetching diaries", it)
+                _isMyDiaryListLoading.value = false
+            }
+        }
+
+    }
+
+    fun fetchMyDiaryNextPage() {
+        if (nextMyDiaryPage != 0 && _isMyDiaryListLoading.value != true) {
+            _isMyDiaryListLoading.value = true
+            viewModelScope.launch {
+                runCatching {
+                    friendDiaryRepository.getAllMySharedDiariesWithPage(nextMyDiaryPage)
+                }.onSuccess { response ->
+                    _isMyDiaryListLoading.value = false
+                    val publicDiaries = response.info.diaries
+                    val currentDiaries = _diaries.value.orEmpty()
+                    _diaries.postValue(currentDiaries + publicDiaries)
+                    nextMyDiaryPage = response.info.next
+                }.onFailure { exception ->
+                    _isMyDiaryListLoading.value = false
+                    Log.e("fetchMyDiaryNextPage", "Error fetching next diary page", exception)
+                }
+            }
+        }
+    }
+
+    fun fetchNextPage() {
+        if (currentFriendId != null) {
+            fetchFriendDiaryNextPage()
+        } else {
+            fetchMyDiaryNextPage()
+        }
+    }
+
+    fun clearFriendSelection() {
+        currentFriendId = null
+        fetchMySharedDiaries()
+    }
+
+    enum class ListType {
+        MY_SHARED_DIARY,
+        FRIEND_DIARY
     }
 }

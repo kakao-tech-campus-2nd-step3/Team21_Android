@@ -77,4 +77,12 @@ class FriendDiaryRepository {
             }
         })
     }
+
+    suspend fun getAllMySharedDiaries(): DiaryResponse{
+        return apiService.getAllMyDiaries(token, until = "2024-11-14")
+    }
+
+    suspend fun getAllMySharedDiariesWithPage(page: Int) : DiaryResponse{
+        return apiService.getAllMyDiaries(token, until = "2024-11-14", key = page)
+    }
 }

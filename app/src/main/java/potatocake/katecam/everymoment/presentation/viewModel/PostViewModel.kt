@@ -11,6 +11,7 @@ import potatocake.katecam.everymoment.data.model.network.dto.response.getFriendD
 import potatocake.katecam.everymoment.data.repository.PostRepository
 import kotlinx.coroutines.launch
 import potatocake.katecam.everymoment.data.model.network.dto.request.PatchCommentRequest
+import potatocake.katecam.everymoment.data.model.network.dto.response.MyDiaryDetailResponse
 import potatocake.katecam.everymoment.data.repository.MyInfoRepository
 
 class PostViewModel(private val postRepository: PostRepository, private val myInfoRepository: MyInfoRepository) : ViewModel() {
@@ -19,6 +20,10 @@ class PostViewModel(private val postRepository: PostRepository, private val myIn
 
     private val _post = MutableLiveData<Post>()
     val post: LiveData<Post> get() = _post
+
+    private val _post2 = MutableLiveData<MyDiaryDetailResponse>()
+    val post2: LiveData<MyDiaryDetailResponse> get() = _post2
+
     private val _images = MutableLiveData<List<String>>()
     val images: LiveData<List<String>> get() = _images
 
@@ -47,6 +52,22 @@ class PostViewModel(private val postRepository: PostRepository, private val myIn
                     Log.d("settle54", "success: ${response.info}")
                     _post.postValue(response.info)
                     _likeCnt.postValue(response.info.likeCount.likeCount)
+                }
+            }
+        }
+    }
+
+    fun getMyDiaryInDetail(diaryId: Int?) {
+        diaryId?.let {
+            this.diaryId = diaryId
+            viewModelScope.launch {
+                runCatching {
+                    postRepository.getMyDiaryInDetail(it)
+                }.onSuccess {
+                    _post2.postValue(it.info)
+                    Log.d("arieum", it.info.toString())
+                }.onFailure {
+                    Log.d("arieum", it.message.toString())
                 }
             }
         }

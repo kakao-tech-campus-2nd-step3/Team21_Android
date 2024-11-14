@@ -26,6 +26,7 @@ import potatocake.katecam.everymoment.data.model.network.dto.response.GetComment
 import potatocake.katecam.everymoment.data.model.network.dto.request.LocationNameRequest
 import potatocake.katecam.everymoment.data.model.network.dto.request.ManualDiaryRequest
 import potatocake.katecam.everymoment.data.model.network.dto.request.TokenRequest
+import potatocake.katecam.everymoment.data.model.network.dto.response.PostMyDiaryResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -291,4 +292,19 @@ interface PotatoCakeApiService {
         @Header("Authorization") token: String,
         @Body tokenRequest: TokenRequest
     ): Call<ServerResponse>
+
+    @GET("api/diaries/my")
+    suspend fun getAllMyDiaries(
+        @Header("Authorization") token: String,
+        @Query("from") from: String = "2024-10-01",
+        @Query("until") until: String,
+        @Query("isPublic") public: Boolean = true,
+        @Query("key") key: Int = 0
+    ): DiaryResponse
+
+    @GET("/api/diaries/my/{diaryId}")
+    suspend fun getMyDiaryInDetail(
+        @Header("Authorization") token: String,
+        @Path("diaryId") diaryId: Int
+    ): PostMyDiaryResponse
 }

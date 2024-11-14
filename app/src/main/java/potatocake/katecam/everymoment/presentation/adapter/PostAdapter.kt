@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import potatocake.katecam.everymoment.R
+import potatocake.katecam.everymoment.data.model.network.dto.response.MyDiaryDetailResponse
 import potatocake.katecam.everymoment.data.model.network.dto.response.getComments.Comment
 import potatocake.katecam.everymoment.data.model.network.dto.response.getFriendDiaryInDetail.Post
 import potatocake.katecam.everymoment.databinding.CommentItemBinding
@@ -37,6 +38,7 @@ class PostAdapter(
     private var commentCnt = 0
 
     private var post: Post? = null
+    private var post2: MyDiaryDetailResponse? = null
     private var images: List<String>? = null
     private var comments: List<Comment> = listOf()
 
@@ -47,6 +49,11 @@ class PostAdapter(
 
     fun updatePost(post: Post) {
         this.post = post
+        notifyItemChanged(0)
+    }
+
+    fun updatePost2(post: MyDiaryDetailResponse) {
+        this.post2 = post
         notifyItemChanged(0)
     }
 
@@ -174,10 +181,46 @@ class PostAdapter(
         }
 
         private fun setDiaryContent() {
+            Log.d("arieum", "post2 : $post2.toString()")
+            Log.d("arieum", post.toString())
             post?.let {
                 binding.location.text = it.locationName
                 binding.content.text = it.content
                 binding.likeCnt.text = it.likeCount.likeCount.toString()
+                binding.dateAndTime.text = formatCreateAt(it.createAt)
+                like.setLike(it.liked)
+
+                if (it.categories.isNotEmpty()) {
+                    if (it.categories.size == 2) {
+                        binding.category2.visibility = View.VISIBLE
+                        binding.category2.text =
+                            itemView.context.getString(
+                                R.string.category_text,
+                                it.categories[1].categoryName
+                            )
+                    }
+                    binding.category1.visibility = View.VISIBLE
+                    binding.category1.text =
+                        itemView.context.getString(
+                            R.string.category_text,
+                            it.categories[0].categoryName
+                        )
+                    binding.categories.visibility = View.VISIBLE
+                }
+
+                potatocake.katecam.everymoment.data.model.entity.Emotions.fromString(it.emoji)
+                    ?.getEmotionUnicode()?.let { emotion ->
+                        binding.emotion.text = emotion
+                        binding.emotion.visibility = View.VISIBLE
+                    }
+                binding.header.visibility = View.VISIBLE
+                if (!it.content.isNullOrBlank()) {
+                    binding.content.visibility = View.VISIBLE
+                }
+            }
+            post2?.let {
+                binding.location.text = it.locationName
+                binding.content.text = it.content
                 binding.dateAndTime.text = formatCreateAt(it.createAt)
                 like.setLike(it.liked)
 

@@ -52,12 +52,19 @@ class ShareViewFragment : Fragment() {
 
         val initialDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
         viewModel.fetchFriendsList()
-        viewModel.fetchTodayFriendDiaryList(initialDate)
+        viewModel.fetchMySharedDiaries()
 
         binding.friendListIcon.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragment_container, FriendsListFragment())
                 addToBackStack(null)
+                commit()
+            }
+        }
+
+        binding.mySharedDiaryListButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, ShareViewFragment())
                 commit()
             }
         }
@@ -77,16 +84,13 @@ class ShareViewFragment : Fragment() {
         viewModel.diaries.observe(viewLifecycleOwner) { friendDiaryList ->
             if (friendDiaryList.isNullOrEmpty()) {
                 if (viewModel.currentFriendId == null) {
-                    binding.noTodayFriendDiaryList.visibility = View.VISIBLE
                     binding.noFriendIdDiaryList.visibility = View.GONE
                 } else {
                     binding.noFriendIdDiaryList.visibility = View.VISIBLE
-                    binding.noTodayFriendDiaryList.visibility = View.GONE
                 }
                 binding.timeLineRecyclerView.visibility = View.GONE
             } else {
                 binding.timeLineRecyclerView.visibility = View.VISIBLE
-                binding.noTodayFriendDiaryList.visibility = View.GONE
                 binding.noFriendIdDiaryList.visibility = View.GONE
                 adapter.submitList(friendDiaryList)
             }
@@ -124,8 +128,14 @@ class ShareViewFragment : Fragment() {
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
 
-                if (!viewModel.isFriendDiaryListLoading.value!! && totalItemCount <= (lastVisibleItemPosition + 2)) {
-                    viewModel.fetchFriendDiaryNextPage()
+                if (viewModel.currentListType.value == ShareViewModel.ListType.MY_SHARED_DIARY) {
+                    if (!viewModel.isMyDiaryListLoading.value!! && totalItemCount <= (lastVisibleItemPosition + 2)) {
+                        viewModel.fetchNextPage()
+                    }
+                } else if (viewModel.currentListType.value == ShareViewModel.ListType.FRIEND_DIARY) {
+                    if (!viewModel.isFriendDiaryListLoading.value!! && totalItemCount <= (lastVisibleItemPosition + 2)) {
+                        viewModel.fetchNextPage()
+                    }
                 }
             }
         })
