@@ -26,10 +26,10 @@ class SharedFriendListAdapter(private val viewModel: ShareViewModel) : ListAdapt
 
     fun setSelectedPosition(position: Int) {
         selectedPosition = position
-        viewModel.fetchFriendDiaryList(getItem((position)).id)
+        //viewModel.fetchFriendDiaryList(getItem((position)).id)
         viewModel.setSelectedFriendName(getItem(position).nickname)
         viewModel.setSelectedFriendPosition(position)
-        notifyItemChanged(position)
+        //notifyItemChanged(position)
     }
 
     inner class SharedFriendListViewHolder(private val binding: FriendItemBinding) : RecyclerView.ViewHolder(binding.root) {
