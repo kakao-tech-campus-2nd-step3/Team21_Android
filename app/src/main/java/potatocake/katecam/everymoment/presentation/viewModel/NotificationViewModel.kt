@@ -4,14 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import potatocake.katecam.everymoment.data.model.network.dto.response.MyNotification
 import potatocake.katecam.everymoment.data.model.network.vo.NotificationTypeConstants
 import potatocake.katecam.everymoment.data.repository.FriendRepository
-import potatocake.katecam.everymoment.data.model.network.dto.response.MyNotification
 import potatocake.katecam.everymoment.data.repository.NotificationRepository
-import kotlinx.coroutines.launch
+import potatocake.katecam.everymoment.di.FriendRepositoryQualifier
+import potatocake.katecam.everymoment.di.NotificationRepositoryQualifier
+import javax.inject.Inject
 
-class NotificationViewModel(
+@HiltViewModel
+class NotificationViewModel @Inject constructor(
+    @NotificationRepositoryQualifier
     private val notificationRepository: NotificationRepository,
+    @FriendRepositoryQualifier
     private val friendRepository: FriendRepository
 ) : ViewModel() {
     private val _notifications = MutableLiveData<List<MyNotification>>()

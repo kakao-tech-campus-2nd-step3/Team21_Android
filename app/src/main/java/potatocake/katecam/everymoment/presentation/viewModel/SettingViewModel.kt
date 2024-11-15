@@ -4,14 +4,19 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import potatocake.katecam.everymoment.data.model.network.dto.response.MyInformation
 import potatocake.katecam.everymoment.data.repository.MyInfoRepository
-import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
+import potatocake.katecam.everymoment.di.MyInfoRepositoryQualifier
+import javax.inject.Inject
 
-class SettingViewModel(private val myInfoRepository: MyInfoRepository): ViewModel() {
+@HiltViewModel
+class SettingViewModel@Inject constructor(
+    @MyInfoRepositoryQualifier
+    private val myInfoRepository: MyInfoRepository
+): ViewModel() {
     private val _myInfo = MutableLiveData<MyInformation>()
     val myInfo: MutableLiveData<MyInformation> get() = _myInfo
     fun fetchMyInfo(){

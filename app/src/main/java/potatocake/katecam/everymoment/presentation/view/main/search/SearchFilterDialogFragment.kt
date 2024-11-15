@@ -14,18 +14,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.launch
 import potatocake.katecam.everymoment.R
 import potatocake.katecam.everymoment.data.model.network.dto.vo.FilterState
-import potatocake.katecam.everymoment.data.repository.DiaryRepository
 import potatocake.katecam.everymoment.databinding.FragmentSearchFilterDialogBinding
 import potatocake.katecam.everymoment.presentation.adapter.CategoryAdapter
 import potatocake.katecam.everymoment.presentation.viewModel.DiaryViewModel
 import potatocake.katecam.everymoment.presentation.viewModel.SearchViewModel
-import potatocake.katecam.everymoment.presentation.viewModel.factory.DiaryViewModelFactory
-import potatocake.katecam.everymoment.presentation.viewModel.factory.SearchViewModelFactory
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -34,14 +31,8 @@ class SearchFilterDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentSearchFilterDialogBinding
     private lateinit var categoryAdapter: CategoryAdapter
     private var checkedBookmark: Boolean = false
-    private val diaryViewModel: DiaryViewModel by activityViewModels {
-        DiaryViewModelFactory(
-            DiaryRepository()
-        )
-    }
-    private val searchViewModel: SearchViewModel by activityViewModels {
-        SearchViewModelFactory(DiaryRepository())
-    }
+    private val diaryViewModel: DiaryViewModel by activityViewModels()
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -4,12 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import potatocake.katecam.everymoment.data.model.network.dto.response.Diary
 import potatocake.katecam.everymoment.data.model.network.dto.vo.FilterState
 import potatocake.katecam.everymoment.data.repository.DiaryRepository
-import kotlinx.coroutines.launch
+import potatocake.katecam.everymoment.di.DiaryRepositoryQualifier
+import javax.inject.Inject
 
-class SearchViewModel(private val diaryRepository: DiaryRepository) : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    @DiaryRepositoryQualifier
+    private val diaryRepository: DiaryRepository
+) : ViewModel() {
     private val _searchDiaries = MutableLiveData<List<Diary>>()
     val searchDiaries: LiveData<List<Diary>> get() = _searchDiaries
 
@@ -29,7 +36,14 @@ class SearchViewModel(private val diaryRepository: DiaryRepository) : ViewModel(
         bookmark: Boolean?
     ) {
         viewModelScope.launch {
-            diaryRepository.getSearchedDiaries(keyword, emoji, category, from, until, bookmark) { success, response ->
+            diaryRepository.getSearchedDiaries(
+                keyword,
+                emoji,
+                category,
+                from,
+                until,
+                bookmark
+            ) { success, response ->
                 if (success && response != null) {
                     _searchDiaries.postValue(response.info.diaries)
                 }

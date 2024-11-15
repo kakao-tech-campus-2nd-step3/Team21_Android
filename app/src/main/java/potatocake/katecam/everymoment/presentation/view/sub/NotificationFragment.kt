@@ -7,21 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import potatocake.katecam.everymoment.data.repository.FriendRepository
-import potatocake.katecam.everymoment.data.repository.NotificationRepository
+import dagger.hilt.android.AndroidEntryPoint
 import potatocake.katecam.everymoment.databinding.FragmentNotificationBinding
 import potatocake.katecam.everymoment.presentation.adapter.NotificationAdapter
 import potatocake.katecam.everymoment.presentation.viewModel.NotificationViewModel
-import potatocake.katecam.everymoment.presentation.viewModel.factory.NotificationViewModelFactory
 
+@AndroidEntryPoint
 class NotificationFragment : Fragment() {
 
     private lateinit var binding: FragmentNotificationBinding
-    private val notificationRepository = NotificationRepository()
-    private val friendRepository = FriendRepository()
-    private val viewModel: NotificationViewModel by viewModels {
-        NotificationViewModelFactory(notificationRepository, friendRepository)
-    }
+    private val viewModel: NotificationViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

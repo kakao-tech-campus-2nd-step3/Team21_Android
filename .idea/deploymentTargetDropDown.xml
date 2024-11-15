@@ -2,6 +2,21 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="DiaryRepositoryTest">
+        <State />
+      </entry>
+      <entry key="FriendDiaryRepositoryTest">
+        <State />
+      </entry>
+      <entry key="FriendRepositoryTest">
+        <State />
+      </entry>
+      <entry key="NotificationRepositoryTest">
+        <State />
+      </entry>
+      <entry key="TodayLogFragmentUiTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>

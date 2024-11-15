@@ -1,10 +1,6 @@
 package potatocake.katecam.everymoment.presentation.adapter
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -17,7 +13,6 @@ import potatocake.katecam.everymoment.data.model.network.dto.response.getComment
 import potatocake.katecam.everymoment.data.model.network.dto.response.getFriendDiaryInDetail.Post
 import potatocake.katecam.everymoment.databinding.CommentItemBinding
 import potatocake.katecam.everymoment.databinding.PostRecyclerHeaderBinding
-import potatocake.katecam.everymoment.extensions.CustomDialog
 import potatocake.katecam.everymoment.extensions.Like
 import potatocake.katecam.everymoment.presentation.listener.OnDeleteCommentListener
 import potatocake.katecam.everymoment.presentation.view.sub.PostFragment

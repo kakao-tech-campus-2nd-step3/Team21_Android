@@ -6,11 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import potatocake.katecam.everymoment.GlobalApplication
 import potatocake.katecam.everymoment.data.model.network.api.NetworkModule
 import potatocake.katecam.everymoment.data.model.network.api.PotatoCakeApiService
 import potatocake.katecam.everymoment.data.model.network.dto.request.EmojiRequest
 import potatocake.katecam.everymoment.data.model.network.dto.response.ServerResponse
-import potatocake.katecam.everymoment.services.location.GlobalApplication
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

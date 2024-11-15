@@ -5,19 +5,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import potatocake.katecam.everymoment.data.model.network.dto.request.ManualDiaryRequest
 import potatocake.katecam.everymoment.data.model.network.dto.request.postEditDiary.PatchEditedDiaryRequest
 import potatocake.katecam.everymoment.data.model.network.dto.vo.Category
 import potatocake.katecam.everymoment.data.model.network.dto.vo.DetailDiary
 import potatocake.katecam.everymoment.data.repository.DiaryRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MultipartBody
-import potatocake.katecam.everymoment.data.model.network.dto.request.ManualDiaryRequest
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import potatocake.katecam.everymoment.di.DiaryRepositoryQualifier
+import javax.inject.Inject
 
-class DiaryViewModel(private val diaryRepository: DiaryRepository) : ViewModel() {
+@HiltViewModel
+class DiaryViewModel @Inject constructor(
+    @DiaryRepositoryQualifier
+    private val diaryRepository: DiaryRepository
+) : ViewModel() {
 
     private var diaryId: Int? = null
 
@@ -33,7 +36,6 @@ class DiaryViewModel(private val diaryRepository: DiaryRepository) : ViewModel()
     init {
         getCategories()
     }
-
 
 
     /**
@@ -171,7 +173,7 @@ class DiaryViewModel(private val diaryRepository: DiaryRepository) : ViewModel()
         }
     }
 
-    fun postManualDiary(request: ManualDiaryRequest, callback: (Boolean) -> Unit){
+    fun postManualDiary(request: ManualDiaryRequest, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             diaryRepository.postNewManualDiary(request) { success, message ->
                 Log.d("arieum", message.toString())

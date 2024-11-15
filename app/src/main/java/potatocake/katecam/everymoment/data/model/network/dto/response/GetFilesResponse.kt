@@ -1,8 +1,8 @@
 package potatocake.katecam.everymoment.data.model.network.dto.response
 
 
-import potatocake.katecam.everymoment.data.model.network.dto.vo.File
 import com.google.gson.annotations.SerializedName
+import potatocake.katecam.everymoment.data.model.network.dto.vo.File
 
 data class GetFilesResponse(
     @SerializedName("code")

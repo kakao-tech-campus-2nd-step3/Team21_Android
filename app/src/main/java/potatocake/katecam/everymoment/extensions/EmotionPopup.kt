@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import androidx.fragment.app.Fragment
 import potatocake.katecam.everymoment.databinding.EmotionWindowBinding
 
 class EmotionPopup(
@@ -47,7 +48,19 @@ class EmotionPopup(
         }
 
         private fun setEmotionPopup(): EmotionWindowBinding {
-            popupView = EmotionWindowBinding.inflate((context as Activity).layoutInflater)
+            val inflater = when (context) {
+                is Activity -> {
+                    (context as Activity).layoutInflater
+                }
+                is Fragment -> {
+                    (context as Fragment).requireActivity().layoutInflater
+                }
+                else -> {
+                    throw IllegalArgumentException("Context is not valid")
+                }
+            }
+
+            popupView = EmotionWindowBinding.inflate(inflater)
 
             popupView.happy.text = potatocake.katecam.everymoment.data.model.entity.Emotions.HAPPY.getEmotionUnicode()
             popupView.sad.text = potatocake.katecam.everymoment.data.model.entity.Emotions.SAD.getEmotionUnicode()

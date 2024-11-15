@@ -5,17 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import potatocake.katecam.everymoment.data.model.network.api.GooglePlaceApiUtil
-import potatocake.katecam.everymoment.data.model.network.dto.request.postEditDiary.PatchEditedDiaryRequest
-import potatocake.katecam.everymoment.data.repository.DiaryRepository
-import potatocake.katecam.everymoment.data.model.network.dto.response.Diary
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import potatocake.katecam.everymoment.R
+import potatocake.katecam.everymoment.data.model.network.api.GooglePlaceApiUtil
 import potatocake.katecam.everymoment.data.model.network.dto.request.EmojiRequest
 import potatocake.katecam.everymoment.data.model.network.dto.request.LocationNameRequest
-import potatocake.katecam.everymoment.presentation.view.sub.diary.ManualDiaryEditFragment
+import potatocake.katecam.everymoment.data.model.network.dto.response.Diary
+import potatocake.katecam.everymoment.data.repository.DiaryRepository
+import potatocake.katecam.everymoment.di.DiaryRepositoryQualifier
+import javax.inject.Inject
 
-class TimelineViewModel(private val diaryRepository: DiaryRepository) : ViewModel() {
+@HiltViewModel
+class TimelineViewModel @Inject constructor(
+    @DiaryRepositoryQualifier
+    private val diaryRepository: DiaryRepository
+) : ViewModel() {
     private val _diaries = MutableLiveData<List<Diary>>()
     val diaries: LiveData<List<Diary>> get() = _diaries
 
@@ -55,7 +59,7 @@ class TimelineViewModel(private val diaryRepository: DiaryRepository) : ViewMode
         }
     }
 
-    fun deleteDiary(diaryId: Int){
+    fun deleteDiary(diaryId: Int) {
         viewModelScope.launch {
             diaryRepository.deleteDiary(diaryId) { success, response -> }
         }
@@ -85,14 +89,18 @@ class TimelineViewModel(private val diaryRepository: DiaryRepository) : ViewMode
         }
     }
 
-    private fun getPlaceNames(latitude: Double, longitude: Double, callback: (List<String>) -> Unit) {
+    private fun getPlaceNames(
+        latitude: Double,
+        longitude: Double,
+        callback: (List<String>) -> Unit
+    ) {
         GooglePlaceApiUtil.getPlaceNamesFromCoordinates(longitude, latitude) { placeNames, _ ->
             callback(placeNames)
             Log.d("arieum", "google place names : $placeNames")
         }
     }
 
-    fun updateDiaryLocation(diaryId: Int, locationName: String){
+    fun updateDiaryLocation(diaryId: Int, locationName: String) {
         viewModelScope.launch {
             val request = LocationNameRequest(
                 locationName = locationName
@@ -108,7 +116,7 @@ class TimelineViewModel(private val diaryRepository: DiaryRepository) : ViewMode
         }
     }
 
-    fun updateEmotions(diaryId: Int, selectedEmoji: String){
+    fun updateEmotions(diaryId: Int, selectedEmoji: String) {
         viewModelScope.launch {
             val request = EmojiRequest(
                 emoji = selectedEmoji

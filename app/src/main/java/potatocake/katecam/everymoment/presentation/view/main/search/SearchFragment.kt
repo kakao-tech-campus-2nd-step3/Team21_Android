@@ -12,20 +12,18 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import potatocake.katecam.everymoment.data.repository.DiaryRepository
+import dagger.hilt.android.AndroidEntryPoint
 import potatocake.katecam.everymoment.databinding.FragmentSearchBinding
 import potatocake.katecam.everymoment.presentation.adapter.SearchAdapter
 import potatocake.katecam.everymoment.presentation.viewModel.SearchViewModel
-import potatocake.katecam.everymoment.presentation.viewModel.factory.SearchViewModelFactory
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var filterBottomSheet: SearchFilterDialogFragment
     private lateinit var adapter: SearchAdapter
-    private val searchViewModel: SearchViewModel by activityViewModels {
-        SearchViewModelFactory(DiaryRepository())
-    }
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

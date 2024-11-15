@@ -10,24 +10,22 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import potatocake.katecam.everymoment.R
 import potatocake.katecam.everymoment.data.model.network.dto.response.Friends
-import potatocake.katecam.everymoment.data.repository.FriendRepository
 import potatocake.katecam.everymoment.databinding.FragmentFriendsListBinding
 import potatocake.katecam.everymoment.presentation.adapter.FriendsListAdapter
 import potatocake.katecam.everymoment.presentation.view.main.ShareViewFragment
 import potatocake.katecam.everymoment.presentation.viewModel.FriendsListViewModel
-import potatocake.katecam.everymoment.presentation.viewModel.factory.FriendsListViewModelFactory
 
+@AndroidEntryPoint
 class FriendsListFragment : Fragment() {
 
     private lateinit var binding: FragmentFriendsListBinding
     private lateinit var adapter: FriendsListAdapter
     private var isFabExpanded = false
 
-    private val viewModel: FriendsListViewModel by viewModels {
-        FriendsListViewModelFactory(FriendRepository())
-    }
+    private val viewModel: FriendsListViewModel by viewModels()
 
     private val fromBottomFabAnim: Animation by lazy {
         AnimationUtils.loadAnimation(requireContext(), R.anim.from_bottom_fab)

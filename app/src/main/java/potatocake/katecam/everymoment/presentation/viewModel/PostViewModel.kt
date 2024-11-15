@@ -5,15 +5,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import potatocake.katecam.everymoment.data.model.network.dto.request.PatchCommentRequest
 import potatocake.katecam.everymoment.data.model.network.dto.request.PostCommentRequest
 import potatocake.katecam.everymoment.data.model.network.dto.response.getComments.Comment
 import potatocake.katecam.everymoment.data.model.network.dto.response.getFriendDiaryInDetail.Post
-import potatocake.katecam.everymoment.data.repository.PostRepository
-import kotlinx.coroutines.launch
-import potatocake.katecam.everymoment.data.model.network.dto.request.PatchCommentRequest
 import potatocake.katecam.everymoment.data.repository.MyInfoRepository
+import potatocake.katecam.everymoment.data.repository.PostRepository
+import potatocake.katecam.everymoment.di.MyInfoRepositoryQualifier
+import potatocake.katecam.everymoment.di.PostRepositoryQualifier
+import javax.inject.Inject
 
-class PostViewModel(private val postRepository: PostRepository, private val myInfoRepository: MyInfoRepository) : ViewModel() {
+@HiltViewModel
+class PostViewModel @Inject constructor(
+    @PostRepositoryQualifier
+    private val postRepository: PostRepository,
+    @MyInfoRepositoryQualifier
+    private val myInfoRepository: MyInfoRepository
+) : ViewModel() {
     private var diaryId: Int? = null
     private var userId: Int? = null
 

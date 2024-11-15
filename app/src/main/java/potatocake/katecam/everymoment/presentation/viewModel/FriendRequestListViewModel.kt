@@ -4,11 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import potatocake.katecam.everymoment.data.repository.FriendRepository
-import potatocake.katecam.everymoment.data.model.network.dto.response.FriendRequests
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import potatocake.katecam.everymoment.data.model.network.dto.response.FriendRequests
+import potatocake.katecam.everymoment.data.repository.FriendRepository
+import potatocake.katecam.everymoment.di.FriendRepositoryQualifier
+import javax.inject.Inject
 
-class FriendRequestListViewModel(private val friendRepository: FriendRepository) : ViewModel() {
+@HiltViewModel
+class FriendRequestListViewModel @Inject constructor(
+    @FriendRepositoryQualifier
+    private val friendRepository: FriendRepository
+) : ViewModel() {
     private val _requestedFriend = MutableLiveData<List<FriendRequests>>()
     val requestedFriend: LiveData<List<FriendRequests>> get() = _requestedFriend
 

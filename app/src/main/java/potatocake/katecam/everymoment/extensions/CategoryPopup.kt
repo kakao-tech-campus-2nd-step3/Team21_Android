@@ -10,9 +10,10 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import potatocake.katecam.everymoment.databinding.CategoryPopupBinding
 import potatocake.katecam.everymoment.R
+import potatocake.katecam.everymoment.databinding.CategoryPopupBinding
 import potatocake.katecam.everymoment.presentation.viewModel.DiaryViewModel
 
 class CategoryPopup(
@@ -75,7 +76,19 @@ class CategoryPopup(
     }
 
     private fun setCategryPopup() {
-        popupView = CategoryPopupBinding.inflate((context as Activity).layoutInflater)
+        val inflater = when (context) {
+            is Activity -> {
+                (context as Activity).layoutInflater
+            }
+            is Fragment -> {
+                (context as Fragment).requireActivity().layoutInflater
+            }
+            else -> {
+                throw IllegalArgumentException("Context is not valid")
+            }
+        }
+
+        popupView = CategoryPopupBinding.inflate(inflater)
         addButton = popupView.addCategory
         gridLayout = popupView.categoryGrid
 

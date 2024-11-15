@@ -6,8 +6,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import potatocake.katecam.everymoment.data.model.network.vo.NotificationTypeConstants
 import potatocake.katecam.everymoment.data.model.network.dto.response.MyNotification
+import potatocake.katecam.everymoment.data.model.network.vo.NotificationTypeConstants
 import potatocake.katecam.everymoment.databinding.NotificationItemBinding
 import potatocake.katecam.everymoment.presentation.viewModel.NotificationViewModel
 

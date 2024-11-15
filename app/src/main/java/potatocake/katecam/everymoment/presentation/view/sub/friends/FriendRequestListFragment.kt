@@ -8,22 +8,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import potatocake.katecam.everymoment.R
 import potatocake.katecam.everymoment.data.model.network.dto.response.FriendRequests
-import potatocake.katecam.everymoment.data.repository.FriendRepository
 import potatocake.katecam.everymoment.databinding.FragmentFriendRequestListBinding
 import potatocake.katecam.everymoment.presentation.adapter.FriendRequestListAdapter
 import potatocake.katecam.everymoment.presentation.viewModel.FriendRequestListViewModel
-import potatocake.katecam.everymoment.presentation.viewModel.factory.FriendRequestListViewModelFactory
 
-
+@AndroidEntryPoint
 class FriendRequestListFragment : Fragment() {
 
     private lateinit var binding: FragmentFriendRequestListBinding
     private lateinit var adapter: FriendRequestListAdapter
-    private val viewModel: FriendRequestListViewModel by viewModels {
-        FriendRequestListViewModelFactory(FriendRepository())
-    }
+    private val viewModel: FriendRequestListViewModel by viewModels()
     private var allRequestedFriend = mutableListOf<FriendRequests>()
 
     override fun onCreateView(

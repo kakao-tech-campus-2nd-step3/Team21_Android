@@ -3,19 +3,19 @@ package potatocake.katecam.everymoment.presentation.view.main
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import potatocake.katecam.everymoment.data.repository.UserRepository
+import com.kakao.sdk.user.UserApiClient
+import dagger.hilt.android.AndroidEntryPoint
 import potatocake.katecam.everymoment.databinding.ActivityKakaoLoginBinding
 import potatocake.katecam.everymoment.presentation.view.sub.OnBoardingActivity
 import potatocake.katecam.everymoment.presentation.viewModel.KakaoLoginViewModel
-import potatocake.katecam.everymoment.presentation.viewModel.factory.KakaoLoginViewModelFactory
-import com.kakao.sdk.user.UserApiClient
 
+@AndroidEntryPoint
 class KakaoLoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityKakaoLoginBinding
-    private lateinit var viewModel: KakaoLoginViewModel
+    private val viewModel: KakaoLoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKakaoLoginBinding.inflate(layoutInflater)
@@ -23,11 +23,6 @@ class KakaoLoginActivity : AppCompatActivity() {
         setContentView(view)
 
         setupNonLogin()
-
-        val userRepository = UserRepository()
-        viewModel = ViewModelProvider(this, KakaoLoginViewModelFactory(userRepository)).get(
-            KakaoLoginViewModel::class.java
-        )
 
         viewModel.uiState.observe(this) { uiState ->
             if (uiState.isLoggedIn) {
