@@ -82,6 +82,9 @@ class PostAdapter(
             binding.comment.text = item.content
             Glide.with(itemView.context)
                 .load(item.commentFriend.profileImageUrl)
+                .error(R.drawable.account_circle_24px)
+                .fallback(R.drawable.account_circle_24px)
+                .placeholder(R.drawable.account_circle_24px)
                 .circleCrop()
                 .error(R.drawable.account_circle_24px)
                 .fallback(R.drawable.account_circle_24px)
